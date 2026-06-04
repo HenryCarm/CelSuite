@@ -27,3 +27,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: google/gemma-4-31b-it
+          github_token: ${{ secrets.GITHUB_TOKEN }}
