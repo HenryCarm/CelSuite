@@ -23,4 +23,4 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
-          model: google/gemini-1.5-prom
+          model: google/gemma-4-31b-it
