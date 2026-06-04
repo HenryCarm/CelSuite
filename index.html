@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HenJay | MyScreen - Premium Software Projects">
+  <title>HenJay | MyScreen</title>
+  <style>
+    @import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/400.css');
+    @import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/700.css');
+
+    :root {
+      --bg-primary: #050505;
+      --bg-secondary: #0a0a0a;
+      --text-primary: #f4f4f7;
+      --text-secondary: #888888;
+      --accent: #ff1a1a;
+      --accent-dark: #800000;
+      --accent-glow: rgba(255, 26, 26, 0.25);
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --radius-lg: 1rem;
+      --radius-md: 0.75rem;
+      --transition-smooth: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    .neon-mode {
+      --bg-primary: #0a0000;
+      --bg-secondary: #110000;
+      --text-primary: #ffffff;
+      --accent: #ff3333;
+      --accent-glow: rgba(255, 51, 51, 0.5);
+      --glass: rgba(255, 51, 51, 0.03);
+      --glass-border: rgba(255, 51, 51, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .gradient-orb {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      filter: blur(140px);
+      opacity: 0.12;
+      z-index: -2;
+      animation: floatOrb 15s ease-in-out infinite alternate;
+    }
+    .gradient-orb.top-right { top: -10%; right: -10%; animation-delay: 0s; }
+    .gradient-orb.bottom-left { bottom: -10%; left: -10%; animation-delay: 5s; }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 0;
+      backdrop-filter: blur(16px);
+      background: rgba(5, 5, 5, 0.65);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition-smooth);
+      color: var(--text-primary);
+    }
+    .logo:hover { color: var(--accent); }
+    .logo.secret-pulse {
+      animation: logoPulse 0.2s ease-in-out 3;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    main {
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 0 6rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeSlideUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeSlideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: var(--glass);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    .section-title.revealed {
+      animation: fadeSlideUp 0.7s ease-out forwards;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 4rem;
+    }
+
+    .project-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .project-card.revealed {
+      animation: fadeSlideUp 0.65s ease-out forwards;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .card-img-placeholder {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+      border-radius: var(--radius-md);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border: 1px dashed var(--glass-border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-img-placeholder::after {
+      content: '📷 Drop Screenshot Here';
+      position: absolute;
+    }
+
+    .project-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .project-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .tag {
+      padding: 0.3rem 0.65rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+    .card-link:hover { gap: 0.7rem; }
+
+    .easter-egg-hint {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: var(--transition-smooth);
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .project-card:hover .easter-egg-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .secret-confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: confettiFall 1.5s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(80vh) rotate(720deg); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <div class="gradient-orb top-right"></div>
+  <div class="gradient-orb bottom-left"></div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <div class="logo" id="site-logo">HenJay</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="https://github.com/HenJay" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <h1>MyScreen Software</h1>
+      <p>Premium, lightweight, and built for speed. Explore the projects crafted by HenJay. Drop your links, swap screenshots, and watch it shine.</p>
+      <div class="cta-group">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="https://github.com/HenJay/MyScreen" target="_blank" class="btn btn-secondary">Source Code</a>
+      </div>
+    </section>
+
+    <div class="container">
+      <h2 class="section-title" id="projects">Featured Projects</h2>
+      <div class="projects-grid" id="projects-container">
+        <!-- Project 1 -->
+        <article class="project-card">
+          <div class="card-img-placeholder"></div>
+          <h3>Project Alpha</h3>
+          <p>A sleek UI toolkit designed for rapid prototyping. Built with vanilla JS & modern CSS.</p>
+          <div class="card-tags">
+            <span class="tag">UI/UX</span>
+            <span class="tag">Vanilla</span>
+          </div>
+          <a href="#" class="card-link">Explore →</a>
+          <div class="easter-egg-hint">✨ secret</div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card">
+          <div class="card-img-placeholder"></div>
+          <h3>Project Beta</h3>
+          <p>Real-time data visualization dashboard. Optimized for 60fps rendering.</p>
+          <div class="card-tags">
+            <span class="tag">Data</span>
+            <span class="tag">WebGL</span>
+          </div>
+          <a href="#" class="card-link">Explore →</a>
+          <div class="easter-egg-hint">✨ try it</div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="project-card">
+          <div class="card-img-placeholder"></div>
+          <h3>Project Gamma</h3>
+          <p>Minimalist markdown editor with live preview and export capabilities.</p>
+          <div class="card-tags">
+            <span class="tag">Editor</span>
+            <span class="tag">Productivity</span>
+          </div>
+          <a href="#" class="card-link">Explore →</a>
+          <div class="easter-egg-hint">✨ peek</div>
+        </article>
+      </div>
+
+      <h2 class="section-title" id="about">About HenJay</h2>
+      <div style="text-align:center; color:var(--text-secondary); max-width:700px; margin:0 auto 2rem; opacity:0; transform:translateY(25px);" class="reveal-block">
+        <p>Building premium web experiences without the bloat. Focused on clean architecture, accessible design, and smooth interactions. Always pushing boundaries, one pixel at a time. 💻✨</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> HenJay | MyScreen. Crafted with love & zero dependencies.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 🤫 psst... Henny, you know what to do. Try ↑↑↓↓←→←→BA or triple-click the logo. 💖
+    console.log('%c🤫 psst... Henny, you know what to do. Try ↑↑↓↓←→←→BA or triple-click the logo. 💖', 'background: #111; color: #ff1a1a; padding: 8px 12px; border-radius: 6px; font-weight: bold;');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Intersection Observer for Scroll Reveals ---
+    const revealElements = document.querySelectorAll('.section-title, .project-card, .reveal-block');
+    const scrollObserverOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+    
+    const revealObserverInstance = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, scrollObserverOptions);
+
+    revealElements.forEach(el => revealObserverInstance.observe(el));
+
+    // --- Lightweight Canvas Particle System ---
+    const bgCanvas = document.getElementById('particle-canvas');
+    const canvasCtx = bgCanvas.getContext('2d');
+    let particleArray = [];
+    let mouseX = 0, mouseY = 0;
+
+    function resizeCanvas() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    class FloatingParticle {
+      constructor() {
+        this.x = Math.random() * bgCanvas.width;
+        this.y = Math.random() * bgCanvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = (Math.random() - 0.5) * 0.4;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > bgCanvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > bgCanvas.height) this.speedY *= -1;
+      }
+      draw() {
+        canvasCtx.beginPath();
+        canvasCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        canvasCtx.fillStyle = `rgba(255, 26, 26, ${this.opacity * 0.6})`; // Red tint for particles
+        canvasCtx.fill();
+      }
+    }
+
+    function initParticles() {
+      particleArray = [];
+      const count = Math.min(window.innerWidth / 15, 80);
+      for (let i = 0; i < count; i++) particleArray.push(new FloatingParticle());
+    }
+
+    function animateParticles() {
+      canvasCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particleArray.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+    // --- Easter Egg: Konami Code ---
+    const konamiSequence = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'KeyB', 'KeyA'
+    ];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === konamiSequence[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiSequence.length) {
+          triggerSecretMode();
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
+
+    // --- Easter Egg: Logo Triple Click ---
+    const logoElement = document.getElementById('site-logo');
+    let clickCounter = 0;
+    let clickTimer = null;
+
+    logoElement.addEventListener('click', () => {
+      clickCounter++;
+      if (clickCounter === 3) {
+        triggerSecretMode();
+        clickCounter = 0;
+        clearTimeout(clickTimer);
+      } else {
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clickCounter = 0; }, 800);
+      }
+    });
+
+    // --- Secret Mode Logic ---
+    function triggerSecretMode() {
+      document.body.classList.toggle('neon-mode');
+      spawnConfetti();
+      console.log('%c✨ Secret Mode Activated! Henny, you found the hidden switch. 💫', 'color: #ff3333; font-weight: bold;');
+    }
+
+    function spawnConfetti() {
+      const confettiContainer = document.createElement('div');
+      confettiContainer.classList.add('secret-confetti');
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti-piece');
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.top = '-10px';
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        piece.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+        confettiContainer.appendChild(piece);
+      }
+
+      setTimeout(() => confettiContainer.remove(), 2000);
+    }
+  </script>
+</body>
+</html>
+
