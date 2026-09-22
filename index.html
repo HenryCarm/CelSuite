@@ -10,13 +10,16 @@
 <meta property="og:title" content="CelSuite — Mini Studio Apps by HenryJayz">
 <meta property="og:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat. 11+ projects, 2 shipped, 9 brewing in the lab.">
 <meta property="og:url" content="https://henrycarm.github.io/CelSuite/">
-<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelSuite_Main_BG_Compressed.webp">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/Cel%20Logo%20Full%2016-9-q50.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="893">
 <meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelWeave%20Yellow%20AS%20wallpaper%20Compressed.jpg">
-<meta property="og:image:alt" content="CelSuite liquid glass wallpaper">
+<meta property="og:image:alt" content="CelSuite — Mini Studio Apps by HenryJayz">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CelSuite — Mini Studio Apps by HenryJayz">
 <meta name="twitter:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat.">
-<meta name="twitter:image" content="https://henrycarm.github.io/CelSuite/assets/CelSuite_Main_BG_Compressed.webp">
+<meta name="twitter:image" content="https://henrycarm.github.io/CelSuite/assets/Cel%20Logo%20Full%2016-9-q50.webp">
 <meta name="theme-color" content="#2a0b12">
 <link rel="icon" type="image/webp" href="assets/Cel%20Logo%20Circle-q50.webp" id="favLink">
 <link rel="apple-touch-icon" href="assets/Cel%20Logo%20Circle-q50.webp">
@@ -649,13 +652,17 @@ setInterval(()=>{
   braillePre.textContent=s;
 },120);
 
-/* ---------- MiMo liquid physics (verbatim trail math, hero-scoped, self-sleeping) ---------- */
+/* ---------- MiMo liquid physics — ALWAYS-ALIVE floating water ---------- */
 const hero=$("hero"),liquid=$("liquid");
 let ltime=0;
-const LS={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:false,raf:0};
+const LS={tx:0,ty:0,pts:Array.from({length:6},()=>({x:0,y:0})),inside:true,raf:0,centered:false};
 const SEG=MOBILE?32:48;
+function liquidCenter(){LS.tx=hero.clientWidth/2;LS.ty=hero.clientHeight*.46;}
 function liquidFrame(){
+  LS.raf=requestAnimationFrame(liquidFrame);
+  if(document.hidden||scrollY>innerHeight*1.2)return;   /* sleep offscreen, keep the chain */
   ltime+=.05;
+  if(!LS.centered){liquidCenter();LS.pts.forEach(p=>{p.x=LS.tx;p.y=LS.ty;});LS.centered=true;}
   for(let i=0;i<6;i++){
     const target=i===0?{x:LS.tx,y:LS.ty}:LS.pts[i-1];
     const damping=.7-.04*i;
@@ -679,36 +686,17 @@ function liquidFrame(){
     points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`);
   }
   liquid.style.clipPath=`polygon(${points.join(", ")})`;
-  if(LS.inside||Math.abs(LS.tx-lp.x)>.5||Math.abs(LS.ty-lp.y)>.5){
-    LS.raf=requestAnimationFrame(liquidFrame);
-  }else{LS.raf=0;}
 }
-function liquidWake(){if(!LS.raf&&!REDUCED)LS.raf=requestAnimationFrame(liquidFrame);}
 function liquidSet(cx,cy){
   const rect=hero.getBoundingClientRect();
   LS.tx=cx-rect.left; LS.ty=cy-rect.top;
-  liquidWake();
 }
 hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
-hero.addEventListener("mouseenter",e=>{
-  const rect=hero.getBoundingClientRect();
-  LS.tx=e.clientX-rect.left; LS.ty=e.clientY-rect.top;
-  LS.inside=true;
-  LS.pts.forEach(p=>{p.x=LS.tx;p.y=LS.ty;});
-  liquidWake();
-});
-function liquidLeave(){
-  LS.inside=false;
-  const rect=hero.getBoundingClientRect();
-  let tx=LS.tx,ty=LS.ty;
-  if(tx<=0)tx=-400; else if(tx>=rect.width)tx=rect.width+400;
-  if(ty<=0)ty=-400; else if(ty>=rect.height)ty=rect.height+400;
-  LS.tx=tx; LS.ty=ty;
-  liquidWake();
-}
-hero.addEventListener("mouseleave",liquidLeave);
-hero.addEventListener("touchmove",e=>{LS.inside=true;liquidSet(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-hero.addEventListener("touchend",liquidLeave,{passive:true});
+hero.addEventListener("touchmove",e=>liquidSet(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+hero.addEventListener("touchend",()=>liquidCenter(),{passive:true});
+hero.addEventListener("mouseleave",()=>liquidCenter());
+addEventListener("resize",()=>{if(LS.centered)liquidCenter();},{passive:true});
+requestAnimationFrame(liquidFrame);   /* no reduced-motion gate. the water is non-negotiable. */
 setTimeout(()=>$("revealLine").classList.add("on"),700);
 
 /* ---------- router ---------- */
