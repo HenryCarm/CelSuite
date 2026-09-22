@@ -12,9 +12,9 @@
 <meta property="og:url" content="https://henrycarm.github.io/CelSuite/">
 <meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/Cel%20Logo%20Full%2016-9-q50.webp">
 <meta property="og:image:type" content="image/webp">
-<meta property="og:image:width" content="1600">
-<meta property="og:image:height" content="893">
-<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelWeave%20Yellow%20AS%20wallpaper%20Compressed.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelSuite_OG_16-9.jpg">
 <meta property="og:image:alt" content="CelSuite — Mini Studio Apps by HenryJayz">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CelSuite — Mini Studio Apps by HenryJayz">
@@ -57,6 +57,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   radial-gradient(120% 80% at 50% -10%, hsl(var(--h) 85% 55% / .12), transparent 60%),
   radial-gradient(90% 60% at 50% 110%, hsl(var(--h) 85% 40% / .10), transparent 60%)}
 
+/* ---------- mobile note ---------- */
+.mobnote{position:fixed;top:56px;left:10px;z-index:49;display:none;font-size:10.5px;font-weight:600;color:#000;
+  background:hsl(0 0% 100% / .78);padding:3px 9px;border-radius:99px;backdrop-filter:blur(6px);pointer-events:none;letter-spacing:.02em}
+
 /* ---------- nav ---------- */
 #nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 22px;
   background:var(--glass);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border-bottom:1px solid var(--line)}
@@ -66,9 +70,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .logo.spin img{animation:spin .6s cubic-bezier(.3,1.4,.4,1)}
 @keyframes spin{to{transform:rotate(360deg)}}
 #nav .links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
-#nav .links a{padding:7px 12px;border-radius:99px;color:var(--ink);opacity:.85;font-size:14px}
+#nav .links a{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px;color:var(--ink);opacity:.85;font-size:14px}
 #nav .links a:hover{background:hsl(var(--h) 60% 50% / .16);opacity:1}
-.ghbtn{padding:7px 14px;border:1px solid var(--line);border-radius:99px;font-size:13.5px;color:var(--ink);background:hsl(var(--h) 60% 50% / .12)}
+#nav .links a svg,.sheet a svg,.ghbtn svg{flex:none;opacity:.85}
+.ghbtn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--line);border-radius:99px;font-size:13.5px;color:var(--ink);background:hsl(var(--h) 60% 50% / .12)}
 .ghbtn:hover{background:var(--acc);color:#fff}
 #burger{display:none;flex-direction:column;gap:4px;padding:11px 9px;border-radius:8px;margin-left:6px}
 #burger span{width:18px;height:2px;background:var(--ink);border-radius:2px;transition:.25s}
@@ -173,7 +178,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .badge.done{background:hsl(140 60% 40% / .18);color:hsl(140 70% 65%);border-color:hsl(140 60% 50% / .4)}
 .lockico{opacity:.8}
 
-/* ---------- about (braille curtain, RO-measured) ---------- */
+/* ---------- about (braille curtain) ---------- */
 #about{position:relative}
 .braille{position:absolute;inset:0;z-index:0;margin:0;padding:18px;overflow:hidden;
   font-family:var(--sym);font-size:12px;line-height:1.25;color:var(--acc);opacity:.22;
@@ -241,6 +246,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 @media (max-width:768px){
   #nav .links{display:none}
   #burger{display:flex}
+  .mobnote{display:block}
   .reveal{bottom:20%}
   .cue{bottom:calc(20% - 40px)}
   .blk{padding-top:64px}
@@ -263,6 +269,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 <div class="bg" id="bgB" style="opacity:0"></div>
 <div id="pit"></div>
 <div id="tint"></div>
+<div class="mobnote">*Desktop Site Recommended</div>
 
 <header id="nav">
   <button class="logo" id="logoBtn" title="psst… click me 😈">
@@ -270,22 +277,22 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <span class="wordmark">▣ CelSuite <span class="wm-sub">• Mini Studio Apps</span></span>
   </button>
   <nav class="links">
-    <a href="#/home" data-scroll="top">Home</a>
-    <a href="#/home" data-scroll="apps">The Suite</a>
-    <a href="#/home" data-scroll="lab">Lab</a>
-    <a href="#/home" data-scroll="about">About</a>
-    <a href="#/home" data-scroll="changelog">Changelog</a>
+    <a href="#/home" data-scroll="top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9h-6v-6h-4v6H4Z"/></svg>Home</a>
+    <a href="#/home" data-scroll="apps"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>The Suite</a>
+    <a href="#/home" data-scroll="lab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v5l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 17l-5-9V3"/></svg>Lab</a>
+    <a href="#/home" data-scroll="about"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>About</a>
+    <a href="#/home" data-scroll="changelog"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6Z"/><path d="M9 11h7M9 15h7" stroke-linecap="round"/></svg>Changelog</a>
   </nav>
-  <a class="ghbtn" href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub ↗</a>
+  <a class="ghbtn" href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.66.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
   <button id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 <div class="sheet" id="sheet">
-  <a href="#/home" data-scroll="top">Home</a>
-  <a href="#/home" data-scroll="apps">The Suite</a>
-  <a href="#/home" data-scroll="lab">Lab</a>
-  <a href="#/home" data-scroll="about">About</a>
-  <a href="#/home" data-scroll="changelog">Changelog</a>
-  <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub ↗</a>
+  <a href="#/home" data-scroll="top"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9h-6v-6h-4v6H4Z"/></svg>Home</a>
+  <a href="#/home" data-scroll="apps"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>The Suite</a>
+  <a href="#/home" data-scroll="lab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v5l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 17l-5-9V3"/></svg>Lab</a>
+  <a href="#/home" data-scroll="about"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>About</a>
+  <a href="#/home" data-scroll="changelog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6Z"/><path d="M9 11h7M9 15h7" stroke-linecap="round"/></svg>Changelog</a>
+  <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.66.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
 </div>
 
 <main id="root">
@@ -318,15 +325,15 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <pre class="braille" id="braille" aria-hidden="true"></pre>
     <h2 class="rv">About HenryJayz</h2>
     <div class="aboutbox rv selectable">
-      <p class="art">▂▃▅▇▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▇▆▅▃▂</p>
+      <p class="art">▂▃▅▇▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▆▅▃▂</p>
       <p>Heyy, <b>Henry</b> here, so you found me here too?, well yes I am also a <u>Solo dev</u>. plus...</p>
       <p>— <b>Main CelSuite builder</b><br>— <b>Chronic over-polisher</b> <i>(cuz who doesn't love good looking apps)</i></p>
       <p>CelSuite is like my own little <i>Adobe-style family</i>: a growing stack of tools that feel <b>premium</b>, run <b>offline</b>, and <u>respect your machine</u>.</p>
       <p>Two apps are public today. Eight more are still being finalized in the lab, debugging the code into perfection before they're allowed outside. I try to achieve the goal of <b>Everything to be shipped with zero-dependency</b>, Apps are also tuned until it feels like it should cost money to use... Glad It didn't cost me money to make any of these, <i>It cost me sleep tho :/</i></p>
       <p class="sig">— Pace is one problem at a time &gt;:)</p>
       <a class="ytbox" href="https://www.youtube.com/@HenryJayZ" target="_blank" rel="noopener">
-<pre class="ascii">╔═╦╗╔╦╗╔═╦═╦╦╦╦╗╔═╗
-║╚╣║║║╚╣╣╔╣╔╣║╚╣═╣ 
+<pre class="ascii">╔═╦╗╔╦╗╔══╦╦╦╦╗╔═╗
+║╚╣║║║╚╣╚╣╔╣╔╣║╚╣═╣ 
 ╠╗║╚╝║║╠╗║╚╣║║║║║═╣
 ╚═╩══╩═╩═╩═╩╝╚╩═╩═╝</pre>
         <span class="ytnote"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff0033"/><path d="M10 9.2v5.6l5-2.8Z" fill="#fff"/></svg>youtube.com/@HenryJayZ <span class="subnote">[ if you want :) ]</span></span>
@@ -422,7 +429,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 
 <script>
 "use strict";
-/* ============ CelSuite site — MiMo physics restored, OG-ready, low-end friendly ============ */
+/* ============ CelSuite site — demon-red default, iconified, mobile-tuned ============ */
 const $=id=>document.getElementById(id);
 const MOBILE=matchMedia("(max-width:768px)").matches || matchMedia("(pointer:coarse)").matches;
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -519,14 +526,12 @@ $("p2pDl").innerHTML=dlHTML(P2P_DL,"https://github.com/HenryCarm/CelSuite_P2P-Sc
 $("asFeat").innerHTML=featHTML(AS_FEAT);
 $("asDl").innerHTML=dlHTML(AS_DL,"https://github.com/HenryCarm/CelSuite_Art_Studio/releases/latest");
 
-/* ---------- theme ---------- */
-const HUE_KEY="cel-hue";
+/* ---------- theme: demon red by default, rerolls are session-only flings ---------- */
 function setHue(h,spin){
   document.documentElement.style.setProperty("--h",h);
-  localStorage.setItem(HUE_KEY,h);
   if(spin){const l=$("logoBtn");l.classList.remove("spin");void l.offsetWidth;l.classList.add("spin");}
 }
-setHue(localStorage.getItem(HUE_KEY)||352,false);
+setHue(352,false);
 $("logoBtn").onclick=()=>setHue(Math.floor(Math.random()*360),true);
 
 /* ---------- hamburger ---------- */
@@ -564,7 +569,7 @@ function watchImgs(){
   });
 }
 
-/* ---------- wallpaper + pit ---------- */
+/* ---------- wallpaper + pit (mobile-eased curve) ---------- */
 let bgFront=$("bgA"),bgBack=$("bgB");
 bgFront.style.backgroundImage=WALL.home;
 function swapWall(key){
@@ -581,14 +586,16 @@ function pitFrame(){
   const doc=document.documentElement;
   const max=doc.scrollHeight-innerHeight;
   const p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
-  const target=.33+p*.55;
+  const easeP=MOBILE?Math.pow(p,1.35):p;          /* breathe with the longer mobile page */
+  const target=.33+easeP*.55;
   const settling=Math.abs(target-pitCur)>.001;
   if(scrollDirty||settling||Math.abs(p-lastP)>.0005){
     lastP=p;
     pitCur+=(target-pitCur)*.08;
     const f=`brightness(${(1-pitCur).toFixed(3)}) saturate(${(1.08-p*.3).toFixed(3)})`;
     bgFront.style.filter=f; bgBack.style.filter=f;
-    const t1=pitCur*.75, t2=Math.min(.88,pitCur+.18);
+    const delta=MOBILE?.10:.18;                    /* softer in-viewport veil on phones */
+    const t1=pitCur*.75, t2=Math.min(.88,pitCur+delta);
     $("pit").style.background=`linear-gradient(180deg,rgba(0,0,0,${t1.toFixed(3)}),rgba(0,0,0,${t2.toFixed(3)}))`;
     revealPass();
     scrollDirty=false;
@@ -600,11 +607,13 @@ function pitFrame(){
   requestAnimationFrame(pitFrame);
 }
 
-/* ---------- reveals ---------- */
+/* ---------- reveals (mobile pre-fades before entering) ---------- */
 let RV=[];
 function collectRV(){RV=[...document.querySelectorAll(".rv")];}
 function revealPass(){
   const vh=innerHeight, sy=scrollY;
+  const IN=MOBILE?vh+80:vh-70;      /* phones: start glowing before it's even on screen */
+  const OUT=MOBILE?vh+140:vh-40;
   const reads=[];
   for(const el of RV){
     if(el.offsetParent===null)continue;
@@ -618,17 +627,17 @@ function revealPass(){
       if(top+h>sy+10){st.add("in");st.remove("above");}
     }else if(st.contains("in")){
       if(top+h<sy-30){st.remove("in");st.add("above");}
-      else if(top>sy+vh-40){st.remove("in");}
+      else if(top>sy+OUT){st.remove("in");}
     }else{
       if(top+h<sy-30){st.add("above");}
-      else if(top<sy+vh-70){st.add("in");}
+      else if(top<sy+IN){st.add("in");}
     }
   }
 }
 
-/* ---------- braille curtain (ResizeObserver = foolproof fill) ---------- */
+/* ---------- braille curtain (ResizeObserver-measured) ---------- */
 const braillePre=$("braille");
-const BGlyphs="⠀⠁⣿⣼⣀⡀⢙⠶";
+const BGlyphs="⠀⠁⣼⡀⠶";
 let BR={rows:0,cols:0},brailleT=0;
 new ResizeObserver(es=>{
   const r=es[0].contentRect;
@@ -696,7 +705,7 @@ hero.addEventListener("touchmove",e=>liquidSet(e.touches[0].clientX,e.touches[0]
 hero.addEventListener("touchend",()=>liquidCenter(),{passive:true});
 hero.addEventListener("mouseleave",()=>liquidCenter());
 addEventListener("resize",()=>{if(LS.centered)liquidCenter();},{passive:true});
-requestAnimationFrame(liquidFrame);   /* no reduced-motion gate. the water is non-negotiable. */
+requestAnimationFrame(liquidFrame);   /* no reduced-motion gate. the blub is non-negotiable. */
 setTimeout(()=>$("revealLine").classList.add("on"),700);
 
 /* ---------- router ---------- */
@@ -742,7 +751,7 @@ async function transition(next){
 function requestRoute(next,scroll){
   if(next===route){doScroll(scroll||"top");return;}
   if(busy){queued={next,scroll};return;}
-  scrollAfter=scroll||null;
+  if(scroll)scrollAfter=scroll;      /* never clobber a pending scroll target */
   busy=true;
   transition(next).catch(err=>console.error("transition:",err)).finally(()=>{
     busy=false;
