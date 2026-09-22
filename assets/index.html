@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CelSuite — By HenryJayz</title>
+<meta name="description" content="CelSuite by HenryJayz — programs you didn't know you needed. Premium, offline-first, zero bloat. 11+ projects, 2 shipped, 9 brewing in the lab.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CelSuite">
+<meta property="og:title" content="CelSuite — Mini Studio Apps by HenryJayz">
+<meta property="og:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat. 11+ projects, 2 shipped, 9 brewing in the lab.">
+<meta property="og:url" content="https://henrycarm.github.io/CelSuite/">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/Cel%20Logo%20Full%2016-9-q50.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="893">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelWeave%20Yellow%20AS%20wallpaper%20Compressed.jpg">
+<meta property="og:image:alt" content="CelSuite — Mini Studio Apps by HenryJayz">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CelSuite — Mini Studio Apps by HenryJayz">
+<meta name="twitter:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat.">
+<meta name="twitter:image" content="https://henrycarm.github.io/CelSuite/assets/Cel%20Logo%20Full%2016-9-q50.webp">
+<meta name="theme-color" content="#2a0b12">
+<link rel="icon" type="image/webp" href="assets/Cel%20Logo%20Circle-q50.webp" id="favLink">
+<link rel="apple-touch-icon" href="assets/Cel%20Logo%20Circle-q50.webp">
+<link rel="preload" as="image" href="assets/CelSuite_Main_BG_Compressed.webp">
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com" crossorigin>
+<style>
+@font-face{font-family:"MEvoS";src:url("assets/MEvoS_B.otf") format("opentype");font-display:swap}
+:root{
+  --h:352;
+  --acc:hsl(var(--h) 82% 56%); --acc-deep:hsl(var(--h) 74% 46%); --acc-dark:hsl(var(--h) 70% 12%);
+  --bg0:hsl(var(--h) 42% 7%); --ink:hsl(var(--h) 30% 96%); --sub:hsl(var(--h) 16% 74%);
+  --glass:hsl(var(--h) 40% 9% / .55); --line:hsl(var(--h) 60% 70% / .20); --glow:hsl(var(--h) 90% 60% / .35);
+  --disp:"MEvoS","Segoe UI",system-ui,sans-serif; --body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --sym:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg0);color:var(--ink);overflow-x:hidden;line-height:1.6;
+  user-select:none;-webkit-user-select:none}
+.selectable,.selectable *{user-select:text;-webkit-user-select:text}
+::selection{background:hsl(var(--h) 85% 45% / .9);color:#fff}
+.hidden{display:none !important}
+img{max-width:100%;display:block;-webkit-user-drag:none}
+a{color:var(--acc);text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+.display{font-family:var(--disp);font-weight:400;letter-spacing:.01em}
+.selectable a,.logbox a{color:var(--acc);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:hsl(var(--h) 80% 60% / .5);transition:.2s}
+.selectable a:hover,.logbox a:hover{text-decoration-color:var(--acc);text-shadow:0 0 14px var(--glow);filter:brightness(1.15)}
+
+/* ---------- fixed wallpaper / pit / tint ---------- */
+.bg{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;will-change:filter,opacity}
+#pit{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.33),rgba(0,0,0,.55))}
+#tint{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 80% at 50% -10%, hsl(var(--h) 85% 55% / .12), transparent 60%),
+  radial-gradient(90% 60% at 50% 110%, hsl(var(--h) 85% 40% / .10), transparent 60%)}
+
+/* ---------- nav ---------- */
+#nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 22px;
+  background:var(--glass);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{width:34px;height:34px;border-radius:50%;box-shadow:0 0 14px var(--glow)}
+.logo .wordmark{font-family:var(--disp);font-size:19px;white-space:nowrap}
+.logo.spin img{animation:spin .6s cubic-bezier(.3,1.4,.4,1)}
+@keyframes spin{to{transform:rotate(360deg)}}
+#nav .links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+#nav .links a{padding:7px 12px;border-radius:99px;color:var(--ink);opacity:.85;font-size:14px}
+#nav .links a:hover{background:hsl(var(--h) 60% 50% / .16);opacity:1}
+.ghbtn{padding:7px 14px;border:1px solid var(--line);border-radius:99px;font-size:13.5px;color:var(--ink);background:hsl(var(--h) 60% 50% / .12)}
+.ghbtn:hover{background:var(--acc);color:#fff}
+#burger{display:none;flex-direction:column;gap:4px;padding:11px 9px;border-radius:8px;margin-left:6px}
+#burger span{width:18px;height:2px;background:var(--ink);border-radius:2px;transition:.25s}
+#burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+#burger.open span:nth-child(2){opacity:0}
+#burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.sheet{position:fixed;top:60px;left:10px;right:10px;z-index:56;background:var(--glass);backdrop-filter:blur(18px) saturate(1.3);
+  border:1px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:2px;
+  transform:translateY(-14px);opacity:0;pointer-events:none;transition:.25s cubic-bezier(.16,1,.3,1);box-shadow:0 18px 50px -18px #000}
+.sheet.open{transform:none;opacity:1;pointer-events:auto}
+.sheet a{padding:13px 14px;border-radius:10px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.sheet a:hover{background:hsl(var(--h) 60% 50% / .16)}
+
+/* ---------- hero (MiMo liquid physics) ---------- */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;cursor:crosshair;touch-action:pan-y}
+.hlayer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.heroT{font-family:var(--disp);font-size:clamp(64px,14vw,168px);letter-spacing:.01em;line-height:1;text-align:center;padding:0 12px}
+.base .heroT{color:var(--ink);text-shadow:0 8px 44px rgba(0,0,0,.5)}
+.liquid{background:linear-gradient(140deg,var(--acc),var(--acc-deep) 70%);clip-path:circle(0px at -300px -300px);will-change:clip-path;
+  filter:drop-shadow(0 0 46px var(--glow))}
+.liquid .heroT{color:var(--acc-dark)}
+.reveal{position:absolute;bottom:24%;left:0;right:0;text-align:center;font-family:var(--disp);font-size:clamp(18px,3vw,30px);color:var(--sub);opacity:0;transform:translateY(14px);transition:opacity .9s .15s,transform .9s .15s;pointer-events:none}
+.reveal.on{opacity:1;transform:none}
+.cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite;pointer-events:none}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+
+/* ---------- blocks ---------- */
+.blk{max-width:1120px;margin:0 auto;padding:88px 22px 10px}
+.blk h2{font-family:var(--disp);font-size:clamp(30px,5vw,52px);margin-bottom:6px}
+.blk .lead{color:var(--sub);max-width:680px;margin-bottom:20px}
+.vq{color:var(--ink);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.vertable{display:inline-block;margin:6px 0 28px;padding:10px 16px;border-radius:10px;border:1px solid var(--line);
+  background:hsl(var(--h) 40% 10% / .7);font-family:Consolas,"Cascadia Code",monospace;font-size:12.5px;color:var(--sub);overflow-x:auto;max-width:100%}
+.vertable b{color:var(--acc)}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.rv.above{transform:translateY(-36px)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- stats ---------- */
+.strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1000px;margin:-40px auto 0;padding:0 20px;position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:hsl(var(--h) 40% 12% / .82);font-size:13px;color:var(--ink)}
+.chip b{color:var(--acc)}
+.chip svg{flex:none}
+
+/* ---------- shimmer ---------- */
+.imgwrap{position:relative;display:block;overflow:hidden;max-width:100%}
+.imgwrap.round{border-radius:50%;display:inline-block;vertical-align:middle;animation:float 6s ease-in-out infinite}
+.imgwrap.ic{border-radius:50%;display:inline-block;vertical-align:top;animation:float 5s ease-in-out infinite}
+.imgwrap img{opacity:0;transform:scale(1.02);transition:opacity .5s ease,transform .5s ease}
+.imgwrap img.loaded{opacity:1;transform:scale(1)}
+.shimmer{position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent 20%,hsl(var(--h) 70% 60% / .25) 50%,transparent 80%) 0 0/200% 100% no-repeat,
+             hsl(var(--h) 40% 14% / .85);
+  animation:shim 1.1s linear infinite}
+@keyframes shim{to{background-position:-200% 0,0 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* ---------- app cards ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.grid2>.rv{min-width:0}
+.appcard{position:relative;border-radius:18px;border:1px solid var(--line);padding:26px;overflow:hidden;cursor:pointer;
+  background:hsl(var(--h) 45% 9% / .82);transform-style:preserve-3d;transition:box-shadow .3s,border-color .3s;will-change:transform;height:100%}
+.appcard:hover{border-color:hsl(var(--h) 80% 60% / .5);box-shadow:0 18px 50px -18px var(--glow)}
+.appcard::before{content:"";position:absolute;inset:-30%;z-index:0;opacity:.6;filter:blur(30px) saturate(1.25);will-change:transform;
+  background:
+   radial-gradient(42% 60% at 24% 26%, var(--g1), transparent 62%),
+   radial-gradient(38% 52% at 78% 32%, var(--g2), transparent 58%),
+   radial-gradient(55% 70% at 52% 88%, var(--g3), transparent 62%);
+  animation:fluid 18s ease-in-out infinite alternate}
+@keyframes fluid{
+  0%{transform:scale(1) rotate(0deg) translate(0,0)}
+  50%{transform:scale(1.15) rotate(5deg) translate(4%,-3%)}
+  100%{transform:scale(1.05) rotate(-4deg) translate(-4%,3%)}}
+.appcard::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(160deg,rgba(0,0,0,.14),rgba(0,0,0,.52))}
+.appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
+.appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
+.appcard>*{position:relative;z-index:1}
+.appcard .glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px 300px at var(--mx,50%) var(--my,50%),hsl(var(--h) 90% 70% / .16),transparent 65%)}
+.appcard:hover .glare{opacity:1}
+.appcard .appicon{width:74px;height:74px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.appcard h3{font-family:var(--disp);font-size:26px;margin:16px 0 4px}
+.appcard p{color:var(--sub);font-size:14.5px;margin:10px 0 18px}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip.mini{padding:4px 11px;font-size:11.5px;background:hsl(var(--h) 60% 50% / .13)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;border:1px solid var(--line);font-size:14px;color:var(--ink);transition:.2s}
+.btn:hover{background:hsl(var(--h) 60% 50% / .16);transform:translateY(-1px)}
+.btn.glow{background:var(--acc);border-color:transparent;color:#fff;box-shadow:0 6px 22px -6px var(--glow)}
+.btn.glow:hover{background:var(--acc-deep)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- lab ---------- */
+.labgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.lockcard{position:relative;border-radius:14px;border:1px dashed hsl(var(--h) 50% 60% / .35);padding:20px;overflow:hidden;
+  background:hsl(var(--h) 40% 10% / .6);transition:.25s}
+.lockcard:hover{border-style:solid;border-color:var(--acc);animation:glitch .35s steps(2) 1}
+@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-2px,1px) skewX(-1deg)}50%{transform:translate(2px,-1px)}100%{transform:translate(0)}}
+.lockcard .sil{position:absolute;right:-18px;top:-18px;width:96px;height:96px;border-radius:26px;background:var(--acc);opacity:.14;filter:blur(14px)}
+.lockcard h4{font-family:var(--disp);font-size:19px;margin:10px 0 4px}
+.lockcard p{color:var(--sub);font-size:13px}
+.badge{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:99px;font-size:10.5px;letter-spacing:.12em;
+  background:hsl(var(--h) 70% 50% / .16);border:1px solid var(--line);color:var(--acc)}
+.badge.done{background:hsl(140 60% 40% / .18);color:hsl(140 70% 65%);border-color:hsl(140 60% 50% / .4)}
+.lockico{opacity:.8}
+
+/* ---------- about (braille curtain, RO-measured) ---------- */
+#about{position:relative}
+.braille{position:absolute;inset:0;z-index:0;margin:0;padding:18px;overflow:hidden;
+  font-family:var(--sym);font-size:12px;line-height:1.25;color:var(--acc);opacity:.22;
+  pointer-events:none;user-select:none !important;-webkit-user-select:none !important;white-space:pre;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);
+  animation:bpulse 1.6s ease-in-out infinite alternate}
+@keyframes bpulse{from{filter:brightness(.7)}to{filter:brightness(1.7)}}
+.aboutbox{background:transparent;border:none;padding:34px 8px;max-width:820px;position:relative;z-index:1}
+.aboutbox p{margin-bottom:14px;color:var(--ink);opacity:.95}
+.aboutbox b{color:var(--ink)}
+.aboutbox u{text-decoration-color:var(--acc);text-underline-offset:4px}
+.aboutbox .art{font-family:var(--sym);color:var(--acc);font-size:16px;letter-spacing:1px;margin-bottom:16px}
+.aboutbox .sig{font-family:var(--disp);font-size:clamp(22px,3.4vw,30px);color:var(--acc);margin-top:10px}
+.ytbox{display:inline-block;border-radius:14px;padding:16px 20px;border:1px solid var(--line);
+  background:hsl(var(--h) 60% 50% / .10);transition:.25s;margin-top:8px}
+.ytbox:hover{background:hsl(var(--h) 60% 50% / .2);transform:translateY(-3px);box-shadow:0 14px 34px -14px var(--glow);border-color:var(--acc)}
+.ytbox .ascii{font-family:Consolas,monospace;font-size:13px;line-height:1.5;color:var(--acc);margin:0 0 10px;overflow:auto}
+.ytnote{display:flex;align-items:center;gap:9px;color:var(--ink);font-size:13.5px;font-weight:600}
+.subnote{color:var(--sub);font-size:12px;font-weight:400}
+
+/* ---------- changelog ---------- */
+.logtabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.logtabs button{padding:8px 16px;border-radius:99px;border:1px solid var(--line);font-size:13px;color:var(--sub)}
+.logtabs button.on{background:var(--acc);color:#fff;border-color:transparent}
+.logbox{border-radius:14px;border:1px solid var(--line);background:hsl(var(--h) 40% 9% / .7);padding:26px 30px;max-height:460px;overflow:auto;font-size:14px}
+.logbox h4{font-family:var(--disp);font-size:22px;margin:18px 0 6px;color:var(--acc)}
+.logbox h5{font-size:15px;margin:14px 0 4px;color:var(--ink)}
+.logbox ul{margin:6px 0 10px 20px;color:var(--sub)}
+.logbox li{margin:3px 0}
+.logbox code{background:hsl(var(--h) 60% 50% / .15);padding:1px 6px;border-radius:5px;font-size:12.5px}
+.logbox table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px}
+.logbox th,.logbox td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+.logbox th{background:hsl(var(--h) 60% 50% / .14);color:var(--ink)}
+.logbox tr:nth-child(even) td{background:hsl(var(--h) 40% 12% / .5)}
+
+/* ---------- footer ---------- */
+footer{margin-top:90px;border-top:1px solid var(--line);background:hsl(var(--h) 45% 6% / .72);backdrop-filter:blur(12px);padding:44px 22px 34px;text-align:center}
+footer .flogo{width:46px;height:46px;border-radius:50%;margin:0 auto 12px;box-shadow:0 0 18px var(--glow)}
+footer .flinks{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:13.5px}
+footer small{color:var(--sub);display:block;margin-top:8px}
+
+/* ---------- app pages ---------- */
+.apppage{padding-top:86px}
+.back{margin:0 auto;display:flex;max-width:1120px;padding:10px 16px;color:var(--sub);font-size:14px}
+.back:hover{color:var(--acc)}
+.banner{width:100%;max-height:340px;object-fit:cover;box-shadow:0 20px 60px -20px #000}
+.banner.foot{margin-top:70px;max-height:220px;opacity:.95}
+.apphead{display:flex;align-items:center;gap:20px;max-width:1120px;margin:34px auto 0;padding:0 22px;flex-wrap:wrap}
+.apphead img{width:92px;height:92px;filter:drop-shadow(0 14px 22px rgba(0,0,0,.55))}
+.apphead h1{font-size:clamp(30px,5vw,54px)}
+.tag{max-width:1120px;margin:14px auto 0;padding:0 22px;color:var(--sub);font-size:17px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.fitem{border-radius:12px;border:1px solid var(--line);background:hsl(var(--h) 40% 11% / .6);padding:16px 18px;font-size:14px}
+.fitem b{display:block;margin-bottom:4px;color:var(--acc);font-size:14.5px}
+.fitem span{color:var(--sub)}
+.diagram{background:hsl(var(--h) 45% 6% / .85);border:1px solid var(--line);border-radius:14px;padding:22px;overflow:auto;
+  font-family:Consolas,"Cascadia Code",monospace;font-size:12.5px;line-height:1.7;color:var(--sub)}
+.dlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.dlitem{border-radius:12px;border:1px solid var(--line);background:hsl(var(--h) 40% 11% / .6);padding:18px;display:flex;flex-direction:column;gap:8px}
+.dlitem b{font-size:15px;display:flex;align-items:center;gap:8px}
+.dlitem b svg{flex:none;opacity:.9}
+.dlitem span{color:var(--sub);font-size:12.5px;flex:1}
+
+@media (max-width:768px){
+  #nav .links{display:none}
+  #burger{display:flex}
+  .reveal{bottom:20%}
+  .cue{bottom:calc(20% - 40px)}
+  .blk{padding-top:64px}
+  .strip{margin-top:-24px}
+  .banner{max-height:200px}
+  .banner.foot{max-height:150px}
+  .apphead img{width:72px;height:72px}
+  footer{padding-bottom:60px}
+  .logo .wm-sub{display:none}
+  .logbox{padding:18px 16px}
+}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-thumb{background:hsl(var(--h) 40% 40% / .6);border-radius:99px}
+::-webkit-scrollbar-track{background:transparent}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bgA"></div>
+<div class="bg" id="bgB" style="opacity:0"></div>
+<div id="pit"></div>
+<div id="tint"></div>
+
+<header id="nav">
+  <button class="logo" id="logoBtn" title="psst… click me 😈">
+    <img src="assets/Cel Logo Circle-q50.webp" alt="CelSuite logo" draggable="false">
+    <span class="wordmark">▣ CelSuite <span class="wm-sub">• Mini Studio Apps</span></span>
+  </button>
+  <nav class="links">
+    <a href="#/home" data-scroll="top">Home</a>
+    <a href="#/home" data-scroll="apps">The Suite</a>
+    <a href="#/home" data-scroll="lab">Lab</a>
+    <a href="#/home" data-scroll="about">About</a>
+    <a href="#/home" data-scroll="changelog">Changelog</a>
+  </nav>
+  <a class="ghbtn" href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub ↗</a>
+  <button id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<div class="sheet" id="sheet">
+  <a href="#/home" data-scroll="top">Home</a>
+  <a href="#/home" data-scroll="apps">The Suite</a>
+  <a href="#/home" data-scroll="lab">Lab</a>
+  <a href="#/home" data-scroll="about">About</a>
+  <a href="#/home" data-scroll="changelog">Changelog</a>
+  <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<main id="root">
+<!-- ================= HOME ================= -->
+<section class="view" id="view-home">
+  <div class="hero" id="hero">
+    <div class="hlayer base"><h1 class="heroT">CelSuite</h1></div>
+    <div class="hlayer liquid" id="liquid"><h1 class="heroT">CelSuite</h1></div>
+    <div class="reveal" id="revealLine">By HenryJayz :)</div>
+    <div class="cue">SCROLL</div>
+  </div>
+
+  <div class="strip rv" id="stats"></div>
+
+  <section class="blk" id="apps">
+    <h2 class="rv">The Suite</h2>
+    <p class="lead rv selectable">Programs you didn't know you needed — Premium, offline-first, zero bloat<br>
+      <span class="vq">Quick Version Explanation</span></p>
+    <div class="vertable rv selectable">| <b>vXXY.ZZ.&amp;&amp;</b> | XX = Year | Y = Month | Z = Day | &amp;&amp; = Version that Day |</div>
+    <div class="grid2" id="appGrid"></div>
+  </section>
+
+  <section class="blk" id="lab">
+    <h2 class="rv">In The Lab 🔬</h2>
+    <p class="lead rv">Nine brewing behind glass. Don't touch the glass.</p>
+    <div class="labgrid" id="labGrid"></div>
+  </section>
+
+  <section class="blk" id="about">
+    <pre class="braille" id="braille" aria-hidden="true"></pre>
+    <h2 class="rv">About HenryJayz</h2>
+    <div class="aboutbox rv selectable">
+      <p class="art">▂▃▅▇▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▇▆▅▃▂</p>
+      <p>Heyy, <b>Henry</b> here, so you found me here too?, well yes I am also a <u>Solo dev</u>. plus...</p>
+      <p>— <b>Main CelSuite builder</b><br>— <b>Chronic over-polisher</b> <i>(cuz who doesn't love good looking apps)</i></p>
+      <p>CelSuite is like my own little <i>Adobe-style family</i>: a growing stack of tools that feel <b>premium</b>, run <b>offline</b>, and <u>respect your machine</u>.</p>
+      <p>Two apps are public today. Eight more are still being finalized in the lab, debugging the code into perfection before they're allowed outside. I try to achieve the goal of <b>Everything to be shipped with zero-dependency</b>, Apps are also tuned until it feels like it should cost money to use... Glad It didn't cost me money to make any of these, <i>It cost me sleep tho :/</i></p>
+      <p class="sig">— Pace is one problem at a time &gt;:)</p>
+      <a class="ytbox" href="https://www.youtube.com/@HenryJayZ" target="_blank" rel="noopener">
+<pre class="ascii">╔═╦╗╔╦╗╔═╦═╦╦╦╦╗╔═╗
+║╚╣║║║╚╣╣╔╣╔╣║╚╣═╣ 
+╠╗║╚╝║║╠╗║╚╣║║║║║═╣
+╚═╩══╩═╩═╩═╩╝╚╩═╩═╝</pre>
+        <span class="ytnote"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff0033"/><path d="M10 9.2v5.6l5-2.8Z" fill="#fff"/></svg>youtube.com/@HenryJayZ <span class="subnote">[ if you want :) ]</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="blk" id="changelog">
+    <h2 class="rv">Changelog</h2>
+    <p class="lead rv">Live from the repos, because hand-writing release notes is a crime against laziness.</p>
+    <div class="logtabs rv">
+      <button class="on" data-log="p2p">P2P Screen Mirroring</button>
+      <button data-log="as">Art Studio</button>
+    </div>
+    <div class="logbox rv selectable" id="logBox">loading…</div>
+  </section>
+
+  <footer class="rv">
+    <img class="flogo" src="assets/Cel Logo Circle-q50.webp" alt="" draggable="false">
+    <div class="display" style="font-size:24px">CelSuite</div>
+    <div class="flinks">
+      <a href="#/home" data-scroll="apps">The Suite</a>
+      <a href="#/home" data-scroll="lab">Lab</a>
+      <a href="#/home" data-scroll="about">About</a>
+      <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <small>© 2026 HenryJayz — CelSuite. Crafted with love &amp; zero dependencies.</small>
+    <small>click the logo. you know you want to. 🎲</small>
+  </footer>
+</section>
+
+<!-- ================= P2P PAGE (images lazy) ================= -->
+<section class="view hidden" id="view-p2p">
+  <div class="apppage">
+    <button class="back" data-goto="home">← Back to the Suite</button>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner Logo P2P Green.jpeg" alt="CelSuite P2P banner" draggable="false"></div>
+    <div class="apphead rv">
+      <img data-src="assets/Cel Logo P2P icon-q90.webp" alt="P2P icon" draggable="false">
+      <div>
+        <h1 class="display">P2P Screen Mirroring</h1>
+        <div class="chiprow">
+          <span class="chip mini"><b>v269.17.0</b></span>
+          <span class="chip mini"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.6 4.5v7.1H3zM11.6 4.4 21 3v8.6h-9.4zM3 12.6h7.6v7L3 18.5zM11.6 12.6H21V21l-9.4-1.4z"/></svg>Windows</span>
+          <span class="chip mini"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.9 0-3.1 1.4-3.1 3.3 0 .9-.4 1.8-1 2.6-1.2 1.6-2.3 3.4-2.3 5.6 0 1.5.5 2.7 1.2 3.6-.3.6-.5 1.3-.5 2 0 1.6 1.2 2.9 2.8 2.9.8 0 1.5-.3 2-.8.3.1.6.1.9.1s.6 0 .9-.1c.5.5 1.2.8 2 .8 1.6 0 2.8-1.3 2.8-2.9 0-.7-.2-1.4-.5-2 .7-.9 1.2-2.1 1.2-3.6 0-2.2-1.1-4-2.3-5.6-.6-.8-1-1.7-1-2.6C15.1 3.4 13.9 2 12 2Zm-1.1 3.1c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm2.2 0c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm-3.6 7.7 1 .5h3l1-.5c1 .8 1.7 2 1.7 3.4 0 1-.4 1.9-1 2.5-.5-.3-1.1-.5-1.7-.5-.6 0-1.1.1-1.5.4-.4-.3-.9-.4-1.5-.4-.6 0-1.2.2-1.7.5-.6-.6-1-1.5-1-2.5 0-1.4.7-2.6 1.7-3.4Z"/></svg>Linux</span>
+          <span class="chip mini"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m7.1 4.6-.9-1.5c-.1-.1 0-.3.1-.3.1-.1.3 0 .3.1l.9 1.5a8 8 0 0 1 9 0l.9-1.5c.1-.1.2-.2.3-.1.1 0 .2.2.1.3l-.9 1.5A7.5 7.5 0 0 1 20 10.8H4A7.5 7.5 0 0 1 7.1 4.6ZM9 8.4a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Zm6 0a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6ZM4 12.3h16v6.2A1.5 1.5 0 0 1 18.5 20h-13A1.5 1.5 0 0 1 4 18.5Z"/></svg>Android</span>
+          <span class="chip mini">MIT</span>
+        </div>
+      </div>
+    </div>
+    <p class="tag rv selectable">Bidirectional zero-lag screen mirroring: Phone ↔ PC. Multitouch digitizer, audio loopback, virtual macros, clipboard sync — all wireless, all instant.</p>
+    <section class="blk"><h2 class="rv">Features</h2><div class="fgrid" id="p2pFeat"></div></section>
+    <section class="blk"><h2 class="rv">How it works</h2>
+      <pre class="diagram rv selectable">Phone (Android Client)                         PC (CelSuite Desktop)
+       │                                                 │
+       ├──── UDP Heartbeat (Port 5556) ─────────────────>│  (Auto-Discovery)
+       │                                                 │
+       │&lt;─── ADB Connect (Port 5555) ────────────────────┤  (Wireless Bridge)
+       │                                                 │
+       │&lt;─── Scrcpy Video Stream ────────────────────────┤  (Ultra-Low Latency)
+       │                                                 │
+       ├──── TCP File &amp; Clipboard (Port 5558) ──────────>│  (Bi-Directional Sync)</pre>
+    </section>
+    <section class="blk"><h2 class="rv">Downloads</h2><div class="dlgrid" id="p2pDl"></div></section>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer P2P Green.jpeg" alt="" draggable="false"></div>
+  </div>
+</section>
+
+<!-- ================= ART STUDIO PAGE (images lazy) ================= -->
+<section class="view hidden" id="view-celas">
+  <div class="apppage">
+    <button class="back" data-goto="home">← Back to the Suite</button>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner Head CelAS_High_compressed.jpeg" alt="CelSuite Art Studio banner" draggable="false"></div>
+    <div class="apphead rv">
+      <img data-src="assets/Cel Logo CelAS Circle Compressed.png" alt="Art Studio icon" draggable="false">
+      <div>
+        <h1 class="display">Art Studio</h1>
+        <div class="chiprow">
+          <span class="chip mini"><b>v269.18.0</b></span>
+          <span class="chip mini"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.6 4.5v7.1H3zM11.6 4.4 21 3v8.6h-9.4zM3 12.6h7.6v7L3 18.5zM11.6 12.6H21V21l-9.4-1.4z"/></svg>Windows</span>
+          <span class="chip mini"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.9 0-3.1 1.4-3.1 3.3 0 .9-.4 1.8-1 2.6-1.2 1.6-2.3 3.4-2.3 5.6 0 1.5.5 2.7 1.2 3.6-.3.6-.5 1.3-.5 2 0 1.6 1.2 2.9 2.8 2.9.8 0 1.5-.3 2-.8.3.1.6.1.9.1s.6 0 .9-.1c.5.5 1.2.8 2 .8 1.6 0 2.8-1.3 2.8-2.9 0-.7-.2-1.4-.5-2 .7-.9 1.2-2.1 1.2-3.6 0-2.2-1.1-4-2.3-5.6-.6-.8-1-1.7-1-2.6C15.1 3.4 13.9 2 12 2Zm-1.1 3.1c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm2.2 0c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm-3.6 7.7 1 .5h3l1-.5c1 .8 1.7 2 1.7 3.4 0 1-.4 1.9-1 2.5-.5-.3-1.1-.5-1.7-.5-.6 0-1.1.1-1.5.4-.4-.3-.9-.4-1.5-.4-.6 0-1.2.2-1.7.5-.6-.6-1-1.5-1-2.5 0-1.4.7-2.6 1.7-3.4Z"/></svg>Linux</span>
+          <span class="chip mini">Liquid Glass Yellow</span>
+          <span class="chip mini">MIT</span>
+        </div>
+      </div>
+    </div>
+    <p class="tag rv selectable">Offline generative AI art studio with Liquid Glass Yellow aesthetics, multi-core CPU Beast Mode, and instant checkpoint inference. No cloud GPUs. No telemetry. No mercy.</p>
+    <section class="blk"><h2 class="rv">Features</h2><div class="fgrid" id="asFeat"></div></section>
+    <section class="blk"><h2 class="rv">Release matrix</h2><div class="dlgrid" id="asDl"></div></section>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer Long CelAS_compressed.jpeg" alt="" draggable="false"></div>
+  </div>
+</section>
+</main>
+
+<script>
+"use strict";
+/* ============ CelSuite site — MiMo physics restored, OG-ready, low-end friendly ============ */
+const $=id=>document.getElementById(id);
+const MOBILE=matchMedia("(max-width:768px)").matches || matchMedia("(pointer:coarse)").matches;
+const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")'};
+const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas"};
+const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png"};
+function setFavicon(r){$("favLink").href=FAV[r]||FAV.home;}
+
+const ICO={
+ win:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.6 4.5v7.1H3zM11.6 4.4 21 3v8.6h-9.4zM3 12.6h7.6v7L3 18.5zM11.6 12.6H21V21l-9.4-1.4z"/></svg>',
+ linux:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.9 0-3.1 1.4-3.1 3.3 0 .9-.4 1.8-1 2.6-1.2 1.6-2.3 3.4-2.3 5.6 0 1.5.5 2.7 1.2 3.6-.3.6-.5 1.3-.5 2 0 1.6 1.2 2.9 2.8 2.9.8 0 1.5-.3 2-.8.3.1.6.1.9.1s.6 0 .9-.1c.5.5 1.2.8 2 .8 1.6 0 2.8-1.3 2.8-2.9 0-.7-.2-1.4-.5-2 .7-.9 1.2-2.1 1.2-3.6 0-2.2-1.1-4-2.3-5.6-.6-.8-1-1.7-1-2.6C15.1 3.4 13.9 2 12 2Zm-1.1 3.1c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm2.2 0c.3 0 .6.3.6.7s-.3.7-.6.7-.6-.3-.6-.7.3-.7.6-.7Zm-3.6 7.7 1 .5h3l1-.5c1 .8 1.7 2 1.7 3.4 0 1-.4 1.9-1 2.5-.5-.3-1.1-.5-1.7-.5-.6 0-1.1.1-1.5.4-.4-.3-.9-.4-1.5-.4-.6 0-1.2.2-1.7.5-.6-.6-1-1.5-1-2.5 0-1.4.7-2.6 1.7-3.4Z"/></svg>',
+ android:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m7.1 4.6-.9-1.5c-.1-.1 0-.3.1-.3.1-.1.3 0 .3.1l.9 1.5a8 8 0 0 1 9 0l.9-1.5c.1-.1.2-.2.3-.1.1 0 .2.2.1.3l-.9 1.5A7.5 7.5 0 0 1 20 10.8H4A7.5 7.5 0 0 1 7.1 4.6ZM9 8.4a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Zm6 0a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6ZM4 12.3h16v6.2A1.5 1.5 0 0 1 18.5 20h-13A1.5 1.5 0 0 1 4 18.5Z"/></svg>'
+};
+
+const APPS=[
+ {route:"app/p2p",cls:"green",icon:"assets/Cel Logo P2P icon-q90.webp",name:"P2P Screen Mirroring",ver:"v269.17.0",
+  desc:"Bidirectional zero-lag mirroring between phone & PC — multitouch, audio loopback, clipboard sync, file drops. Wireless like it's magic.",
+  chips:["PySide6","scrcpy","<30ms"]},
+ {route:"app/celas",cls:"gold",icon:"assets/Cel Logo CelAS Circle Compressed.png",name:"Art Studio",ver:"v269.18.0",
+  desc:"Offline generative AI studio in Liquid Glass Yellow. CPU Beast Mode, dual engines, instant checkpoints — your CPU-less laptop said thank you.",
+  chips:["PyTorch","sd.cpp","Offline"]}
+];
+const LAB=[
+ {n:"Watermark Remover",t:"One click, gone. Like it was never there. 🤫",b:"FINISHED — AWAITING DROP",done:true},
+ {n:"Image Studio",t:"Compress, convert, PNG→SVG, slice game assets, autoframe, sprite resize — the whole pixel kitchen."},
+ {n:"LightBeam",t:"QR file transfer on literal beams of light. Scan, beam, done."},
+ {n:"TubeGrab",t:"YouTube downloader. Your offline library is about to get heavy."},
+ {n:"OblivionVaults",t:"Minecraft Java file manager, saves, mods — and more. The vault remembers."},
+ {n:"Cellium",t:"My own LLM Studio. Local brains, zero cloud, all vibes."},
+ {n:"CelSuite VHS",t:"Video Helper Studio — record, convert, rewind the aesthetics."},
+ {n:"OpenCode History Viewer",t:"Every line you ever wrote, time-travelled. Yes, even that one."},
+ {n:"GitHub Repo Explorer",t:"Windows-Explorer-look repo manager: upload, move, rename, preview — one clean commit per action. Almost ready to escape."}
+];
+const P2P_FEAT=[
+ ["Zero-Cable Wireless Mirroring","Auto-pairs over WiFi/Hotspot via UDP heartbeat packets."],
+ ["Quick Settings Tile","Toggle mirroring straight from your Android Quick Panel."],
+ ["Live Hardware Telemetry","Battery %, temps, model, resolution, latency — real time."],
+ ["Bi-Directional Clipboard","One-click clipboard sync, both ways, instantly."],
+ ["High-Speed File Transfer","Drag & drop over local TCP (port 5558) with integrity checks."],
+ ["Reverse Mirror (PC → Phone)","<30ms GPU-accelerated desktop streaming to your phone."],
+ ["Multitouch Digitizer","Full multi-touch injection on Windows & Linux."],
+ ["Virtual Macros & Audio","Modular macro pads + low-latency audio loopback streaming."],
+ ["Silent Background","Suppressed subprocesses — no flashing console windows. Ever."]
+];
+const P2P_DL=[
+ {ico:"android",t:"Android",d:"ScrcpyHeartbeat APK — QS tile, heartbeat service, clipboard bridge."},
+ {ico:"win",t:"Windows Portable",d:"Single .exe — zero install, double-click, gone."},
+ {ico:"win",t:"Windows Standalone",d:"Unzip & run main.exe for instant cold-boot."},
+ {ico:"linux",t:"Linux Portable",d:"Single binary — chmod +x and launch."},
+ {ico:"linux",t:"Linux Standalone",d:"Pre-packaged folder with native Qt libs."}
+];
+const AS_FEAT=[
+ ["CPU Beast Mode","Unthrottles and harnesses 100% of every core, all threads."],
+ ["Liquid Glass Yellow","Amber-gold translucent aesthetic (#f39c12) with wallpaper tinting."],
+ ["Prompt Auto-Fit","Prompt, Sticky & Negative boxes expand to match your text."],
+ ["Panic Disguise (Ctrl+Space)","Instant fake PowerShell / top overlay. Your secret's safe."],
+ ["Dolphin 3.0 Integration","Local GGUF language models auto-expand your prompts."],
+ ["Dual Engine","PyTorch (universal) + pure C++ stable-diffusion.cpp (Intel AVX2)."],
+ ["Batch Evolution","Real-time batch generation that evolves as you watch."],
+ ["LGPL Clean","Built on PySide6 — Qt's official LGPL framework."]
+];
+const AS_DL=[
+ {ico:"linux",t:"Linux Universal",d:"PyTorch, all AMD/Intel CPUs — .zip / .7z"},
+ {ico:"linux",t:"Linux Intel AVX2",d:"~50MB pure C++ sd.cpp micro package — .zip / .7z"},
+ {ico:"win",t:"Windows Universal",d:"Win 10/11 standalone w/ native MSVC runtime — .zip / .7z"},
+ {ico:"win",t:"Windows Intel AVX2",d:"High-speed AVX2 C++ engine — .zip / .7z"}
+];
+const STATS=[["Suite","11+ projects"],["Public","2 shipped"],["Lab","9 brewing"],["Art Studio","v269.18.0"],["P2P","v269.17.0"],["Deps","zero, forever"]];
+
+/* ---------- render ---------- */
+$("stats").innerHTML=STATS.map(s=>`<span class="chip"><b>${s[0]}</b> · ${s[1]}</span>`).join("");
+$("appGrid").innerHTML=APPS.map(a=>`
+ <div class="rv"><article class="appcard ${a.cls}" data-goto="${a.route}" data-tilt>
+   <div class="glare"></div>
+   <img class="appicon" src="${a.icon}" alt="" draggable="false">
+   <h3>${a.name}</h3>
+   <div class="chiprow"><span class="chip mini"><b>${a.ver}</b></span>${a.chips.map(c=>`<span class="chip mini">${c}</span>`).join("")}</div>
+   <p class="selectable">${a.desc}</p>
+   <div class="row"><span class="btn glow">Open page →</span></div>
+ </article></div>`).join("");
+$("labGrid").innerHTML=LAB.map(l=>`
+ <article class="lockcard rv">
+   <div class="sil"></div>
+   <svg class="lockico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+   <h4>${l.n}</h4><p class="selectable">${l.t}</p>
+   <span class="badge ${l.done?"done":""}">${l.b||"IN THE LAB"}</span>
+ </article>`).join("");
+const featHTML=f=>f.map(x=>`<div class="fitem rv"><b>${x[0]}</b><span class="selectable">${x[1]}</span></div>`).join("");
+const dlHTML=(arr,url)=>arr.map(x=>`<div class="dlitem rv"><b>${ICO[x.ico]||""}${x.t}</b><span class="selectable">${x.d}</span><a class="btn" href="${url}" target="_blank" rel="noopener">Download ↗</a></div>`).join("");
+$("p2pFeat").innerHTML=featHTML(P2P_FEAT);
+$("p2pDl").innerHTML=dlHTML(P2P_DL,"https://github.com/HenryCarm/CelSuite_P2P-Screen-Mirroring/releases/latest");
+$("asFeat").innerHTML=featHTML(AS_FEAT);
+$("asDl").innerHTML=dlHTML(AS_DL,"https://github.com/HenryCarm/CelSuite_Art_Studio/releases/latest");
+
+/* ---------- theme ---------- */
+const HUE_KEY="cel-hue";
+function setHue(h,spin){
+  document.documentElement.style.setProperty("--h",h);
+  localStorage.setItem(HUE_KEY,h);
+  if(spin){const l=$("logoBtn");l.classList.remove("spin");void l.offsetWidth;l.classList.add("spin");}
+}
+setHue(localStorage.getItem(HUE_KEY)||352,false);
+$("logoBtn").onclick=()=>setHue(Math.floor(Math.random()*360),true);
+
+/* ---------- hamburger ---------- */
+const burger=$("burger"),sheet=$("sheet");
+function closeSheet(){sheet.classList.remove("open");burger.classList.remove("open");}
+burger.onclick=e=>{e.stopPropagation();sheet.classList.toggle("open");burger.classList.toggle("open");};
+sheet.addEventListener("click",e=>{if(e.target.closest("a"))closeSheet();});
+document.addEventListener("click",e=>{if(!e.target.closest("#sheet")&&!e.target.closest("#burger"))closeSheet();});
+
+/* ---------- lazy images + shimmer ---------- */
+function activateImgs(scope){
+  scope.querySelectorAll("img[data-src]").forEach(i=>{
+    if(i.dataset.active)return;
+    i.dataset.active="1"; i.src=i.dataset.src;
+  });
+  watchImgs();
+}
+function watchImgs(){
+  document.querySelectorAll("img").forEach(img=>{
+    if(img.dataset.watched||!img.getAttribute("src"))return;
+    img.dataset.watched="1";
+    img.decoding="async";
+    const w=document.createElement("div");
+    const round=img.classList.contains("flogo")||!!img.closest(".logo");
+    const ic=img.classList.contains("appicon")||!!img.closest(".apphead");
+    w.className="imgwrap"+(round?" round":ic?" ic":"");
+    img.parentNode.insertBefore(w,img); w.appendChild(img);
+    const sh=document.createElement("div"); sh.className="shimmer"; w.appendChild(sh);
+    const done=()=>{img.classList.add("loaded"); sh.remove();};
+    if(img.complete&&img.naturalWidth>0)done();
+    else{
+      img.addEventListener("load",done,{once:true});
+      img.addEventListener("error",()=>{sh.remove();img.classList.add("loaded");},{once:true});
+    }
+  });
+}
+
+/* ---------- wallpaper + pit ---------- */
+let bgFront=$("bgA"),bgBack=$("bgB");
+bgFront.style.backgroundImage=WALL.home;
+function swapWall(key){
+  const url=WALL[key]; if(bgFront.style.backgroundImage===url)return;
+  bgBack.style.backgroundImage=url; bgBack.style.filter=bgFront.style.filter;
+  bgBack.animate([{opacity:0},{opacity:1}],{duration:900,easing:"ease-in-out",fill:"forwards"});
+  bgFront.animate([{opacity:1},{opacity:0}],{duration:900,easing:"ease-in-out",fill:"forwards"});
+  [bgFront,bgBack]=[bgBack,bgFront];
+}
+let pitCur=.33,lastP=-1,scrollDirty=true,frameN=0,brailleOn=false;
+addEventListener("scroll",()=>{scrollDirty=true;},{passive:true});
+addEventListener("resize",()=>{scrollDirty=true;},{passive:true});
+function pitFrame(){
+  const doc=document.documentElement;
+  const max=doc.scrollHeight-innerHeight;
+  const p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
+  const target=.33+p*.55;
+  const settling=Math.abs(target-pitCur)>.001;
+  if(scrollDirty||settling||Math.abs(p-lastP)>.0005){
+    lastP=p;
+    pitCur+=(target-pitCur)*.08;
+    const f=`brightness(${(1-pitCur).toFixed(3)}) saturate(${(1.08-p*.3).toFixed(3)})`;
+    bgFront.style.filter=f; bgBack.style.filter=f;
+    const t1=pitCur*.75, t2=Math.min(.88,pitCur+.18);
+    $("pit").style.background=`linear-gradient(180deg,rgba(0,0,0,${t1.toFixed(3)}),rgba(0,0,0,${t2.toFixed(3)}))`;
+    revealPass();
+    scrollDirty=false;
+  }
+  if((frameN++%20)===0){
+    const r=$("about").getBoundingClientRect();
+    brailleOn=r.bottom>0&&r.top<innerHeight;
+  }
+  requestAnimationFrame(pitFrame);
+}
+
+/* ---------- reveals ---------- */
+let RV=[];
+function collectRV(){RV=[...document.querySelectorAll(".rv")];}
+function revealPass(){
+  const vh=innerHeight, sy=scrollY;
+  const reads=[];
+  for(const el of RV){
+    if(el.offsetParent===null)continue;
+    const r=el.getBoundingClientRect();
+    const off=el.classList.contains("in")?0:(el.classList.contains("above")?-36:36);
+    reads.push([el,r.top+sy-off,r.height]);
+  }
+  for(const [el,top,h] of reads){
+    const st=el.classList;
+    if(st.contains("above")){
+      if(top+h>sy+10){st.add("in");st.remove("above");}
+    }else if(st.contains("in")){
+      if(top+h<sy-30){st.remove("in");st.add("above");}
+      else if(top>sy+vh-40){st.remove("in");}
+    }else{
+      if(top+h<sy-30){st.add("above");}
+      else if(top<sy+vh-70){st.add("in");}
+    }
+  }
+}
+
+/* ---------- braille curtain (ResizeObserver = foolproof fill) ---------- */
+const braillePre=$("braille");
+const BGlyphs="⠀⠁⣿⣼⣀⡀⢙⠶";
+let BR={rows:0,cols:0},brailleT=0;
+new ResizeObserver(es=>{
+  const r=es[0].contentRect;
+  BR.cols=Math.min(220,Math.floor(r.width/6.8));
+  BR.rows=Math.min(140,Math.ceil(r.height/15)+2);
+}).observe($("about"));
+setInterval(()=>{
+  if(document.hidden||!brailleOn||!BR.rows)return;
+  brailleT+=.5;
+  let s="";
+  for(let y=0;y<BR.rows;y++){
+    let row="";
+    for(let x=0;x<BR.cols;x++){
+      const v=Math.sin(x*.28+brailleT*.9)+Math.sin(y*.45-brailleT*.6)+Math.sin((x+y)*.15+brailleT*.35);
+      let idx=Math.floor(((v+3)/6)*BGlyphs.length);
+      if(Math.random()<.02)idx=Math.floor(Math.random()*BGlyphs.length);
+      row+=BGlyphs[Math.max(0,Math.min(BGlyphs.length-1,idx))];
+    }
+    s+=row+"\n";
+  }
+  braillePre.textContent=s;
+},120);
+
+/* ---------- MiMo liquid physics — ALWAYS-ALIVE floating water ---------- */
+const hero=$("hero"),liquid=$("liquid");
+let ltime=0;
+const LS={tx:0,ty:0,pts:Array.from({length:6},()=>({x:0,y:0})),inside:true,raf:0,centered:false};
+const SEG=MOBILE?32:48;
+function liquidCenter(){LS.tx=hero.clientWidth/2;LS.ty=hero.clientHeight*.46;}
+function liquidFrame(){
+  LS.raf=requestAnimationFrame(liquidFrame);
+  if(document.hidden||scrollY>innerHeight*1.2)return;   /* sleep offscreen, keep the chain */
+  ltime+=.05;
+  if(!LS.centered){liquidCenter();LS.pts.forEach(p=>{p.x=LS.tx;p.y=LS.ty;});LS.centered=true;}
+  for(let i=0;i<6;i++){
+    const target=i===0?{x:LS.tx,y:LS.ty}:LS.pts[i-1];
+    const damping=.7-.04*i;
+    LS.pts[i].x+=(target.x-LS.pts[i].x)*damping;
+    LS.pts[i].y+=(target.y-LS.pts[i].y)*damping;
+  }
+  const fp=LS.pts[0],lp=LS.pts[5];
+  const angle=Math.atan2(fp.y-lp.y,fp.x-lp.x);
+  const baseRadius=Math.min(hero.clientWidth,hero.clientHeight)*.34;
+  const points=[];
+  for(let i=0;i<=SEG;i++){
+    const theta=angle-Math.PI/2+(Math.PI*i/SEG);
+    const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;
+    const r=Math.max(50,baseRadius+ripple);
+    points.push(`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`);
+  }
+  for(let i=0;i<=SEG;i++){
+    const theta=angle+Math.PI/2+(Math.PI*i/SEG);
+    const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;
+    const r=Math.max(50,baseRadius+ripple);
+    points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`);
+  }
+  liquid.style.clipPath=`polygon(${points.join(", ")})`;
+}
+function liquidSet(cx,cy){
+  const rect=hero.getBoundingClientRect();
+  LS.tx=cx-rect.left; LS.ty=cy-rect.top;
+}
+hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
+hero.addEventListener("touchmove",e=>liquidSet(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+hero.addEventListener("touchend",()=>liquidCenter(),{passive:true});
+hero.addEventListener("mouseleave",()=>liquidCenter());
+addEventListener("resize",()=>{if(LS.centered)liquidCenter();},{passive:true});
+requestAnimationFrame(liquidFrame);   /* no reduced-motion gate. the water is non-negotiable. */
+setTimeout(()=>$("revealLine").classList.add("on"),700);
+
+/* ---------- router ---------- */
+const VIEWS={home:"view-home","app/p2p":"view-p2p","app/celas":"view-celas"};
+let route="home",busy=false,queued=null,scrollAfter=null;
+const parseHash=()=>{const h=location.hash.replace(/^#\/?/,"");return VIEWS[h]?h:"home";};
+const currentView=()=>$(VIEWS[route]);
+const units=v=>[...v.querySelectorAll(":scope > *")];
+function doScroll(t){
+  if(t==="top")scrollTo({top:0,behavior:"smooth"});
+  else{const el=$(t); if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+}
+async function transition(next){
+  const oldV=currentView();
+  const fall=units(oldV);
+  fall.forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
+  const dist=MOBILE?70:115;
+  fall.forEach((el,i)=>el.animate([
+    {transform:"translateY(0) rotate(0deg)"},
+    {transform:"translateY(-2.5vh)",offset:.16},
+    {transform:`translateY(${dist+Math.random()*20}vh) rotate(${(Math.random()*44-22).toFixed(1)}deg)`}
+  ],{duration:560,delay:i*30,easing:"cubic-bezier(.55,0,.85,.45)",fill:"forwards"}));
+  await sleep(MOBILE?520:640);
+  oldV.classList.add("hidden");
+  fall.forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
+  route=next;
+  setFavicon(next);
+  swapWall(ROUTE_WALL[next]);
+  const newV=currentView();
+  units(newV).forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
+  newV.classList.remove("hidden");
+  activateImgs(newV);
+  scrollTo({top:0,behavior:"instant"});
+  units(newV).forEach((el,i)=>el.animate([
+    {transform:"translateY(16vh) scale(.97)",opacity:0},
+    {transform:"none",opacity:1}
+  ],{duration:720,delay:80+i*55,easing:"cubic-bezier(.16,1,.3,1)",fill:"backwards"}));
+  collectRV();
+  scrollDirty=true;
+  const s=scrollAfter; scrollAfter=null;
+  if(s)setTimeout(()=>doScroll(s),260);
+}
+function requestRoute(next,scroll){
+  if(next===route){doScroll(scroll||"top");return;}
+  if(busy){queued={next,scroll};return;}
+  scrollAfter=scroll||null;
+  busy=true;
+  transition(next).catch(err=>console.error("transition:",err)).finally(()=>{
+    busy=false;
+    const q=queued; queued=null;
+    if(q)requestRoute(q.next,q.scroll);
+  });
+}
+addEventListener("hashchange",()=>{const r=parseHash(); if(r!==route)requestRoute(r);});
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-goto]");
+  if(g){e.preventDefault();const r=g.dataset.goto;
+    if(r===route)doScroll("top"); else location.hash="#/"+r;
+    return;}
+  const l=e.target.closest("[data-scroll]");
+  if(l){e.preventDefault();const s=l.dataset.scroll;
+    if(route!=="home"){scrollAfter=s; location.hash="#/home";}
+    else doScroll(s);
+    return;}
+});
+
+/* ---------- tilt (on-demand) ---------- */
+const TILTS=[...document.querySelectorAll("[data-tilt]")].map(c=>{
+  const st={rx:0,ry:0,lift:0,tx:0,ty:0,tl:0};
+  const aim=(cx,cy)=>{
+    const r=c.getBoundingClientRect();
+    const px=(cx-r.left)/r.width, py=(cy-r.top)/r.height;
+    st.tx=(.5-py)*7; st.ty=(px-.5)*9; st.tl=4;
+    c.style.setProperty("--mx",px*100+"%"); c.style.setProperty("--my",py*100+"%");
+    tiltWake();
+  };
+  const rest=()=>{st.tx=0;st.ty=0;st.tl=0;tiltWake();};
+  c.addEventListener("pointermove",e=>{if(e.pointerType==="mouse")aim(e.clientX,e.clientY);});
+  c.addEventListener("pointerleave",rest);
+  c.addEventListener("touchstart",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  c.addEventListener("touchmove",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  c.addEventListener("touchend",rest,{passive:true});
+  return {c,st};
+});
+let tiltRAF=0;
+function tiltWake(){if(!tiltRAF&&!REDUCED)tiltRAF=requestAnimationFrame(tiltStep);}
+function tiltStep(){
+  let active=false;
+  for(const {c,st} of TILTS){
+    st.rx+=(st.tx-st.rx)*.12; st.ry+=(st.ty-st.ry)*.12; st.lift+=(st.tl-st.lift)*.12;
+    if(Math.abs(st.rx)+Math.abs(st.ry)+Math.abs(st.lift)>.02){
+      active=true;
+      c.style.transform=`perspective(900px) rotateX(${st.rx.toFixed(2)}deg) rotateY(${st.ry.toFixed(2)}deg) translateY(${(-st.lift).toFixed(2)}px)`;
+    }else if(c.style.transform){c.style.transform="";}
+  }
+  tiltRAF=active?requestAnimationFrame(tiltStep):0;
+}
+
+/* ---------- changelog ---------- */
+const LOG_CACHE={};
+function mdMini(src,limit=240){
+  const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const inline=s=>esc(s)
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")
+    .replace(/`(.+?)`/g,"<code>$1</code>");
+  let out="",inUl=false,inTable=false,n=0;
+  const closeAll=()=>{if(inUl){out+="</ul>";inUl=false;} if(inTable){out+="</table>";inTable=false;}};
+  for(const raw of src.split("\n")){
+    if(++n>limit)break;
+    const line=raw.replace(/<[^>]*>/g,"").trimEnd();
+    const t=line.trim();
+    if(!t){closeAll();continue;}
+    if(/^\|.*\|\s*$/.test(t)){
+      const cells=t.slice(1,-1).split("|").map(c=>c.trim());
+      if(cells.every(c=>/^:?-{2,}:?$/.test(c)))continue;
+      if(!inTable){closeAll();inTable=true;out+="<table><tr>"+cells.map(c=>"<th>"+inline(c)+"</th>").join("")+"</tr>";}
+      else out+="<tr>"+cells.map(c=>"<td>"+inline(c)+"</td>").join("")+"</tr>";
+      continue;
+    }
+    if(/^###\s/.test(t)){closeAll();out+="<h5>"+inline(t.slice(4))+"</h5>";}
+    else if(/^##\s/.test(t)){closeAll();out+="<h4>"+inline(t.slice(3))+"</h4>";}
+    else if(/^#\s/.test(t)){closeAll();out+="<h4>"+inline(t.slice(2))+"</h4>";}
+    else if(/^[-*]\s/.test(t)){closeAll();inUl=true;out+="<ul><li>"+inline(t.slice(2))+"</li>";}
+    else if(/^https?:\/\/\S+$/.test(t)){closeAll();out+="<p><a href='"+t+"' target='_blank' rel='noopener'>"+esc(t)+"</a></p>";}
+    else{closeAll();out+="<p style='color:var(--sub)'>"+inline(t)+"</p>";}
+  }
+  closeAll();
+  return out;
+}
+async function loadLog(which){
+  if(LOG_CACHE[which]){$("logBox").innerHTML=LOG_CACHE[which];return;}
+  $("logBox").innerHTML="fetching…";
+  try{
+    if(which==="p2p"){
+      const r=await fetch("https://raw.githubusercontent.com/HenryCarm/CelSuite_P2P-Screen-Mirroring/master/CHANGELOG.md");
+      if(!r.ok)throw 0;
+      LOG_CACHE[which]=mdMini(await r.text());
+    }else{
+      const r=await fetch("https://api.github.com/repos/HenryCarm/CelSuite_Art_Studio/releases/latest");
+      if(!r.ok)throw 0;
+      const j=await r.json();
+      LOG_CACHE[which]="<h4>"+j.tag_name+"</h4>"+mdMini(j.body||"");
+    }
+  }catch(e){
+    LOG_CACHE[which]=`<p style="color:var(--sub)">Couldn't fetch live changelog (offline or rate-limited).<br>See the <a href="https://github.com/HenryCarm/CelSuite_${which==="p2p"?"P2P-Screen-Mirroring":"Art_Studio"}/releases" target="_blank" rel="noopener">releases page</a> instead 💋</p>`;
+  }
+  $("logBox").innerHTML=LOG_CACHE[which];
+}
+document.querySelectorAll(".logtabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".logtabs button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); loadLog(b.dataset.log);
+});
+loadLog("p2p");
+
+/* ---------- boot ---------- */
+const bootRoute=parseHash();
+if(bootRoute!=="home"){
+  $("view-home").classList.add("hidden");
+  route=bootRoute;
+  $(VIEWS[bootRoute]).classList.remove("hidden");
+  bgFront.style.backgroundImage=WALL[ROUTE_WALL[bootRoute]];
+  setFavicon(bootRoute);
+}
+activateImgs(currentView());
+collectRV();
+requestAnimationFrame(pitFrame);
+</script>
+</body>
+</html>
