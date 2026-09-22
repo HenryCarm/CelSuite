@@ -4,9 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CelSuite — By HenryJayz</title>
+<meta name="description" content="CelSuite by HenryJayz — programs you didn't know you needed. Premium, offline-first, zero bloat. 11+ projects, 2 shipped, 9 brewing in the lab.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CelSuite">
+<meta property="og:title" content="CelSuite — Mini Studio Apps by HenryJayz">
+<meta property="og:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat. 11+ projects, 2 shipped, 9 brewing in the lab.">
+<meta property="og:url" content="https://henrycarm.github.io/CelSuite/">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelSuite_Main_BG_Compressed.webp">
+<meta property="og:image" content="https://henrycarm.github.io/CelSuite/assets/CelWeave%20Yellow%20AS%20wallpaper%20Compressed.jpg">
+<meta property="og:image:alt" content="CelSuite liquid glass wallpaper">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CelSuite — Mini Studio Apps by HenryJayz">
+<meta name="twitter:description" content="Programs you didn't know you needed — Premium, offline-first, zero bloat.">
+<meta name="twitter:image" content="https://henrycarm.github.io/CelSuite/assets/CelSuite_Main_BG_Compressed.webp">
+<meta name="theme-color" content="#2a0b12">
 <link rel="icon" type="image/webp" href="assets/Cel%20Logo%20Circle-q50.webp" id="favLink">
 <link rel="apple-touch-icon" href="assets/Cel%20Logo%20Circle-q50.webp">
 <link rel="preload" as="image" href="assets/CelSuite_Main_BG_Compressed.webp">
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com" crossorigin>
 <style>
 @font-face{font-family:"MEvoS";src:url("assets/MEvoS_B.otf") format("opentype");font-display:swap}
 :root{
@@ -63,20 +79,21 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .sheet a{padding:13px 14px;border-radius:10px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
 .sheet a:hover{background:hsl(var(--h) 60% 50% / .16)}
 
-/* ---------- hero ---------- */
-.hero{position:relative;height:100svh;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#blobSvg{position:absolute;inset:0;width:100%;height:100%}
-#blobMain{fill:var(--acc-deep);filter:drop-shadow(0 0 40px var(--glow))}
-.heroT{font-family:var(--disp);font-size:168px;text-anchor:middle;dominant-baseline:middle;letter-spacing:.01em}
-.heroT.base{fill:var(--ink)}
-.heroT.clip{fill:var(--acc-dark)}
-.reveal{position:absolute;bottom:24%;font-family:var(--disp);font-size:clamp(18px,3vw,30px);color:var(--sub);opacity:0;transform:translateY(14px);transition:opacity .9s .15s,transform .9s .15s}
+/* ---------- hero (MiMo liquid physics) ---------- */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;cursor:crosshair;touch-action:pan-y}
+.hlayer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.heroT{font-family:var(--disp);font-size:clamp(64px,14vw,168px);letter-spacing:.01em;line-height:1;text-align:center;padding:0 12px}
+.base .heroT{color:var(--ink);text-shadow:0 8px 44px rgba(0,0,0,.5)}
+.liquid{background:linear-gradient(140deg,var(--acc),var(--acc-deep) 70%);clip-path:circle(0px at -300px -300px);will-change:clip-path;
+  filter:drop-shadow(0 0 46px var(--glow))}
+.liquid .heroT{color:var(--acc-dark)}
+.reveal{position:absolute;bottom:24%;left:0;right:0;text-align:center;font-family:var(--disp);font-size:clamp(18px,3vw,30px);color:var(--sub);opacity:0;transform:translateY(14px);transition:opacity .9s .15s,transform .9s .15s;pointer-events:none}
 .reveal.on{opacity:1;transform:none}
-.cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite}
+.cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite;pointer-events:none}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 
-/* ---------- blocks / sections ---------- */
-.blk{max-width:1120px;margin:0 auto;padding:88px 22px 10px;content-visibility:auto;contain-intrinsic-size:auto 720px}
+/* ---------- blocks ---------- */
+.blk{max-width:1120px;margin:0 auto;padding:88px 22px 10px}
 .blk h2{font-family:var(--disp);font-size:clamp(30px,5vw,52px);margin-bottom:6px}
 .blk .lead{color:var(--sub);max-width:680px;margin-bottom:20px}
 .vq{color:var(--ink);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
@@ -87,17 +104,16 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .rv.above{transform:translateY(-36px)}
 .rv.in{opacity:1;transform:none}
 
-/* ---------- stats strip ---------- */
+/* ---------- stats ---------- */
 .strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1000px;margin:-40px auto 0;padding:0 20px;position:relative;z-index:2}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:hsl(var(--h) 40% 12% / .82);font-size:13px;color:var(--ink)}
 .chip b{color:var(--acc)}
 .chip svg{flex:none}
 
-/* ---------- image loading shimmer ---------- */
+/* ---------- shimmer ---------- */
 .imgwrap{position:relative;display:block;overflow:hidden;max-width:100%}
-.imgwrap.round{border-radius:50%;display:inline-block;vertical-align:middle}
+.imgwrap.round{border-radius:50%;display:inline-block;vertical-align:middle;animation:float 6s ease-in-out infinite}
 .imgwrap.ic{border-radius:50%;display:inline-block;vertical-align:top;animation:float 5s ease-in-out infinite}
-.imgwrap.round{animation:float 6s ease-in-out infinite}
 .imgwrap img{opacity:0;transform:scale(1.02);transition:opacity .5s ease,transform .5s ease}
 .imgwrap img.loaded{opacity:1;transform:scale(1)}
 .shimmer{position:absolute;inset:0;
@@ -154,13 +170,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .badge.done{background:hsl(140 60% 40% / .18);color:hsl(140 70% 65%);border-color:hsl(140 60% 50% / .4)}
 .lockico{opacity:.8}
 
-/* ---------- about (braille curtain over whole section) ---------- */
+/* ---------- about (braille curtain, RO-measured) ---------- */
 #about{position:relative}
 .braille{position:absolute;inset:0;z-index:0;margin:0;padding:18px;overflow:hidden;
-  font-family:var(--sym);font-size:12px;line-height:1.3;color:var(--acc);opacity:.22;
+  font-family:var(--sym);font-size:12px;line-height:1.25;color:var(--acc);opacity:.22;
   pointer-events:none;user-select:none !important;-webkit-user-select:none !important;white-space:pre;
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
-  mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);
   animation:bpulse 1.6s ease-in-out infinite alternate}
 @keyframes bpulse{from{filter:brightness(.7)}to{filter:brightness(1.7)}}
 .aboutbox{background:transparent;border:none;padding:34px 8px;max-width:820px;position:relative;z-index:1}
@@ -192,7 +208,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .logbox tr:nth-child(even) td{background:hsl(var(--h) 40% 12% / .5)}
 
 /* ---------- footer ---------- */
-footer{margin-top:90px;border-top:1px solid var(--line);background:hsl(var(--h) 45% 6% / .72);backdrop-filter:blur(12px);padding:44px 22px 34px;text-align:center;content-visibility:auto;contain-intrinsic-size:auto 320px}
+footer{margin-top:90px;border-top:1px solid var(--line);background:hsl(var(--h) 45% 6% / .72);backdrop-filter:blur(12px);padding:44px 22px 34px;text-align:center}
 footer .flogo{width:46px;height:46px;border-radius:50%;margin:0 auto 12px;box-shadow:0 0 18px var(--glow)}
 footer .flinks{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:13.5px}
 footer small{color:var(--sub);display:block;margin-top:8px}
@@ -222,7 +238,6 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 @media (max-width:768px){
   #nav .links{display:none}
   #burger{display:flex}
-  .heroT{font-size:150px}
   .reveal{bottom:20%}
   .cue{bottom:calc(20% - 40px)}
   .blk{padding-top:64px}
@@ -273,13 +288,9 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 <main id="root">
 <!-- ================= HOME ================= -->
 <section class="view" id="view-home">
-  <div class="hero">
-    <svg id="blobSvg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs><clipPath id="blobClip"><path id="blobClipPath" d=""/></clipPath></defs>
-      <path id="blobMain" d=""/>
-      <text class="heroT base" x="600" y="352">CelSuite</text>
-      <g clip-path="url(#blobClip)"><text class="heroT clip" x="600" y="352">CelSuite</text></g>
-    </svg>
+  <div class="hero" id="hero">
+    <div class="hlayer base"><h1 class="heroT">CelSuite</h1></div>
+    <div class="hlayer liquid" id="liquid"><h1 class="heroT">CelSuite</h1></div>
     <div class="reveal" id="revealLine">By HenryJayz :)</div>
     <div class="cue">SCROLL</div>
   </div>
@@ -312,7 +323,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
       <p class="sig">— Pace is one problem at a time &gt;:)</p>
       <a class="ytbox" href="https://www.youtube.com/@HenryJayZ" target="_blank" rel="noopener">
 <pre class="ascii">╔═╦╗╔╦╗╔═╦═╦╦╦╦╗╔═╗
-║╚╣║║║╚╣╚╣╔╣╔╣║╚╣═╣ 
+║╚╣║║║╚╣╣╔╣╔╣║╚╣═╣ 
 ╠╗║╚╝║║╠╗║╚╣║║║║║═╣
 ╚═╩══╩═╩═╩═╩╝╚╩═╩═╝</pre>
         <span class="ytnote"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff0033"/><path d="M10 9.2v5.6l5-2.8Z" fill="#fff"/></svg>youtube.com/@HenryJayZ <span class="subnote">[ if you want :) ]</span></span>
@@ -344,13 +355,13 @@ footer small{color:var(--sub);display:block;margin-top:8px}
   </footer>
 </section>
 
-<!-- ================= P2P PAGE ================= -->
+<!-- ================= P2P PAGE (images lazy) ================= -->
 <section class="view hidden" id="view-p2p">
   <div class="apppage">
     <button class="back" data-goto="home">← Back to the Suite</button>
-    <div class="rv"><img class="banner" src="assets/Cel Banner Logo P2P Green.jpeg" alt="CelSuite P2P banner" draggable="false"></div>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner Logo P2P Green.jpeg" alt="CelSuite P2P banner" draggable="false"></div>
     <div class="apphead rv">
-      <img src="assets/Cel Logo P2P icon-q90.webp" alt="P2P icon" draggable="false">
+      <img data-src="assets/Cel Logo P2P icon-q90.webp" alt="P2P icon" draggable="false">
       <div>
         <h1 class="display">P2P Screen Mirroring</h1>
         <div class="chiprow">
@@ -376,17 +387,17 @@ footer small{color:var(--sub);display:block;margin-top:8px}
        ├──── TCP File &amp; Clipboard (Port 5558) ──────────>│  (Bi-Directional Sync)</pre>
     </section>
     <section class="blk"><h2 class="rv">Downloads</h2><div class="dlgrid" id="p2pDl"></div></section>
-    <div class="rv"><img class="banner foot" src="assets/Cel Banner Footer P2P Green.jpeg" alt="" draggable="false"></div>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer P2P Green.jpeg" alt="" draggable="false"></div>
   </div>
 </section>
 
-<!-- ================= ART STUDIO PAGE ================= -->
+<!-- ================= ART STUDIO PAGE (images lazy) ================= -->
 <section class="view hidden" id="view-celas">
   <div class="apppage">
     <button class="back" data-goto="home">← Back to the Suite</button>
-    <div class="rv"><img class="banner" src="assets/Cel Banner Head CelAS_High_compressed.jpeg" alt="CelSuite Art Studio banner" draggable="false"></div>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner Head CelAS_High_compressed.jpeg" alt="CelSuite Art Studio banner" draggable="false"></div>
     <div class="apphead rv">
-      <img src="assets/Cel Logo CelAS Circle Compressed.png" alt="Art Studio icon" draggable="false">
+      <img data-src="assets/Cel Logo CelAS Circle Compressed.png" alt="Art Studio icon" draggable="false">
       <div>
         <h1 class="display">Art Studio</h1>
         <div class="chiprow">
@@ -401,14 +412,14 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <p class="tag rv selectable">Offline generative AI art studio with Liquid Glass Yellow aesthetics, multi-core CPU Beast Mode, and instant checkpoint inference. No cloud GPUs. No telemetry. No mercy.</p>
     <section class="blk"><h2 class="rv">Features</h2><div class="fgrid" id="asFeat"></div></section>
     <section class="blk"><h2 class="rv">Release matrix</h2><div class="dlgrid" id="asDl"></div></section>
-    <div class="rv"><img class="banner foot" src="assets/Cel Banner Footer Long CelAS_compressed.jpeg" alt="" draggable="false"></div>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer Long CelAS_compressed.jpeg" alt="" draggable="false"></div>
   </div>
 </section>
 </main>
 
 <script>
 "use strict";
-/* ============ CelSuite site — zero deps, perf-tuned, mobile-ready ============ */
+/* ============ CelSuite site — MiMo physics restored, OG-ready, low-end friendly ============ */
 const $=id=>document.getElementById(id);
 const MOBILE=matchMedia("(max-width:768px)").matches || matchMedia("(pointer:coarse)").matches;
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -522,10 +533,18 @@ burger.onclick=e=>{e.stopPropagation();sheet.classList.toggle("open");burger.cla
 sheet.addEventListener("click",e=>{if(e.target.closest("a"))closeSheet();});
 document.addEventListener("click",e=>{if(!e.target.closest("#sheet")&&!e.target.closest("#burger"))closeSheet();});
 
-/* ---------- image shimmer ---------- */
+/* ---------- lazy images + shimmer ---------- */
+function activateImgs(scope){
+  scope.querySelectorAll("img[data-src]").forEach(i=>{
+    if(i.dataset.active)return;
+    i.dataset.active="1"; i.src=i.dataset.src;
+  });
+  watchImgs();
+}
 function watchImgs(){
   document.querySelectorAll("img").forEach(img=>{
-    if(img.dataset.watched)return; img.dataset.watched="1";
+    if(img.dataset.watched||!img.getAttribute("src"))return;
+    img.dataset.watched="1";
     img.decoding="async";
     const w=document.createElement("div");
     const round=img.classList.contains("flogo")||!!img.closest(".logo");
@@ -541,9 +560,8 @@ function watchImgs(){
     }
   });
 }
-watchImgs();
 
-/* ---------- wallpaper + pit (gated writes) ---------- */
+/* ---------- wallpaper + pit ---------- */
 let bgFront=$("bgA"),bgBack=$("bgB");
 bgFront.style.backgroundImage=WALL.home;
 function swapWall(key){
@@ -564,7 +582,7 @@ function pitFrame(){
   const settling=Math.abs(target-pitCur)>.001;
   if(scrollDirty||settling||Math.abs(p-lastP)>.0005){
     lastP=p;
-    pitCur+=(target-pitCur)*.12;
+    pitCur+=(target-pitCur)*.08;
     const f=`brightness(${(1-pitCur).toFixed(3)}) saturate(${(1.08-p*.3).toFixed(3)})`;
     bgFront.style.filter=f; bgBack.style.filter=f;
     const t1=pitCur*.75, t2=Math.min(.88,pitCur+.18);
@@ -579,7 +597,7 @@ function pitFrame(){
   requestAnimationFrame(pitFrame);
 }
 
-/* ---------- reveals (layout-math, scroll-gated) ---------- */
+/* ---------- reveals ---------- */
 let RV=[];
 function collectRV(){RV=[...document.querySelectorAll(".rv")];}
 function revealPass(){
@@ -605,19 +623,22 @@ function revealPass(){
   }
 }
 
-/* ---------- braille curtain (paused when hidden/offscreen) ---------- */
+/* ---------- braille curtain (ResizeObserver = foolproof fill) ---------- */
 const braillePre=$("braille");
-const BGlyphs="⠀⠁⠇⣿⣼⣸⣀⡀⢙⠶";
-let brailleT=0;
+const BGlyphs="⠀⠁⣿⣼⣀⡀⢙⠶";
+let BR={rows:0,cols:0},brailleT=0;
+new ResizeObserver(es=>{
+  const r=es[0].contentRect;
+  BR.cols=Math.min(220,Math.floor(r.width/6.8));
+  BR.rows=Math.min(140,Math.ceil(r.height/15)+2);
+}).observe($("about"));
 setInterval(()=>{
-  if(document.hidden||!brailleOn||!braillePre.clientWidth)return;
-  const cols=Math.min(120,Math.floor(braillePre.clientWidth/7));
-  const rows=Math.min(24,Math.floor(braillePre.clientHeight/15));
+  if(document.hidden||!brailleOn||!BR.rows)return;
   brailleT+=.5;
   let s="";
-  for(let y=0;y<rows;y++){
+  for(let y=0;y<BR.rows;y++){
     let row="";
-    for(let x=0;x<cols;x++){
+    for(let x=0;x<BR.cols;x++){
       const v=Math.sin(x*.28+brailleT*.9)+Math.sin(y*.45-brailleT*.6)+Math.sin((x+y)*.15+brailleT*.35);
       let idx=Math.floor(((v+3)/6)*BGlyphs.length);
       if(Math.random()<.02)idx=Math.floor(Math.random()*BGlyphs.length);
@@ -628,39 +649,66 @@ setInterval(()=>{
   braillePre.textContent=s;
 },120);
 
-/* ---------- blob hero (mobile viewBox + offscreen skip) ---------- */
-const blobSvg=$("blobSvg"),blobMain=$("blobMain"),blobClip=$("blobClipPath");
-const CY=MOBILE?600:350, RBASE=MOBILE?330:250;
-if(MOBILE){
-  blobSvg.setAttribute("viewBox","0 0 1200 1200");
-  document.querySelectorAll(".heroT").forEach(t=>t.setAttribute("y",CY));
-}
-let pnx=0,pny=0,ox=0,oy=0,t0=performance.now();
-addEventListener("pointermove",e=>{
-  pnx=e.clientX/innerWidth-.5;
-  pny=e.clientY/innerHeight-.5;
-},{passive:true});
-const N=MOBILE?48:96,AMP=MOBILE?.10:.14;
-function blobFrame(now){
-  if(!document.hidden&&scrollY<innerHeight*1.4&&!REDUCED){
-    const t=(now-t0)/1000;
-    const tx=pnx*300+Math.sin(t*.23)*36;
-    const ty=pny*180+Math.cos(t*.17)*24;
-    ox+=(tx-ox)*.07; oy+=(ty-oy)*.07;
-    const sy=scrollY, shrink=1-Math.min(sy/innerHeight,1)*.22;
-    const cx=600+ox, cy=CY+oy+sy*.12, R=RBASE*shrink;
-    let d="";
-    for(let i=0;i<N;i++){
-      const a=i/N*Math.PI*2;
-      const r=R*(1+AMP*(.5*Math.sin(3*a+t*.9)+.3*Math.sin(5*a-t*.62)+.2*Math.sin(2*a+t*.41)));
-      d+=(i?"L":"M")+(cx+Math.cos(a)*r).toFixed(1)+" "+(cy+Math.sin(a)*r).toFixed(1);
-    }
-    d+="Z"; blobMain.setAttribute("d",d); blobClip.setAttribute("d",d);
+/* ---------- MiMo liquid physics (verbatim trail math, hero-scoped, self-sleeping) ---------- */
+const hero=$("hero"),liquid=$("liquid");
+let ltime=0;
+const LS={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:false,raf:0};
+const SEG=MOBILE?32:48;
+function liquidFrame(){
+  ltime+=.05;
+  for(let i=0;i<6;i++){
+    const target=i===0?{x:LS.tx,y:LS.ty}:LS.pts[i-1];
+    const damping=.7-.04*i;
+    LS.pts[i].x+=(target.x-LS.pts[i].x)*damping;
+    LS.pts[i].y+=(target.y-LS.pts[i].y)*damping;
   }
-  requestAnimationFrame(blobFrame);
+  const fp=LS.pts[0],lp=LS.pts[5];
+  const angle=Math.atan2(fp.y-lp.y,fp.x-lp.x);
+  const baseRadius=Math.min(hero.clientWidth,hero.clientHeight)*.34;
+  const points=[];
+  for(let i=0;i<=SEG;i++){
+    const theta=angle-Math.PI/2+(Math.PI*i/SEG);
+    const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;
+    const r=Math.max(50,baseRadius+ripple);
+    points.push(`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`);
+  }
+  for(let i=0;i<=SEG;i++){
+    const theta=angle+Math.PI/2+(Math.PI*i/SEG);
+    const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;
+    const r=Math.max(50,baseRadius+ripple);
+    points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`);
+  }
+  liquid.style.clipPath=`polygon(${points.join(", ")})`;
+  if(LS.inside||Math.abs(LS.tx-lp.x)>.5||Math.abs(LS.ty-lp.y)>.5){
+    LS.raf=requestAnimationFrame(liquidFrame);
+  }else{LS.raf=0;}
 }
-if(!REDUCED)requestAnimationFrame(blobFrame);
-else{blobMain.setAttribute("d","M350 350 L850 350 L850 350 Z");}
+function liquidWake(){if(!LS.raf&&!REDUCED)LS.raf=requestAnimationFrame(liquidFrame);}
+function liquidSet(cx,cy){
+  const rect=hero.getBoundingClientRect();
+  LS.tx=cx-rect.left; LS.ty=cy-rect.top;
+  liquidWake();
+}
+hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
+hero.addEventListener("mouseenter",e=>{
+  const rect=hero.getBoundingClientRect();
+  LS.tx=e.clientX-rect.left; LS.ty=e.clientY-rect.top;
+  LS.inside=true;
+  LS.pts.forEach(p=>{p.x=LS.tx;p.y=LS.ty;});
+  liquidWake();
+});
+function liquidLeave(){
+  LS.inside=false;
+  const rect=hero.getBoundingClientRect();
+  let tx=LS.tx,ty=LS.ty;
+  if(tx<=0)tx=-400; else if(tx>=rect.width)tx=rect.width+400;
+  if(ty<=0)ty=-400; else if(ty>=rect.height)ty=rect.height+400;
+  LS.tx=tx; LS.ty=ty;
+  liquidWake();
+}
+hero.addEventListener("mouseleave",liquidLeave);
+hero.addEventListener("touchmove",e=>{LS.inside=true;liquidSet(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+hero.addEventListener("touchend",liquidLeave,{passive:true});
 setTimeout(()=>$("revealLine").classList.add("on"),700);
 
 /* ---------- router ---------- */
@@ -692,6 +740,7 @@ async function transition(next){
   const newV=currentView();
   units(newV).forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
   newV.classList.remove("hidden");
+  activateImgs(newV);
   scrollTo({top:0,behavior:"instant"});
   units(newV).forEach((el,i)=>el.animate([
     {transform:"translateY(16vh) scale(.97)",opacity:0},
@@ -726,7 +775,7 @@ document.addEventListener("click",e=>{
     return;}
 });
 
-/* ---------- tilt (on-demand loop) ---------- */
+/* ---------- tilt (on-demand) ---------- */
 const TILTS=[...document.querySelectorAll("[data-tilt]")].map(c=>{
   const st={rx:0,ry:0,lift:0,tx:0,ty:0,tl:0};
   const aim=(cx,cy)=>{
@@ -758,7 +807,7 @@ function tiltStep(){
   tiltRAF=active?requestAnimationFrame(tiltStep):0;
 }
 
-/* ---------- changelog (links + tables polished) ---------- */
+/* ---------- changelog ---------- */
 const LOG_CACHE={};
 function mdMini(src,limit=240){
   const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
@@ -824,6 +873,7 @@ if(bootRoute!=="home"){
   bgFront.style.backgroundImage=WALL[ROUTE_WALL[bootRoute]];
   setFavicon(bootRoute);
 }
+activateImgs(currentView());
 collectRV();
 requestAnimationFrame(pitFrame);
 </script>
