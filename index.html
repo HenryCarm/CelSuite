@@ -150,6 +150,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .appcard::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(160deg,rgba(0,0,0,.14),rgba(0,0,0,.52))}
 .appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
 .appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
+.appcard.cyan{--g1:#22d3ee;--g2:#0e7490;--g3:#164e63}
 .appcard>*{position:relative;z-index:1}
 .appcard .glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px 300px at var(--mx,50%) var(--my,50%),hsl(var(--h) 90% 70% / .16),transparent 65%)}
 .appcard:hover .glare{opacity:1}
@@ -317,7 +318,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 
   <section class="blk" id="lab">
     <h2 class="rv">In The Lab 🔬</h2>
-    <p class="lead rv">Nine brewing behind glass. Don't touch the glass.</p>
+    <p class="lead rv">Eight brewing behind glass. Don't touch the glass.</p>
     <div class="labgrid" id="labGrid"></div>
   </section>
 
@@ -425,6 +426,31 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer Long CelAS_compressed.jpeg" alt="" draggable="false"></div>
   </div>
 </section>
+
+<!-- ================= EXPLORER PAGE (images lazy) ================= -->
+<section class="view hidden" id="view-explorer">
+  <div class="apppage">
+    <button class="back" data-goto="home">← Back to the Suite</button>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner Explorer.webp" alt="CelSuite GitHub Repo Explorer banner" draggable="false"></div>
+    <div class="apphead rv">
+      <img data-src="assets/Cel Logo Circle-q50.webp" alt="GitHub Repo Explorer icon" draggable="false">
+      <div>
+        <h1 class="display">GitHub Repo Explorer</h1>
+        <div class="chiprow">
+          <span class="chip mini"><b>v269.26.3</b></span>
+          <span class="chip mini">WebView2</span>
+          <span class="chip mini">Tauri</span>
+          <span class="chip mini">WebView</span>
+          <span class="chip mini">Single-File</span>
+        </div>
+      </div>
+    </div>
+    <p class="tag rv selectable">Windows-Explorer-grade file management for GitHub repos, packed into one obfuscated HTML file and four native shells. Upload, move, rename, delete, preview, edit — every action lands as a single clean atomic commit.</p>
+    <section class="blk"><h2 class="rv">Features</h2><div class="fgrid" id="explorerFeat"></div></section>
+    <section class="blk"><h2 class="rv">Downloads</h2><div class="dlgrid" id="explorerDl"></div></section>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer Explorer.webp" alt="" draggable="false"></div>
+  </div>
+</section>
 </main>
 
 <script>
@@ -436,7 +462,7 @@ const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")'};
-const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas"};
+const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"home"};
 const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png"};
 function setFavicon(r){$("favLink").href=FAV[r]||FAV.home;}
 
@@ -452,7 +478,10 @@ const APPS=[
   chips:["PySide6","scrcpy","<30ms"]},
  {route:"app/celas",cls:"gold",icon:"assets/Cel Logo CelAS Circle Compressed.png",name:"Art Studio",ver:"v269.18.0",
   desc:"Offline generative AI studio in Liquid Glass Yellow. CPU Beast Mode, dual engines, instant checkpoints — your CPU-less laptop said thank you.",
-  chips:["PyTorch","sd.cpp","Offline"]}
+  chips:["PyTorch","sd.cpp","Offline"]},
+ {route:"app/explorer",cls:"cyan",icon:"assets/Cel Logo Circle-q50.webp",name:"GitHub Repo Explorer",ver:"v269.26.3",
+  desc:"Complete browser-native repo workspace — Windows-Explorer-grade file management for GitHub repos, every action one clean atomic commit.",
+  chips:["WebView2","Tauri","WebView","Single-File"]}
 ];
 const LAB=[
  {n:"Watermark Remover",t:"One click, gone. Like it was never there. 🤫",b:"FINISHED — AWAITING DROP",done:true},
@@ -462,8 +491,7 @@ const LAB=[
  {n:"OblivionVaults",t:"Minecraft Java file manager, saves, mods — and more. The vault remembers."},
  {n:"Cellium",t:"My own LLM Studio. Local brains, zero cloud, all vibes."},
  {n:"CelSuite VHS",t:"Video Helper Studio — record, convert, rewind the aesthetics."},
- {n:"OpenCode History Viewer",t:"Every line you ever wrote, time-travelled. Yes, even that one."},
- {n:"GitHub Repo Explorer",t:"Windows-Explorer-look repo manager: upload, move, rename, preview — one clean commit per action. Almost ready to escape."}
+ {n:"OpenCode History Viewer",t:"Every line you ever wrote, time-travelled. Yes, even that one."}
 ];
 const P2P_FEAT=[
  ["Zero-Cable Wireless Mirroring","Auto-pairs over WiFi/Hotspot via UDP heartbeat packets."],
@@ -499,7 +527,24 @@ const AS_DL=[
  {ico:"win",t:"Windows Universal",d:"Win 10/11 standalone w/ native MSVC runtime — .zip / .7z"},
  {ico:"win",t:"Windows Intel AVX2",d:"High-speed AVX2 C++ engine — .zip / .7z"}
 ];
-const STATS=[["Suite","11+ projects"],["Public","2 shipped"],["Lab","9 brewing"],["Art Studio","v269.18.0"],["P2P","v269.17.0"],["Deps","zero, forever"]];
+const EXPLORER_FEAT=[
+ ["Atomic Commits","Every mutation is one clean Git commit via the Git Data API — no force-pushes, no mess."],
+ ["Tabs & Split Panes","Windows 11 tabs with Linux-Mint-Nemo instant split (F3 / F4), drag between panes."],
+ ["Desktop-Grade Selection","Marquee draw-box, Shift ranges, Ctrl combos, long-press hold-drag on touch."],
+ ["Cache Cloud","Per-repo pinning; retry-only updates; commits refresh the cache themselves."],
+ ["Nine Themes","Dark, OLED Dark, Light, CelSuite Red, Sunset, Ocean, Violet, Forest, Matrix + Liquid Glass modifier."],
+ ["Wallpaper Engine","Custom image behind every theme with tint slider or full disable."]
+];
+const EXPLORER_DL=[
+ {ico:"android",t:"Android",d:"Signed WebView APK — offline, tiny, install and go."},
+ {ico:"win",t:"Windows Portable",d:"Single .exe (WebView2) — zero install, double-click to run."},
+ {ico:"win",t:"Windows Standalone",d:"Unzip and run for instant cold-boot startup."},
+ {ico:"linux",t:"Linux AppImage",d:"chmod +x and launch directly."},
+ {ico:"linux",t:"Linux Debian",d:"sudo dpkg -i and go."},
+ {t:"Single-File HTML",d:"The entire app, obfuscated — double-click anywhere."},
+ {t:"Web Pack",d:"html + icon + wallpaper for your own server."}
+];
+const STATS=[["Suite","11+ projects"],["Public","3 shipped"],["Lab","9 brewing"],["Art Studio","v269.18.0"],["P2P","v269.17.0"],["Deps","zero, forever"]];
 
 /* ---------- render ---------- */
 $("stats").innerHTML=STATS.map(s=>`<span class="chip"><b>${s[0]}</b> · ${s[1]}</span>`).join("");
@@ -525,6 +570,8 @@ $("p2pFeat").innerHTML=featHTML(P2P_FEAT);
 $("p2pDl").innerHTML=dlHTML(P2P_DL,"https://github.com/HenryCarm/CelSuite_P2P-Screen-Mirroring/releases/latest");
 $("asFeat").innerHTML=featHTML(AS_FEAT);
 $("asDl").innerHTML=dlHTML(AS_DL,"https://github.com/HenryCarm/CelSuite_Art_Studio/releases/latest");
+$("explorerFeat").innerHTML=featHTML(EXPLORER_FEAT);
+$("explorerDl").innerHTML=dlHTML(EXPLORER_DL,"https://github.com/HenryCarm/CelSuite_Github-Repository-Explorer/releases/latest");
 
 /* ---------- theme: demon red by default, rerolls are session-only flings ---------- */
 function setHue(h,spin){
@@ -709,7 +756,7 @@ requestAnimationFrame(liquidFrame);   /* no reduced-motion gate. the blub is non
 setTimeout(()=>$("revealLine").classList.add("on"),700);
 
 /* ---------- router ---------- */
-const VIEWS={home:"view-home","app/p2p":"view-p2p","app/celas":"view-celas"};
+const VIEWS={home:"view-home","app/p2p":"view-p2p","app/celas":"view-celas","app/explorer":"view-explorer"};
 let route="home",busy=false,queued=null,scrollAfter=null;
 const parseHash=()=>{const h=location.hash.replace(/^#\/?/,"");return VIEWS[h]?h:"home";};
 const currentView=()=>$(VIEWS[route]);
