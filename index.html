@@ -120,7 +120,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 /* ---------- shimmer ---------- */
 .imgwrap{position:relative;display:block;overflow:hidden;max-width:100%}
-.imgwrap.round{border-radius:50%;display:inline-block;vertical-align:middle;animation:float 6s ease-in-out infinite}
+.imgwrap.round{border-radius:50%;display:inline-block;vertical-align:middle}
 .imgwrap.ic{border-radius:50%;display:inline-block;vertical-align:top;animation:float 5s ease-in-out infinite}
 .imgwrap img{opacity:0;transform:scale(1.02);transition:opacity .5s ease,transform .5s ease}
 .imgwrap img.loaded{opacity:1;transform:scale(1)}
@@ -150,7 +150,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .appcard::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(160deg,rgba(0,0,0,.14),rgba(0,0,0,.52))}
 .appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
 .appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
-.appcard.cyan{--g1:#22d3ee;--g2:#0e7490;--g3:#164e63}
+.appcard.steel{--g1:#f5f5f5;--g2:#9aa0a6;--g3:#33383d}
 .appcard>*{position:relative;z-index:1}
 .appcard .glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px 300px at var(--mx,50%) var(--my,50%),hsl(var(--h) 90% 70% / .16),transparent 65%)}
 .appcard:hover .glare{opacity:1}
@@ -433,7 +433,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <button class="back" data-goto="home">← Back to the Suite</button>
     <div class="rv"><img class="banner" data-src="assets/Cel Banner Explorer.webp" alt="CelSuite GitHub Repo Explorer banner" draggable="false"></div>
     <div class="apphead rv">
-      <img data-src="assets/Cel Logo Circle-q50.webp" alt="GitHub Repo Explorer icon" draggable="false">
+      <img data-src="assets/Cel Logo Explorer.webp" alt="GitHub Repo Explorer icon" draggable="false">
       <div>
         <h1 class="display">GitHub Repo Explorer</h1>
         <div class="chiprow">
@@ -461,9 +461,9 @@ const MOBILE=matchMedia("(max-width:768px)").matches || matchMedia("(pointer:coa
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")'};
-const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"home"};
-const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png"};
+const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")',explorer:'url("assets/CelWeave Explorer.webp")'};
+const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"explorer"};
+const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png","app/explorer":"assets/Cel%20Logo%20Explorer.webp"};
 function setFavicon(r){$("favLink").href=FAV[r]||FAV.home;}
 
 const ICO={
@@ -479,7 +479,7 @@ const APPS=[
  {route:"app/celas",cls:"gold",icon:"assets/Cel Logo CelAS Circle Compressed.png",name:"Art Studio",ver:"v269.18.0",
   desc:"Offline generative AI studio in Liquid Glass Yellow. CPU Beast Mode, dual engines, instant checkpoints — your CPU-less laptop said thank you.",
   chips:["PyTorch","sd.cpp","Offline"]},
- {route:"app/explorer",cls:"cyan",icon:"assets/Cel Logo Circle-q50.webp",name:"GitHub Repo Explorer",ver:"v269.26.3",
+ {route:"app/explorer",cls:"steel",icon:"assets/Cel Logo Explorer.webp",name:"GitHub Repo Explorer",ver:"v269.26.3",
   desc:"Complete browser-native repo workspace — Windows-Explorer-grade file management for GitHub repos, every action one clean atomic commit.",
   chips:["WebView2","Tauri","WebView","Single-File"]}
 ];
