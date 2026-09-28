@@ -262,6 +262,11 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-thumb{background:hsl(var(--h) 40% 40% / .6);border-radius:99px}
 ::-webkit-scrollbar-track{background:transparent}
+/* ============ PUZZLE ENGINE v1 — css ============ */
+#appGrid.puz-on,#labGrid.puz-on{gap:0}
+.puz-on#appGrid>.rv,.puz-on#labGrid>.lockcard{margin:calc(var(--puzE,18px)*-1);filter:drop-shadow(0 10px 22px rgba(0,0,0,.38));transition:filter .25s,opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.puz-on#appGrid>.rv:hover,.puz-on#labGrid>.lockcard:hover{filter:drop-shadow(0 18px 36px rgba(0,0,0,.52))}
+.puz-on .appcard:hover{box-shadow:none}
 </style>
 </head>
 <body>
@@ -907,6 +912,81 @@ document.querySelectorAll(".logtabs button").forEach(b=>b.onclick=()=>{
   b.classList.add("on"); loadLog(b.dataset.log);
 });
 loadLog("p2p");
+
+/* ============ PUZZLE ENGINE v1 — js (Qwen-exclusive) ============ */
+(function(){
+const GRIDS=[["appGrid",":scope > .rv"],["labGrid",":scope > .lockcard"]];
+const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const M=()=>{const m=matchMedia("(max-width:768px)").matches;return{r:m?10:14,E:m?14:18}};
+const arc=(cx,cy,r,a0,a1)=>{const p=[];for(let i=0;i<=10;i++){const a=(a0+(a1-a0)*i/10)*Math.PI/180;p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)])}return p};
+function matrix(arts,cont){
+  const rel=arts.map(a=>({a,x:a.offsetLeft+ (a.offsetParent? a.offsetParent.offsetLeft:0) - cont.offsetLeft, y:a.offsetTop+(a.offsetParent? a.offsetParent.offsetTop:0)-cont.offsetTop}));
+  rel.forEach(o=>{const p=o.a.parentElement; o.x=o.a.offsetLeft; o.y=o.a.offsetTop;});
+  const base=rel.map(o=>({a:o.a,x:o.a.getBoundingClientRect().left-cont.getBoundingClientRect().left+cont.scrollLeft,y:o.a.getBoundingClientRect().top-cont.getBoundingClientRect().top+cont.scrollTop}));
+  const rows=[];
+  base.slice().sort((u,v)=>u.y-v.y).forEach(o=>{
+    let row=rows.find(r=>Math.abs(r.y-o.y)<10);
+    if(!row){row={y:o.y,items:[]};rows.push(row)}
+    row.items.push(o);
+  });
+  rows.forEach(r=>r.items.sort((u,v)=>u.x-v.x));
+  return rows;
+}
+function apply(cont,sel){
+  const m=M(); cont.style.setProperty("--puzE",m.E+"px"); cont.classList.add("puz-on");
+  const arts=[...cont.querySelectorAll(sel)].filter(w=>w.offsetWidth>40);
+  if(arts.length<2)return;
+  const rows=matrix(arts,cont);
+  const key=rows.length+"x"+Math.max(...rows.map(r=>r.items.length));
+  if(!cont._puz||cont._puzKey!==key){
+    const V=new Map(),H=new Map();
+    rows.forEach((row,r)=>row.items.forEach((it,c)=>{
+      if(row.items[c+1])V.set(r+","+c,{t:.32+Math.random()*.36,d:Math.random()<.5?1:-1});
+      if(rows[r+1]&&rows[r+1].items[c])H.set(r+","+c,{t:.32+Math.random()*.36,d:Math.random()<.5?1:-1});
+    }));
+    cont._puz={V,H}; cont._puzKey=key; cont._played=false;
+  }
+  const {V,H}=cont._puz, E=m.E, rK=m.r;
+  rows.forEach((row,r)=>row.items.forEach((it,c)=>{
+    const w=it.a, W=w.offsetWidth, Hh=w.offsetHeight;
+    const x0=E,x1=W-E,y0=E,y1=Hh-E;
+    const clampT=(t,lo,hi)=>Math.max(lo,Math.min(hi,t));
+    const pts=[[x0,y0]];
+    const up=H.get((r-1)+","+c);
+    if(up){const tx=clampT(x0+up.t*(x1-x0),x0+rK+4,x1-rK-4);
+      pts.push(...(up.d===1?arc(tx,y0,rK,180,0):arc(tx,y0,rK,180,360)))}
+    pts.push([x1,y0]);
+    const rt=V.get(r+","+c);
+    if(rt){const ty=clampT(y0+rt.t*(y1-y0),y0+rK+4,y1-rK-4);
+      pts.push(...(rt.d===1?arc(x1,ty,rK,-90,90):arc(x1,ty,rK,-90,-270)))}
+    pts.push([x1,y1]);
+    const dn=H.get(r+","+c);
+    if(dn){const tx=clampT(x0+dn.t*(x1-x0),x0+rK+4,x1-rK-4);
+      pts.push(...(dn.d===1?arc(tx,y1,rK,0,180):arc(tx,y1,rK,0,-180)))}
+    pts.push([x0,y1]);
+    const lf=V.get(r+","+(c-1));
+    if(lf){const ty=clampT(y0+lf.t*(y1-y0),y0+rK+4,y1-rK-4);
+      pts.push(...(lf.d===1?arc(x0,ty,rK,90,-90):arc(x0,ty,rK,90,270)))}
+    const poly="polygon("+pts.map(p=>p[0].toFixed(1)+"px "+p[1].toFixed(1)+"px").join(",")+")";
+    const flat="polygon("+pts.map(p=>{
+      let[x,y]=p; x=Math.max(x0,Math.min(x1,x)); y=Math.max(y0,Math.min(y1,y));
+      return x.toFixed(1)+"px "+y.toFixed(1)+"px"}).join(",")+")";
+    w.style.clipPath=poly;
+    if(!cont._played&&!REDUCED&&w.animate){
+      w.animate([{clipPath:flat,transform:"scale(.97)"},{clipPath:poly,transform:"none"}],
+        {duration:520,delay:60*(r*4+c),easing:"cubic-bezier(.2,1.4,.4,1)",fill:"backwards"});
+    }
+  }));
+  cont._played=true;
+}
+GRIDS.forEach(([id,sel])=>{
+  const cont=document.getElementById(id); if(!cont)return;
+  const run=()=>requestAnimationFrame(()=>apply(cont,sel));
+  new ResizeObserver(run).observe(cont);
+  addEventListener("orientationchange",run);
+  run();
+});
+})();
 
 /* ---------- boot ---------- */
 const bootRoute=parseHash();
