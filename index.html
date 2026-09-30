@@ -140,7 +140,7 @@ footer .imgwrap.round{width:46px;height:46px}
 .appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
 .appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
 .appcard.steel{--g1:#f5f5f5;--g2:#9aa0a6;--g3:#33383d}
-.appcard.cyan{--g1:#22d3ee;--g2:#0e7490;--g3:#083344}
+.appcard.cyan{--g1:#00e5ff;--g2:#00838f;--g3:#003d42}
 .appcard .appicon{width:74px;height:74px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
 .appcard h3{font-family:var(--disp);font-size:clamp(21px,3vw,26px);margin:16px 0 4px}
 .appcard p{color:var(--sub);font-size:clamp(13px,2.6vw,14.5px);margin:10px 0 18px}
@@ -426,13 +426,13 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer Explorer.webp" alt="" draggable="false"></div>
   </div>
 </section>
-<!-- ================= VHS PAGE (images lazy) ================= -->
+
 <section class="view hidden" id="view-vhs">
   <div class="apppage">
     <button class="back" data-goto="home">← Back to the Suite</button>
-    <div class="rv"><img class="banner" data-src="assets/CelVHS_Banner.webp" alt="CelSuite Video Helper Studio banner" draggable="false"></div>
+    <div class="rv"><img class="banner" data-src="assets/Cel Banner VHS.webp" alt="CelSuite VHS banner" draggable="false"></div>
     <div class="apphead rv">
-      <img data-src="assets/CelVHS_Icon.png" alt="Video Helper Studio icon" draggable="false">
+      <img data-src="assets/Cel Logo VHS.webp" alt="VHS icon" draggable="false">
       <div>
         <h1 class="display">Video Helper Studio</h1>
         <div class="chiprow">
@@ -441,9 +441,10 @@ footer small{color:var(--sub);display:block;margin-top:8px}
         </div>
       </div>
     </div>
-    <p class="tag rv selectable">OBS-level screen recording with zero bloat — reactor UI, AV sync studio, trim/WAV/GIF tools, teleprompter, kind to old hardware.</p>
-    <section class="blk"><h2 class="rv">What it does</h2><div class="fgrid" id="vhsFeat"></div></section>
-    <section class="blk"><h2 class="rv">Get it</h2><div class="dlgrid" id="vhsDl"></div></section>
+    <p class="tag rv selectable">OBS-level screen recording with zero bloat — reactor UI, AV sync studio, trim/WAV/GIF tools, teleprompter, kinder to old hardware than OBS.</p>
+    <section class="blk"><h2 class="rv">Features</h2><div class="fgrid" id="vhsFeat"></div></section>
+    <section class="blk"><h2 class="rv">Downloads</h2><div class="dlgrid" id="vhsDl"></div></section>
+    <div class="rv"><img class="banner foot" data-src="assets/Cel Banner Footer VHS.webp" alt="" draggable="false"></div>
   </div>
 </section>
 </main>
@@ -454,15 +455,15 @@ const $=id=>document.getElementById(id);
 const MOBILE=matchMedia("(max-width:768px)").matches||matchMedia("(pointer:coarse)").matches;
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")',explorer:'url("assets/CelWeave Explorer.webp")'};
-const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"explorer","app/vhs":"home"};
-const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png","app/explorer":"assets/Cel%20Logo%20Explorer.webp","app/vhs":"assets/CelVHS_Icon.png"};
+const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")',explorer:'url("assets/CelWeave Explorer.webp")',vhs:'url("assets/CelWeave VHS.webp")'};
+const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"explorer","app/vhs":"vhs"};
+const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png","app/explorer":"assets/Cel%20Logo%20Explorer.webp","app/vhs":"assets/Cel%20Logo%20VHS.webp"};
 function setFavicon(r){$("favLink").href=FAV[r]||FAV.home}
 const APPS=[
  {route:"app/p2p",cls:"green",icon:"assets/Cel Logo P2P icon-q90.webp",name:"P2P Screen Mirroring",ver:"v269.17.0",desc:"Bidirectional zero-lag mirroring between phone & PC — multitouch, audio loopback, clipboard sync, file drops. Wireless like it's magic.",chips:["PySide6","scrcpy","<30ms"]},
  {route:"app/celas",cls:"gold",icon:"assets/Cel Logo CelAS Circle Compressed.png",name:"Art Studio",ver:"v269.18.0",desc:"Offline generative AI studio in Liquid Glass Yellow. CPU Beast Mode, dual engines, instant checkpoints — your CPU-less laptop said thank you.",chips:["PyTorch","sd.cpp","Offline"]},
  {route:"app/explorer",cls:"steel",icon:"assets/Cel Logo Explorer.webp",name:"GitHub Repo Explorer",ver:"v269.26.3",desc:"Complete browser-native repo workspace — Windows-Explorer-grade file management for GitHub repos, every action one clean atomic commit.",chips:["WebView2","Tauri","WebView","Single-File"]},
- {route:"app/vhs",cls:"cyan",icon:"assets/CelVHS_Icon.png",name:"Video Helper Studio",ver:"v269.29.0",desc:"OBS-level screen recording with zero bloat — reactor UI, AV sync studio, trim/WAV/GIF tools, teleprompter, kind to old hardware.",chips:["PySide6","FFmpeg","OpenCV","Offline"]}
+ {route:"app/vhs",cls:"cyan",icon:"assets/Cel Logo VHS.webp",name:"Video Helper Studio",ver:"v269.29.0",desc:"OBS-level screen recording with zero bloat — reactor UI, AV sync studio, trim/WAV/GIF tools, teleprompter, kinder to old hardware than OBS.",chips:["PySide6","FFmpeg","Offline"]}
 ];
 const LAB=[
  {n:"Watermark Remover",t:"One click, gone. Like it was never there. 🤫",b:"FINISHED — AWAITING DROP",done:true},
@@ -477,23 +478,11 @@ const P2P_FEAT=[["Zero-Cable Wireless Mirroring","Auto-pairs over WiFi/Hotspot v
 const P2P_DL=[{ico:"android",t:"Android",d:"ScrcpyHeartbeat APK — QS tile, heartbeat service, clipboard bridge."},{ico:"win",t:"Windows Portable",d:"Single .exe — zero install, double-click, gone."},{ico:"win",t:"Windows Standalone",d:"Unzip & run main.exe for instant cold-boot."},{ico:"linux",t:"Linux Portable",d:"Single binary — chmod +x and launch."},{ico:"linux",t:"Linux Standalone",d:"Pre-packaged folder with native Qt libs."}];
 const AS_FEAT=[["CPU Beast Mode","Unthrottles and harnesses 100% of every core, all threads."],["Liquid Glass Yellow","Amber-gold translucent aesthetic (#f39c12) with wallpaper tinting."],["Prompt Auto-Fit","Prompt, Sticky & Negative boxes expand to match your text."],["Panic Disguise (Ctrl+Space)","Instant fake PowerShell / top overlay. Your secret's safe."],["Dolphin 3.0 Integration","Local GGUF language models auto-expand your prompts."],["Dual Engine","PyTorch (universal) + pure C++ stable-diffusion.cpp (Intel AVX2)."],["Batch Evolution","Real-time batch generation that evolves as you watch."],["LGPL Clean","Built on PySide6 — Qt's official LGPL framework."]];
 const AS_DL=[{ico:"linux",t:"Linux Universal",d:"PyTorch, all AMD/Intel CPUs — .zip / .7z"},{ico:"linux",t:"Linux Intel AVX2",d:"~50MB pure C++ sd.cpp micro package — .zip / .7z"},{ico:"win",t:"Windows Universal",d:"Win 10/11 standalone w/ native MSVC runtime — .zip / .7z"},{ico:"win",t:"Windows Intel AVX2",d:"High-speed AVX2 C++ engine — .zip / .7z"}];
-const EX_FEAT=[["Atomic Commits","Every mutation is one clean Git commit via the Git Data API — no force-pushes, no mess."],["Tabs & Split Panes","Windows 11 tabs with Linux-Mint-Nemo instant split (F3 / F4), drag between panes."],["Desktop-Grade Selection","Marquee draw-box, Shift ranges, Ctrl combos, long-press hold-drag on touch."],["Cache Cloud","Per-repo pinning; retry-only updates; commits refresh the cache themselves."],["Nine Themes + Glass","Dark, OLED, Light, Red, Sunset, Ocean, Violet, Forest, Matrix + Liquid Glass."],["Encrypted Credentials","Token encrypted at rest; login form speaks to your browser's password manager."]];
+const EX_FEAT=[["Atomic Commits","Every mutation is one clean Git commit via the Git Data API — no force-pushes, no mess."],["Tabs & Split Panes","Windows 11 tabs with Linux-Mint-Nemo instant split (F3 / F4), drag between panes."],["Cache Cloud","Per-repo pinning; retry-only updates; commits refresh the cache themselves."],["9 Themes + Liquid Glass","Dark, OLED, Light, Red, Sunset, Ocean, Violet, Forest, Matrix + Liquid Glass."],["Encrypted Credentials","Token encrypted at rest; login form speaks to your browser's password manager."],["Native shells","exe/AppImage/deb/APK — runs natively everywhere."]];
 const EX_DL=[{ico:"android",t:"Android APK",d:"WebView shell, works offline, tiny."},{ico:"win",t:"Windows Portable",d:"WebView2 executable — zero install."},{ico:"linux",t:"Linux AppImage",d:"chmod +x and launch directly."},{ico:"linux",t:"Linux .deb",d:"sudo dpkg -i and go."},{ico:"win",t:"Single File",d:"The entire app, obfuscated, double-click anywhere."}];
-const VHS_FEAT=[
- ["Dual-Engine Capture","FFmpeg + OpenCV pipelines pick the fastest path for your machine — old hardware included."],
- ["Pause / Resume","Stop mid-recording, breathe, continue — stitch-free sessions."],
- ["AV Sync Studio","Align audio and video tracks by eye and ear until they kiss."],
- ["Post Tools","Trim, WAV export, GIF export, speed ramp, frame-snap — no second app needed."],
- ["Teleprompter + Gemini Director","Scripted reads and AI-shot suggestions floating over your take."],
- ["Wallpaper Engine","Bundled Cyan Weave wallpaper with tint control — bring your own too."],
- ["Nine Themes","OLED, Liquid Glass and seven more moods."],
- ["Diagnostics Console","Every pipeline hop inspectable when something looks off."]
-];
-const VHS_DL=[
- {ico:"win",t:"Windows",d:"CelSuite_VHS-v269.29.0-Windows.exe — onefile Nuitka build, double-click and record."},
- {ico:"linux",t:"Linux",d:"CelSuite_VHS-v269.29.0-Linux.bin — onefile Nuitka build, chmod +x and run."}
-];
-const STATS=[["Suite","11+ projects"],["Public","4 shipped"],["Lab","7 brewing"],["Art Studio","v269.18.0"],["P2P","v269.17.0"],["Explorer","v269.26.3"]];
+const VHS_FEAT=[["Reactor record UI","Clean, modular recording interface that stays out of your way."],["AV Sync Studio","Perfect audio/video alignment tools for flawless playback."],["Clip suite","Trim, extract WAV, export GIF, and adjust speed seamlessly."],["Teleprompter + Gemini","Built-in teleprompter with AI-powered script generation."],["Wallpaper engine","Set your favorite clips or live renders as desktop wallpapers."],["HW accel","Full VAAPI/NVENC/QSV support to save your CPU."]];
+const VHS_DL=[{ico:"win",t:"Windows Portable",d:"Single .exe — zero install, double-click, gone."},{ico:"linux",t:"Linux AppImage",d:"chmod +x and launch directly."},{ico:"linux",t:"Linux .deb",d:"sudo dpkg -i and go."}];
+const STATS=[["Suite","11+ projects"],["Public","4 shipped"],["Lab","7 brewing"],["Art Studio","v269.18.0"],["P2P","v269.17.0"],["Explorer","v269.26.3"],["VHS","v269.29.0"]];
 const ICO={win:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.6 4.5v7.1H3zM11.6 4.4 21 3v8.6h-9.4zM3 12.6h7.6v7L3 18.5zM11.6 12.6H21V21l-9.4-1.4z"/></svg>',linux:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.9 0-3.1 1.4-3.1 3.3 0 .9-.4 1.8-1 2.6-1.2 1.6-2.3 3.4-2.3 5.6 0 1.5.5 2.7 1.2 3.6-.3.6-.5 1.3-.5 2 0 1.6 1.2 2.9 2.8 2.9.8 0 1.5-.3 2-.8.3.1.6.1.9.1s.6 0 .9-.1c.5.5 1.2.8 2 .8 1.6 0 2.8-1.3 2.8-2.9 0-.7-.2-1.4-.5-2 .7-.9 1.2-2.1 1.2-3.6 0-2.2-1.1-4-2.3-5.6-.6-.8-1-1.7-1-2.6C15.1 3.4 13.9 2 12 2Zm-3.5 10.8 1 .5h3l1-.5c1 .8 1.7 2 1.7 3.4 0 1-.4 1.9-1 2.5-.5-.3-1.1-.5-1.7-.5-.6 0-1.1.1-1.5.4-.4-.3-.9-.4-1.5-.4-.6 0-1.2.2-1.7.5-.6-.6-1-1.5-1-2.5 0-1.4.7-2.6 1.7-3.4Z"/></svg>',android:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m7.1 4.6-.9-1.5c-.1-.1 0-.3.1-.3.1-.1.3 0 .3.1l.9 1.5a8 8 0 0 1 9 0l.9-1.5c.1-.1.2-.2.3-.1.1 0 .2.2.1.3l-.9 1.5A7.5 7.5 0 0 1 20 10.8H4A7.5 7.5 0 0 1 7.1 4.6ZM9 8.4a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Zm6 0a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6ZM4 12.3h16v6.2A1.5 1.5 0 0 1 18.5 20h-13A1.5 1.5 0 0 1 4 18.5Z"/></svg>'};
 
 $("stats").innerHTML=STATS.map(s=>`<span class="chip"><b>${s[0]}</b> · ${s[1]}</span>`).join("");
