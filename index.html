@@ -36,8 +36,8 @@
   --sym:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:var(--body);background:var(--bg0);color:var(--ink);overflow-x:hidden;line-height:1.6;font-size:14px}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--body);background:var(--bg0);color:var(--ink);overflow-x:clip;line-height:1.6;font-size:14px}
 .selectable,.selectable *{user-select:text;-webkit-user-select:text}
 ::selection{background:hsl(var(--h) 85% 45% / .9);color:#fff}
 .hidden{display:none!important}
@@ -81,7 +81,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .liquid .heroT{color:var(--acc-dark)}
 .reveal{position:absolute;bottom:24%;left:0;right:0;text-align:center;font-family:var(--disp);font-size:clamp(18px,3vw,30px);color:var(--sub);opacity:0;transform:translateY(14px);transition:opacity .9s .15s,transform .9s .15s;pointer-events:none}
 .reveal.on{opacity:1;transform:none}
-.cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite;pointer-events:none}
+.cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite;pointer-events:auto;cursor:pointer}
+.cue:hover{color:var(--acc);text-shadow:0 0 12px var(--glow)}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 .blk{max-width:1120px;margin:0 auto;padding:clamp(52px,9vw,88px) clamp(14px,3vw,22px) 10px}
 .blk h2{font-family:var(--disp);font-size:clamp(30px,5vw,52px);margin-bottom:6px}
@@ -107,6 +108,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 footer .imgwrap.round{width:46px;height:46px}
 .shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,hsl(var(--h) 70% 60% / .25) 50%,transparent 80%) 0 0/200% 100% no-repeat,hsl(var(--h) 40% 14% / .85);animation:shim 1.1s linear infinite}
 @keyframes shim{to{background-position:-200% 0,0 0}}
+.imgretry{position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:3;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:hsl(var(--h) 40% 12% / .92);color:var(--acc);font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;animation:float 3s ease-in-out infinite}
+.imgretry:hover{background:var(--acc);color:#fff;box-shadow:0 0 14px var(--glow)}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
 .grid2>.rv{min-width:0}
@@ -206,6 +209,8 @@ body.tab-asleep *{animation-play-state:paused!important}
 .logbox a{color:var(--acc);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 footer{margin-top:90px;border-top:1px solid var(--line);background:hsl(var(--h) 45% 6% / .72);backdrop-filter:blur(12px);padding:44px 22px 34px;text-align:center}
 footer .flogo{width:46px;height:46px;border-radius:50%;margin:0 auto 12px;box-shadow:0 0 18px var(--glow);cursor:pointer}
+footer .flogo.holding{animation:holdpulse 3.33s linear forwards}
+@keyframes holdpulse{0%{box-shadow:0 0 0 0 var(--glow)}100%{box-shadow:0 0 0 26px transparent}}
 footer .flinks{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:13.5px}
 footer small{color:var(--sub);display:block;margin-top:8px}
 .apppage{padding-top:86px}
@@ -244,6 +249,16 @@ footer small{color:var(--sub);display:block;margin-top:8px}
   .apphead .imgwrap.ic{width:72px;height:72px}
   footer{padding-bottom:60px}
   .logo .wm-sub{display:none}
+  /* mobile perf pass: kill the per-frame repaint monsters */
+  #nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:hsl(var(--h) 42% 8% / .94)}
+  .sheet{backdrop-filter:none;-webkit-backdrop-filter:none;background:hsl(var(--h) 42% 9% / .97)}
+  footer{backdrop-filter:none;-webkit-backdrop-filter:none}
+  .mobnote{backdrop-filter:none;-webkit-backdrop-filter:none;background:hsl(0 0% 100% / .9)}
+  .braille{display:none}
+  .pz{filter:none}
+  .pz.pulse{animation:none}
+  .puzbeam{display:none}
+  .pz.suite::before{animation:none}
 }
 @media (max-width:640px){
   .grid2{grid-template-columns:1fr}
@@ -291,7 +306,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <div class="hlayer base"><h1 class="heroT">CelSuite</h1></div>
     <div class="hlayer liquid" id="liquid"><h1 class="heroT">CelSuite</h1></div>
     <div class="reveal" id="revealLine">By HenryJayz :)</div>
-    <div class="cue">SCROLL</div>
+    <div class="cue" id="cue" role="button" aria-label="Scroll down to The Suite">SCROLL</div>
   </div>
   <div class="strip rv" id="stats"></div>
   <section class="blk" id="apps">
@@ -309,16 +324,16 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <pre class="braille" id="braille" aria-hidden="true"></pre>
     <h2 class="rv">About HenryJayz</h2>
     <div class="aboutbox rv selectable">
-      <p class="art">▂▃▅▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▇▆▅▃▂</p>
+      <p class="art">▂▃▅▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▆▅▃▂</p>
       <p>Heyy, <b>Henry</b> here, so you found me here too?, well yes I am also a <u>Solo dev</u>. plus...</p>
       <p>— <b>Main CelSuite builder</b><br>— <b>Chronic over-polisher</b> <i>(cuz who doesn't love good looking apps)</i></p>
       <p>CelSuite is like my own little <i>Adobe-style family</i>: a growing stack of tools that feel <b>premium</b>, run <b>offline</b>, and <u>respect your machine</u>.</p>
       <p>Four apps are public today. Seven more are still being finalized in the lab, debugging the code into perfection before they're allowed outside. I try to achieve the goal of <b>Everything to be shipped with zero-dependency</b>, Apps are also tuned until it feels like it should cost money to use... Glad It didn't cost me money to make any of these, <i>It cost me sleep tho :/</i></p>
       <p class="sig">— Pace is one problem at a time &gt;:)</p>
       <a class="ytbox" href="https://www.youtube.com/@HenryJayZ" target="_blank" rel="noopener">
-<pre class="ascii">╔═╦╗╔╦╗╔═╦═╦╦╦╗╔═╗
+<pre class="ascii">╔═╦╗╔╦╗╔══╦╦╦╗╔═╗
 ║╚╣║║║╚╣╚╣╔╣╔╣║╚╣═╣ 
-╠╗║╚╝║║╠╗║╚╣║║║║║═╣
+╠╗║╚╝║║╠╗║╣║║║║║═╣
 ╚═╩══╩═╩═╩═╩╝╚╩═╩═╝</pre>
         <span class="ytnote"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff0033"/><path d="M10 9.2v5.6l5-2.8Z" fill="#fff"/></svg>youtube.com/@HenryJayZ <span class="subnote">[ if you want :) ]</span></span>
       </a>
@@ -330,11 +345,13 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <div class="logtabs rv">
       <button class="on" data-log="p2p">P2P Screen Mirroring</button>
       <button data-log="as">Art Studio</button>
+      <button data-log="ex">GitHub Repo Explorer</button>
+      <button data-log="vhs">Video Helper Studio</button>
     </div>
     <div class="logbox rv selectable" id="logBox">loading…</div>
   </section>
   <footer class="rv">
-    <img class="flogo" id="flogo" src="assets/Cel Logo Circle-q50.webp" alt="" draggable="false" title="yes, I also change colors. try me 🎲">
+    <img class="flogo" id="flogo" src="assets/Cel Logo Circle-q50.webp" alt="" draggable="false" title="yes, I also change colors. try me 🎲 (hold 3.33s = liquid cursor 😈)">
     <div class="display" style="font-size:24px">CelSuite</div>
     <div class="flinks">
       <a href="#/home" data-scroll="apps">The Suite</a>
@@ -343,7 +360,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
       <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub</a>
     </div>
     <small>© 2026 HenryJayz — CelSuite. Crafted with love &amp; zero dependencies.</small>
-    <small>click the logo. you know you want to. 🎲 (triple-click = liquid cursor)</small>
+    <small>click the logo. you know you want to. 🎲 (hold 3.33s = liquid cursor)</small>
   </footer>
 </section>
 
@@ -494,7 +511,7 @@ $("appGrid").innerHTML=APPS.map(a=>`
      <h3>${a.name}</h3>
      <div class="chiprow"><span class="chip mini"><b>${a.ver}</b></span>${a.chips.map(c=>`<span class="chip mini">${c}</span>`).join("")}</div>
      <p class="selectable">${a.desc}</p>
-     <div class="row"><span class="btn glow">Open page →</span></div>
+     <div class="row"><span class="btn glow" data-goto="${a.route}" role="link">Open page →</span></div>
    </article>
    <div class="puzbeam"></div>
  </div>`).join("");
@@ -527,9 +544,15 @@ $("logoBtn").onclick=()=>{
   logoClicks++;clearTimeout(logoTimer);logoTimer=setTimeout(()=>logoClicks=0,1200);
   if(logoClicks>=3){logoClicks=0;if(window.CURSOR)CURSOR.toggle();}
 };
-$("flogo").addEventListener("click",()=>{
+/* footer logo: click = hue reroll · HOLD 3.33s = wake the liquid cursor */
+let fHeld=false,fTimer=0;
+const flogo=$("flogo");
+flogo.addEventListener("pointerdown",()=>{fHeld=false;flogo.classList.add("holding");fTimer=setTimeout(()=>{fHeld=true;flogo.classList.remove("holding");if(window.CURSOR)CURSOR.toggle()},3330)});
+["pointerup","pointerleave","pointercancel"].forEach(ev=>flogo.addEventListener(ev,()=>{clearTimeout(fTimer);flogo.classList.remove("holding")}));
+flogo.addEventListener("click",()=>{
+  if(fHeld){fHeld=false;return}
   setHue(Math.floor(Math.random()*360),false);
-  const f=$("flogo");f.classList.remove("spin");void f.offsetWidth;f.classList.add("spin");
+  flogo.classList.remove("spin");void flogo.offsetWidth;flogo.classList.add("spin");
 });
 
 const burger=$("burger"),sheet=$("sheet");
@@ -548,9 +571,23 @@ function watchImgs(){
     w.className="imgwrap"+(round?" round":ic?" ic":"");
     img.parentNode.insertBefore(w,img);w.appendChild(img);
     const sh=document.createElement("div");sh.className="shimmer";w.appendChild(sh);
-    const done=()=>{img.classList.add("loaded");sh.remove()};
+    const done=()=>{img.classList.add("loaded");sh.remove();const rb=w.querySelector(".imgretry");if(rb)rb.remove()};
+    const fail=()=>{
+      sh.remove();img.classList.add("loaded");
+      if(w.querySelector(".imgretry"))return;
+      const rb=document.createElement("button");rb.className="imgretry";rb.type="button";rb.title="Image failed to load — tap to retry";rb.textContent="↻";
+      rb.addEventListener("click",ev=>{
+        ev.stopPropagation();ev.preventDefault();rb.remove();img.classList.remove("loaded");
+        const sh2=document.createElement("div");sh2.className="shimmer";w.appendChild(sh2);
+        const base=img.dataset.src||img.getAttribute("src")||"";const sep=base.indexOf("?")>-1?"&":"?";
+        img.src=base+sep+"retry="+Date.now();
+        img.addEventListener("load",done,{once:true});img.addEventListener("error",fail,{once:true});
+      });
+      w.appendChild(rb);
+    };
     if(img.complete&&img.naturalWidth>0)done();
-    else{img.addEventListener("load",done,{once:true});img.addEventListener("error",()=>{sh.remove();img.classList.add("loaded")},{once:true})}
+    else if(img.complete&&img.naturalWidth===0)fail();
+    else{img.addEventListener("load",done,{once:true});img.addEventListener("error",fail,{once:true})}
   });
 }
 function activateImgs(scope){scope.querySelectorAll("img[data-src]").forEach(i=>{if(i.dataset.active)return;i.dataset.active="1";i.src=i.dataset.src});watchImgs()}
@@ -564,8 +601,8 @@ function swapWall(key){
   bgFront.animate([{opacity:1},{opacity:0}],{duration:900,easing:"ease-in-out",fill:"forwards"});
   [bgFront,bgBack]=[bgBack,bgFront];
 }
-let pitCur=.33,lastP=-1,scrollDirty=true,frameN=0,brailleOn=false,CHILL=false,dtSum=0,dtN=0,lastFrameT=0;
-addEventListener("scroll",()=>{scrollDirty=true},{passive:true});
+let pitCur=.33,lastP=-1,scrollDirty=true,frameN=0,brailleOn=false,CHILL=false,dtSum=0,dtN=0,lastFrameT=0,lastScrollT=0,lastRevealT=0;
+addEventListener("scroll",()=>{scrollDirty=true;lastScrollT=performance.now()},{passive:true});
 addEventListener("resize",()=>{scrollDirty=true},{passive:true});
 
 let RV=[];
@@ -595,24 +632,25 @@ function pitFrame(t){
   const p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
   const target=.33+p*.55;
   const settling=Math.abs(target-pitCur)>.001;
-  if(scrollDirty||settling||Math.abs(p-lastP)>.0005){
+  if((scrollDirty||settling||Math.abs(p-lastP)>.0005)&&(!MOBILE||frameN%2===0)){
     lastP=p;pitCur+=(target-pitCur)*.08;
     const f=`brightness(${(1-pitCur).toFixed(3)}) saturate(${(1.08-p*.3).toFixed(3)})`;
     bgFront.style.filter=f;bgBack.style.filter=f;
     const t1=pitCur*.75,t2=Math.min(.88,pitCur+.18);
     $("pit").style.background=`linear-gradient(180deg,rgba(0,0,0,${t1.toFixed(3)}),rgba(0,0,0,${t2.toFixed(3)}))`;
-    revealPass();scrollDirty=false;
+    if(!MOBILE||performance.now()-lastRevealT>90){lastRevealT=performance.now();revealPass()}
+    scrollDirty=false;
   }
   if((frameN++%20)===0){const r=$("about").getBoundingClientRect();brailleOn=r.bottom>0&&r.top<innerHeight}
   requestAnimationFrame(pitFrame);
 }
 
 const braillePre=$("braille");
-const BGlyphs="⠀⠁⣼⣀";
+const BGlyphs="⠀⠁⣀";
 let BR={rows:0,cols:0},brailleT=0;
 new ResizeObserver(es=>{const r=es[0].contentRect;BR.cols=Math.min(220,Math.floor(r.width/6.8));BR.rows=Math.min(140,Math.ceil(r.height/15)+2)}).observe($("about"));
 setInterval(()=>{
-  if(document.hidden||!brailleOn||!BR.rows)return;
+  if(document.hidden||!brailleOn||!BR.rows||MOBILE)return;
   brailleT+=.5;let s="";
   for(let y=0;y<BR.rows;y++){let row="";
     for(let x=0;x<BR.cols;x++){
@@ -629,18 +667,21 @@ setInterval(()=>{
 /* MiMo liquid hero — full 60fps (chill mode halves it as emergency only) */
 const hero=$("hero"),liquid=$("liquid");
 let ltime=0,lskip=0;
-const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false};
-const SEG=MOBILE?32:48;
+const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false,glideT:0};
+const SEG=MOBILE?24:48;
 function liquidCenter(){LSq.tx=hero.clientWidth/2;LSq.ty=hero.clientHeight*.46}
 function liquidFrame(){
   LSq.raf=requestAnimationFrame(liquidFrame);
   if(document.hidden||scrollY>innerHeight*1.2)return;
+  if(MOBILE&&performance.now()-lastScrollT<180)return;
   if(CHILL&&(++lskip%2))return;
   ltime+=.05;
   if(!LSq.centered){liquidCenter();LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});LSq.centered=true}
+  const g=LSq.glideT?Math.max(0,1-(performance.now()-LSq.glideT)/1100):0;
+  if(LSq.glideT&&!g)LSq.glideT=0;
   for(let i=0;i<6;i++){
     const target=i===0?{x:LSq.tx,y:LSq.ty}:LSq.pts[i-1];
-    const damping=.7-.04*i;
+    const damping=(.7-.04*i)*(1-g*.45);
     LSq.pts[i].x+=(target.x-LSq.pts[i].x)*damping;
     LSq.pts[i].y+=(target.y-LSq.pts[i].y)*damping;
   }
@@ -648,20 +689,21 @@ function liquidFrame(){
   const angle=Math.atan2(fp.y-lp.y,fp.x-lp.x);
   const baseRadius=Math.min(hero.clientWidth,hero.clientHeight)*.34;
   const points=[];
-  for(let i=0;i<=SEG;i++){const theta=angle-Math.PI/2+(Math.PI*i/SEG);const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;const r=Math.max(50,baseRadius+ripple);points.push(`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`)}
-  for(let i=0;i<=SEG;i++){const theta=angle+Math.PI/2+(Math.PI*i/SEG);const ripple=Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8;const r=Math.max(50,baseRadius+ripple);points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`)}
+  for(let i=0;i<=SEG;i++){const theta=angle-Math.PI/2+(Math.PI*i/SEG);const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*(1+g*1.6);const r=Math.max(50,baseRadius+ripple);points.push(`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`)}
+  for(let i=0;i<=SEG;i++){const theta=angle+Math.PI/2+(Math.PI*i/SEG);const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*(1+g*1.6);const r=Math.max(50,baseRadius+ripple);points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`)}
   liquid.style.clipPath=`polygon(${points.join(", ")})`;
 }
 function liquidSet(cx,cy){const rect=hero.getBoundingClientRect();LSq.tx=cx-rect.left;LSq.ty=cy-rect.top}
 hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
-hero.addEventListener("mouseenter",e=>{const rect=hero.getBoundingClientRect();LSq.tx=e.clientX-rect.left;LSq.ty=e.clientY-rect.top;LSq.inside=true;LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});if(!LSq.raf)requestAnimationFrame(liquidFrame)});
-function liquidLeave(){LSq.inside=false;const rect=hero.getBoundingClientRect();let tx=LSq.tx,ty=LSq.ty;if(tx<=0)tx=-400;else if(tx>=rect.width)tx=rect.width+400;if(ty<=0)ty=-400;else if(ty>=rect.height)ty=rect.height+400;LSq.tx=tx;LSq.ty=ty}
+hero.addEventListener("mouseenter",e=>{const rect=hero.getBoundingClientRect();LSq.tx=e.clientX-rect.left;LSq.ty=e.clientY-rect.top;LSq.inside=true;LSq.glideT=0;LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});if(!LSq.raf)requestAnimationFrame(liquidFrame)});
+function liquidLeave(){LSq.inside=false;LSq.glideT=performance.now();liquidCenter()}
 hero.addEventListener("mouseleave",liquidLeave);
-hero.addEventListener("touchmove",e=>{LSq.inside=true;liquidSet(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+hero.addEventListener("touchmove",e=>{LSq.inside=true;LSq.glideT=0;liquidSet(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
 hero.addEventListener("touchend",liquidLeave,{passive:true});
 addEventListener("resize",()=>{if(LSq.centered)liquidCenter()},{passive:true});
 if(!REDUCED)requestAnimationFrame(liquidFrame);
 setTimeout(()=>$("revealLine").classList.add("on"),700);
+$("cue").addEventListener("click",()=>doScroll("apps"));
 
 const VIEWS={home:"view-home","app/p2p":"view-p2p","app/celas":"view-celas","app/explorer":"view-explorer","app/vhs":"view-vhs"};
 let route="home",busy=false,queued=null,scrollAfter=null;
@@ -710,9 +752,11 @@ const TILTS=[...document.querySelectorAll("[data-tilt]")].map(c=>{
   const rest=()=>{st.tx=0;st.ty=0;st.tl=0;tiltWake()};
   c.addEventListener("pointermove",e=>{if(e.pointerType==="mouse")aim(e.clientX,e.clientY)});
   c.addEventListener("pointerleave",rest);
-  c.addEventListener("touchstart",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
-  c.addEventListener("touchmove",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
-  c.addEventListener("touchend",rest,{passive:true});
+  if(!MOBILE){
+    c.addEventListener("touchstart",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+    c.addEventListener("touchmove",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+    c.addEventListener("touchend",rest,{passive:true});
+  }
   return{c,st};
 });
 let tiltRAF=0;
@@ -728,6 +772,7 @@ function tiltStep(){
 }
 
 const LOG_CACHE={};
+const LOG_REPO={p2p:"CelSuite_P2P-Screen-Mirroring",as:"CelSuite_Art_Studio",ex:"CelSuite_Github-Repository-Explorer",vhs:"CelSuite_Video-Helper-Studio"};
 function mdMini(src,limit=240){
   const esc2=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
   const inline=s=>esc2(s).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`(.+?)`/g,"<code>$1</code>");
@@ -756,10 +801,11 @@ function mdMini(src,limit=240){
 async function loadLog(which){
   if(LOG_CACHE[which]){$("logBox").innerHTML=LOG_CACHE[which];return}
   $("logBox").innerHTML="fetching…";
+  const repo=LOG_REPO[which]||LOG_REPO.p2p;
   try{
-    if(which==="p2p"){const r=await fetch("https://raw.githubusercontent.com/HenryCarm/CelSuite_P2P-Screen-Mirroring/master/CHANGELOG.md");if(!r.ok)throw 0;LOG_CACHE[which]=mdMini(await r.text())}
-    else{const r=await fetch("https://api.github.com/repos/HenryCarm/CelSuite_Art_Studio/releases/latest");if(!r.ok)throw 0;const j=await r.json();LOG_CACHE[which]="<h4>"+j.tag_name+"</h4>"+mdMini(j.body||"")}
-  }catch(e){LOG_CACHE[which]=`<p style="color:var(--sub)">Couldn't fetch live changelog (offline or rate-limited).<br>See the <a href="https://github.com/HenryCarm/CelSuite_${which==="p2p"?"P2P-Screen-Mirroring":"Art_Studio"}/releases" target="_blank" rel="noopener">releases page</a> instead 💋</p>`}
+    if(which==="p2p"){const r=await fetch("https://raw.githubusercontent.com/HenryCarm/"+repo+"/master/CHANGELOG.md");if(!r.ok)throw 0;LOG_CACHE[which]=mdMini(await r.text())}
+    else{const r=await fetch("https://api.github.com/repos/HenryCarm/"+repo+"/releases/latest");if(!r.ok)throw 0;const j=await r.json();LOG_CACHE[which]="<h4>"+j.tag_name+"</h4>"+mdMini(j.body||"")}
+  }catch(e){LOG_CACHE[which]=`<p style="color:var(--sub)">Couldn't fetch live changelog (offline or rate-limited).<br>See the <a href="https://github.com/HenryCarm/${repo}/releases" target="_blank" rel="noopener">releases page</a> instead 💋</p>`}
   $("logBox").innerHTML=LOG_CACHE[which];
 }
 document.querySelectorAll(".logtabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".logtabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");loadLog(b.dataset.log)});
@@ -866,7 +912,7 @@ window.PUZZLE=(function(){
   const g1=document.createElement("div");g1.className="magGhost";
   const g2=document.createElement("div");g2.className="magGhost";
   document.body.append(g2,g1,pop,ring,blob,dot);
-  const STRONG=".btn,.chip,.ghbtn,.ytbox,.logtabs button,#nav .links a,.sheet a,footer .flinks a";
+  const STRONG=".btn,.chip,.ghbtn,.ytbox,.imgretry,.logtabs button,#nav .links a,.sheet a,footer .flinks a";
   const CARD=".appcard,.lockcard,.pz";
   const SOFT="h1,h2,h3,.sig,.vertable";
   let MAG=[],enabled=false;
