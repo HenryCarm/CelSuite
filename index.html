@@ -806,7 +806,7 @@ function navTo(r){
 addEventListener("hashchange",()=>{if(suppressHash){suppressHash=false;return}const r=parseHash();if(r!==route)requestRoute(r)});
 document.addEventListener("click",e=>{
   const g=e.target.closest("[data-goto]");
-  if(g){e.preventDefault();navTo(g.dataset.goto);return}
+  if(g){e.preventDefault();if(g.classList.contains("back"))SCROLL_MEM.delete(g.dataset.goto);navTo(g.dataset.goto);return}
   const l=e.target.closest("[data-scroll]");
   if(l){e.preventDefault();const s=l.dataset.scroll;if(route!=="home"){scrollAfter=s;navTo("home")}else doScroll(s);return}
 });
