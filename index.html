@@ -667,7 +667,7 @@ setInterval(()=>{
 /* MiMo liquid hero — full 60fps (chill mode halves it as emergency only) */
 const hero=$("hero"),liquid=$("liquid");
 let ltime=0,lskip=0;
-const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false,glideT:0};
+const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false,glideT:0,returning:false,returnStart:0,returnFrom:{x:0,y:0}};
 const SEG=MOBILE?24:48;
 function liquidCenter(){LSq.tx=hero.clientWidth/2;LSq.ty=hero.clientHeight*.46}
 function liquidFrame(){
@@ -679,6 +679,15 @@ function liquidFrame(){
   if(!LSq.centered){liquidCenter();LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});LSq.centered=true}
   const g=LSq.glideT?Math.max(0,1-(performance.now()-LSq.glideT)/1100):0;
   if(LSq.glideT&&!g)LSq.glideT=0;
+  if(LSq.returning){
+    const elapsed=performance.now()-LSq.returnStart;
+    const dur=900;
+    const prog=Math.min(1,elapsed/dur);
+    const eased=prog<.5?2*prog*prog:1-Math.pow(-2*prog+2,2)/2;
+    LSq.tx=LSq.returnFrom.x+(hero.clientWidth/2-LSq.returnFrom.x)*eased;
+    LSq.ty=LSq.returnFrom.y+(hero.clientHeight*.46-LSq.returnFrom.y)*eased;
+    if(prog>=1){LSq.returning=false;LSq.glideT=0}
+  }
   for(let i=0;i<6;i++){
     const target=i===0?{x:LSq.tx,y:LSq.ty}:LSq.pts[i-1];
     const damping=(.7-.04*i)*(1-g*.45);
@@ -696,7 +705,7 @@ function liquidFrame(){
 function liquidSet(cx,cy){const rect=hero.getBoundingClientRect();LSq.tx=cx-rect.left;LSq.ty=cy-rect.top}
 hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
 hero.addEventListener("mouseenter",e=>{const rect=hero.getBoundingClientRect();LSq.tx=e.clientX-rect.left;LSq.ty=e.clientY-rect.top;LSq.inside=true;LSq.glideT=0;LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});if(!LSq.raf)requestAnimationFrame(liquidFrame)});
-function liquidLeave(){LSq.inside=false;LSq.glideT=performance.now();liquidCenter()}
+function liquidLeave(){LSq.inside=false;LSq.glideT=performance.now();LSq.returning=true;LSq.returnStart=performance.now();LSq.returnFrom={x:LSq.tx,y:LSq.ty}}
 hero.addEventListener("mouseleave",liquidLeave);
 hero.addEventListener("touchmove",e=>{LSq.inside=true;LSq.glideT=0;liquidSet(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
 hero.addEventListener("touchend",liquidLeave,{passive:true});
