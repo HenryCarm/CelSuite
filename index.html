@@ -162,7 +162,7 @@ footer .imgwrap.round{width:46px;height:46px}
 .badge{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:99px;font-size:10.5px;letter-spacing:.12em;background:hsl(var(--h) 70% 50% / .16);border:1px solid var(--line);color:var(--acc)}
 .badge.done{background:hsl(140 60% 40% / .18);color:hsl(140 70% 65%);border-color:hsl(140 60% 50% / .4)}
 .lockico{opacity:.8}
-/* ===== MAGNETIC LIQUID CURSOR v3 (asleep by default) ===== */
+/* ===== MAGNETIC LIQUID CURSOR v3 (awake by default on desktop) ===== */
 html.cursor-on,html.cursor-on *{cursor:none!important}
 html.cursor-on input,html.cursor-on textarea,html.cursor-on select,html.cursor-on [contenteditable="true"]{cursor:auto!important}
 #magDot,#magBlob,#magRing,.magGhost,#magPop{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;border-radius:50%;opacity:0}
@@ -277,7 +277,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
 <div class="mobnote">*Desktop Site Recommended</div>
 
 <header id="nav">
-  <button class="logo" id="logoBtn" title="click = new color · triple-click = wake the liquid cursor 😈">
+  <button class="logo" id="logoBtn" title="click = new color · triple-click = sleep/wake the liquid cursor 😈">
     <img src="assets/Cel Logo Circle-q50.webp" alt="CelSuite logo" draggable="false">
     <span class="wordmark">▣ CelSuite <span class="wm-sub">• Mini Studio Apps</span></span>
   </button>
@@ -324,7 +324,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <pre class="braille" id="braille" aria-hidden="true"></pre>
     <h2 class="rv">About HenryJayz</h2>
     <div class="aboutbox rv selectable">
-      <p class="art">▂▃▅▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▆▅▃▂</p>
+      <p class="art">▂▃▅▓▒░ ฅ^•ﻌ•^ฅ ░▒▓▅▃▂</p>
       <p>Heyy, <b>Henry</b> here, so you found me here too?, well yes I am also a <u>Solo dev</u>. plus...</p>
       <p>— <b>Main CelSuite builder</b><br>— <b>Chronic over-polisher</b> <i>(cuz who doesn't love good looking apps)</i></p>
       <p>CelSuite is like my own little <i>Adobe-style family</i>: a growing stack of tools that feel <b>premium</b>, run <b>offline</b>, and <u>respect your machine</u>.</p>
@@ -332,8 +332,8 @@ footer small{color:var(--sub);display:block;margin-top:8px}
       <p class="sig">— Pace is one problem at a time &gt;:)</p>
       <a class="ytbox" href="https://www.youtube.com/@HenryJayZ" target="_blank" rel="noopener">
 <pre class="ascii">╔═╦╗╔╦╗╔══╦╦╦╗╔═╗
-║╚╣║║║╚╣╚╣╔╣╔╣║╚╣═╣ 
-╠╗║╚╝║║╠╗║╣║║║║║═╣
+║╚╣║║║╚╣╣╣║╚╣═╣ 
+╠╗║╚╝║║╠╗║╚╣║║║║║═╣
 ╚═╩══╩═╩═╩═╩╝╚╩═╩═╝</pre>
         <span class="ytnote"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff0033"/><path d="M10 9.2v5.6l5-2.8Z" fill="#fff"/></svg>youtube.com/@HenryJayZ <span class="subnote">[ if you want :) ]</span></span>
       </a>
@@ -351,7 +351,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
     <div class="logbox rv selectable" id="logBox">loading…</div>
   </section>
   <footer class="rv">
-    <img class="flogo" id="flogo" src="assets/Cel Logo Circle-q50.webp" alt="" draggable="false" title="yes, I also change colors. try me 🎲 (hold 3.33s = liquid cursor 😈)">
+    <img class="flogo" id="flogo" src="assets/Cel Logo Circle-q50.webp" alt="" draggable="false" title="yes, I also change colors. try me 🎲 (hold 3.33s = sleep/wake the liquid cursor 😈)">
     <div class="display" style="font-size:24px">CelSuite</div>
     <div class="flinks">
       <a href="#/home" data-scroll="apps">The Suite</a>
@@ -360,7 +360,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
       <a href="https://github.com/HenryCarm/CelSuite" target="_blank" rel="noopener">GitHub</a>
     </div>
     <small>© 2026 HenryJayz — CelSuite. Crafted with love &amp; zero dependencies.</small>
-    <small>click the logo. you know you want to. 🎲 (hold 3.33s = liquid cursor)</small>
+    <small>click the logo. you know you want to. 🎲 (triple-click / hold 3.33s = sleep·wake the liquid cursor)</small>
   </footer>
 </section>
 
@@ -502,9 +502,6 @@ const VHS_DL=[{ico:"win",t:"Windows Portable",d:"Single .exe — zero install, d
 const STATS=[["Suite","11+ projects"],["Public","4 shipped"],["Lab","7 brewing"],["AI Art Studio","v269.18.0"],["P2P","v269.17.0"],["Explorer","v269.26.3"],["VHS","v269.29.0"]];
 const ICO={win:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.6 4.5v7.1H3zM11.6 4.4 21 3v8.6h-9.4zM3 12.6h7.6v7L3 18.5zM11.6 12.6H21V21l-9.4-1.4z"/></svg>',linux:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.9 0-3.1 1.4-3.1 3.3 0 .9-.4 1.8-1 2.6-1.2 1.6-2.3 3.4-2.3 5.6 0 1.5.5 2.7 1.2 3.6-.3.6-.5 1.3-.5 2 0 1.6 1.2 2.9 2.8 2.9.8 0 1.5-.3 2-.8.3.1.6.1.9.1s.6 0 .9-.1c.5.5 1.2.8 2 .8 1.6 0 2.8-1.3 2.8-2.9 0-.7-.2-1.4-.5-2 .7-.9 1.2-2.1 1.2-3.6 0-2.2-1.1-4-2.3-5.6-.6-.8-1-1.7-1-2.6C15.1 3.4 13.9 2 12 2Zm-3.5 10.8 1 .5h3l1-.5c1 .8 1.7 2 1.7 3.4 0 1-.4 1.9-1 2.5-.5-.3-1.1-.5-1.7-.5-.6 0-1.1.1-1.5.4-.4-.3-.9-.4-1.5-.4-.6 0-1.2.2-1.7.5-.6-.6-1-1.5-1-2.5 0-1.4.7-2.6 1.7-3.4Z"/></svg>',android:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m7.1 4.6-.9-1.5c-.1-.1 0-.3.1-.3.1-.1.3 0 .3.1l.9 1.5a8 8 0 0 1 9 0l.9-1.5c.1-.1.2-.2.3-.1.1 0 .2.2.1.3l-.9 1.5A7.5 7.5 0 0 1 20 10.8H4A7.5 7.5 0 0 1 7.1 4.6ZM9 8.4a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Zm6 0a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6ZM4 12.3h16v6.2A1.5 1.5 0 0 1 18.5 20h-13A1.5 1.5 0 0 1 4 18.5Z"/></svg>'};
 
-/* ===== SOUND FX (tiny WebAudio beeps, no files) ===== */
-const SFX={ctx:null,init(){if(!this.ctx&&!REDUCED){try{this.ctx=new (window.AudioContext||webkitAudioContext)()}catch(e){}}},beep(freq,dur,type="sine",vol=.05){if(!this.ctx||REDUCED)return;this.init();if(this.ctx.state==="suspended")this.ctx.resume();const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;g.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+dur);o.connect(g).connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+dur)},pick(){this.beep(880,.08,"square",.06);this.beep(1320,.06,"square",.04)},drop(){this.beep(440,.12,"sine",.07);this.beep(220,.1,"sine",.05)},click(){this.beep(660,.05,"sine",.04)},back(){this.beep(330,.1,"triangle",.05);this.beep(220,.08,"triangle",.04)}};
-
 /* ===== SCROLL POSITION MEMORY (per-route) ===== */
 const SCROLL_MEM=new Map();
 function saveScroll(route){SCROLL_MEM.set(route,scrollY)}
@@ -525,7 +522,7 @@ $("appGrid").innerHTML=APPS.map(a=>`
   </div>`).join("");
 $("appGrid").addEventListener("click",e=>{
   const card=e.target.closest("[data-route]");
-  if(card&&!e.target.closest("a,[data-goto]"))requestRoute(card.dataset.route);
+  if(card&&!e.target.closest("a,[data-goto]"))navTo(card.dataset.route);
 });
 $("labGrid").innerHTML=LAB.map(l=>`
  <article class="lockcard rv pz lab">
@@ -556,7 +553,7 @@ $("logoBtn").onclick=()=>{
   logoClicks++;clearTimeout(logoTimer);logoTimer=setTimeout(()=>logoClicks=0,1200);
   if(logoClicks>=3){logoClicks=0;if(window.CURSOR)CURSOR.toggle();}
 };
-/* footer logo: click = hue reroll · HOLD 3.33s = wake the liquid cursor */
+/* footer logo: click = hue reroll · HOLD 3.33s = sleep/wake the liquid cursor */
 let fHeld=false,fTimer=0;
 const flogo=$("flogo");
 flogo.addEventListener("pointerdown",()=>{fHeld=false;flogo.classList.add("holding");fTimer=setTimeout(()=>{fHeld=true;flogo.classList.remove("holding");if(window.CURSOR)CURSOR.toggle()},3330)});
@@ -658,7 +655,7 @@ function pitFrame(t){
 }
 
 const braillePre=$("braille");
-const BGlyphs="⠀⠁⣀";
+const BGlyphs="⠀⠁⣼⣀";
 let BR={rows:0,cols:0},brailleT=0;
 new ResizeObserver(es=>{const r=es[0].contentRect;BR.cols=Math.min(220,Math.floor(r.width/6.8));BR.rows=Math.min(140,Math.ceil(r.height/15)+2)}).observe($("about"));
 setInterval(()=>{
@@ -727,7 +724,7 @@ setTimeout(()=>$("revealLine").classList.add("on"),700);
 $("cue").addEventListener("click",()=>doScroll("apps"));
 
 const VIEWS={home:"view-home","app/p2p":"view-p2p","app/celas":"view-celas","app/explorer":"view-explorer","app/vhs":"view-vhs"};
-let route="home",busy=false,queued=null,scrollAfter=null;
+let route="home",busy=false,queued=null,scrollAfter=null,suppressHash=false;
 const parseHash=()=>{const h=location.hash.replace(/^#\/?/,"");return VIEWS[h]?h:"home"};
 const currentView=()=>$(VIEWS[route]);
 const units=v=>[...v.querySelectorAll(":scope > *")];
@@ -736,10 +733,14 @@ async function transition(next){
   if(route!=="home")saveScroll(route);
   const oldV=currentView();const fall=units(oldV);
   fall.forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
-  SFX.pick();
   const dist=MOBILE?70:115;
-  const rot=Math.random()<.5?-(33+Math.random()*22):33+Math.random()*22;
-  fall.forEach((el,i)=>el.animate([{transform:"translateY(0) rotate(0deg)"},{transform:"translateY(-2.5vh)",offset:.16},{transform:`translateY(${dist+Math.random()*20}vh) rotate(${rot.toFixed(1)}deg)`}],{duration:560,delay:i*30,easing:"cubic-bezier(.55,0,.85,.45)",fill:"forwards"}));
+  /* per-element chaos: own spin sign, own angle, own x-drift, own duration + delay jitter */
+  fall.forEach((el,i)=>{
+    const sgn=Math.random()<.5?-1:1;
+    const rot=sgn*(26+Math.random()*28);
+    const dx=(Math.random()-.5)*10;
+    el.animate([{transform:"translateY(0) rotate(0deg)"},{transform:`translateY(-2.5vh) translateX(${(dx*.4).toFixed(1)}vw) rotate(${(rot*.12).toFixed(1)}deg)`,offset:.16},{transform:`translateY(${dist+Math.random()*22}vh) translateX(${dx.toFixed(1)}vw) rotate(${rot.toFixed(1)}deg)`}],{duration:520+Math.random()*140,delay:i*30+Math.random()*90,easing:"cubic-bezier(.55,0,.85,.45)",fill:"forwards"});
+  });
   await sleep(MOBILE?520:640);
   oldV.classList.add("hidden");
   fall.forEach(el=>el.getAnimations().forEach(a=>a.cancel()));
@@ -749,9 +750,13 @@ async function transition(next){
   newV.classList.remove("hidden");
   activateImgs(newV);
   restoreScroll(next);
-  SFX.drop();
-  const erot=Math.random()<.5?-(15+Math.random()*15):15+Math.random()*15;
-  units(newV).forEach((el,i)=>el.animate([{transform:`translateY(28vh) scale(.92) rotate(${erot.toFixed(1)}deg)`,opacity:0},{transform:"none",opacity:1}],{duration:820,delay:100+i*55,easing:"cubic-bezier(.16,1,.3,1)",fill:"backwards"}));
+  /* per-element rise: own tilt, own drift, own scale + timing jitter */
+  units(newV).forEach((el,i)=>{
+    const sgn=Math.random()<.5?-1:1;
+    const erot=sgn*(8+Math.random()*16);
+    const dx=(Math.random()-.5)*8;
+    el.animate([{transform:`translateY(${24+Math.random()*10}vh) translateX(${dx.toFixed(1)}vw) scale(${(.9+Math.random()*.06).toFixed(2)}) rotate(${erot.toFixed(1)}deg)`,opacity:0},{transform:"none",opacity:1}],{duration:760+Math.random()*160,delay:90+i*55+Math.random()*110,easing:"cubic-bezier(.16,1,.3,1)",fill:"backwards"});
+  });
   collectRV();scrollDirty=true;
   if(next==="home")setTimeout(()=>window.PUZZLE&&PUZZLE.refresh(),760);
   const s=scrollAfter;scrollAfter=null;
@@ -761,16 +766,23 @@ function requestRoute(next,scroll){
   if(next===route){doScroll(scroll||"top");return}
   if(busy){queued={next,scroll};return}
   if(scroll)scrollAfter=scroll;
-  SFX.click();
   busy=true;
   transition(next).catch(err=>console.error("transition:",err)).finally(()=>{busy=false;const q=queued;queued=null;if(q)requestRoute(q.next,q.scroll)});
 }
-addEventListener("hashchange",()=>{const r=parseHash();if(r!==route)requestRoute(r)});
+/* router nav: routes INSTANTLY (no reliance on hashchange) + keeps URL synced */
+function navTo(r){
+  if(r===route){doScroll("top");return}
+  if(location.hash==="#/"+r){requestRoute(r);return}
+  suppressHash=true;
+  try{location.hash="#/"+r}catch(e){}
+  requestRoute(r);
+}
+addEventListener("hashchange",()=>{if(suppressHash){suppressHash=false;return}const r=parseHash();if(r!==route)requestRoute(r)});
 document.addEventListener("click",e=>{
   const g=e.target.closest("[data-goto]");
-  if(g){e.preventDefault();const r=g.dataset.goto;if(r===route)doScroll("top");else location.hash="#/"+r;return}
+  if(g){e.preventDefault();navTo(g.dataset.goto);return}
   const l=e.target.closest("[data-scroll]");
-  if(l){e.preventDefault();const s=l.dataset.scroll;if(route!=="home"){scrollAfter=s;location.hash="#/home"}else doScroll(s);return}
+  if(l){e.preventDefault();const s=l.dataset.scroll;if(route!=="home"){scrollAfter=s;navTo("home")}else doScroll(s);return}
 });
 
 const TILTS=[...document.querySelectorAll("[data-tilt]")].map(c=>{
@@ -779,12 +791,10 @@ const TILTS=[...document.querySelectorAll("[data-tilt]")].map(c=>{
   const rest=()=>{st.tx=0;st.ty=0;st.tl=0;tiltWake()};
   c.addEventListener("pointermove",e=>{if(e.pointerType==="mouse")aim(e.clientX,e.clientY)});
   c.addEventListener("pointerleave",rest);
-  c.addEventListener("pointerdown",()=>{SFX.pick()},{passive:true});
-  c.addEventListener("pointerup",()=>{SFX.drop()},{passive:true});
   if(!MOBILE){
-    c.addEventListener("touchstart",e=>{aim(e.touches[0].clientX,e.touches[0].clientY);SFX.pick()},{passive:true});
+    c.addEventListener("touchstart",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
     c.addEventListener("touchmove",e=>aim(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
-    c.addEventListener("touchend",()=>{rest();SFX.drop()},{passive:true});
+    c.addEventListener("touchend",rest,{passive:true});
   }
   return{c,st};
 });
@@ -930,10 +940,12 @@ window.PUZZLE=(function(){
   return{refresh,apply};
 })();
 
-/* ============ MAGNETIC LIQUID CURSOR v3 — ASLEEP BY DEFAULT (Qwen-exclusive) ============ */
+/* ============ MAGNETIC LIQUID CURSOR v3 — awake by default on desktop, hold/triple-click to sleep·wake (Qwen-exclusive) ============ */
 (function(){
   if(matchMedia("(pointer:coarse)").matches||REDUCED)return;
   const html=document.documentElement;
+  /* sandbox-safe storage: never let blocked localStorage kill the cursor */
+  const STORE={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
   const dot=document.createElement("div");dot.id="magDot";
   const blob=document.createElement("div");blob.id="magBlob";
   const ring=document.createElement("div");ring.id="magRing";
@@ -998,7 +1010,7 @@ window.PUZZLE=(function(){
     wake();
   }
   function wake(){if(enabled&&!raf&&!document.hidden&&!hidden)raf=requestAnimationFrame(loop)}
-  function enable(){if(enabled)return;enabled=true;html.classList.add("cursor-on");localStorage.setItem("cel-cursor","1");collect();wake()}
+  function enable(){if(enabled)return;enabled=true;html.classList.add("cursor-on");STORE.set("cel-cursor","1");collect();wake()}
   function disable(){if(!enabled)return;enabled=false;html.classList.remove("cursor-on");cancelAnimationFrame(raf);raf=0;MAG.forEach(m=>{m.el.style.translate=""})}
   window.CURSOR={enable,disable,toggle(){enabled?disable():enable()}};
   addEventListener("pointermove",e=>{
@@ -1022,7 +1034,8 @@ window.PUZZLE=(function(){
     else{dirty=true;if(enabled&&!hidden)wake()}
   });
   addEventListener("load",()=>{if(enabled){collect();wake()}});
-  if(location.search.indexOf("cursor=1")>-1||localStorage.getItem("cel-cursor")==="1")enable();
+  /* awake by default on desktop — ?cursor=0 opts out, triple-click / hold 3.33s toggles */
+  if(location.search.indexOf("cursor=0")===-1)enable();
 })();
 
 /* boot */
