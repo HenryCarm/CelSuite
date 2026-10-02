@@ -127,7 +127,9 @@ footer .imgwrap.round{width:46px;height:46px}
 .pz.lab{background:hsl(var(--h) 40% 10% / .6);border-radius:14px}
 .pz>.appcard,.pz>.lk{height:100%;position:relative;z-index:1}
 .pz .glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;border-radius:18px;background:radial-gradient(420px 300px at var(--mx,50%) var(--my,50%),hsl(var(--h) 90% 70% / .16),transparent 65%)}
-.pz:hover .glare{opacity:1}
+.pz:hover .glare{opacity:1;transition:opacity .18s}
+/* HOVER GLINT: the sweep now fires on every card (not just the random 3.8s pulse) — same glass highlight, every card */
+.pz:hover .puzbeam{animation:beamsweep 1.3s ease-out 1}
 .puzbeam{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;mix-blend-mode:screen;
   background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%) 180% 0/260% 100% no-repeat}
 .puzbeam.go{animation:beamsweep 1.3s ease-out 1}
@@ -139,6 +141,10 @@ footer .imgwrap.round{width:46px;height:46px}
 .chill .pz.suite::before{animation-play-state:paused}
 .chill .braille{animation:none}
 @keyframes fluid{0%{transform:scale(1) rotate(0deg) translate(0,0)}50%{transform:scale(1.15) rotate(5deg) translate(4%,-3%)}100%{transform:scale(1.05) rotate(-4deg) translate(-4%,3%)}}
+/* OFF-SCREEN GATING: identical visuals — the compositor simply stops drawing what nobody can see */
+.pz.io-off,.pz.io-off::before{animation-play-state:paused}
+.io-off .imgwrap.round,.io-off .imgwrap.ic,.imgwrap.round.io-off,.imgwrap.ic.io-off,.cue.io-off{animation-play-state:paused}
+.imgwrap.round,.imgwrap.ic{will-change:transform}
 .appcard{position:relative;padding:clamp(24px,4vw,32px);cursor:pointer;transform-style:preserve-3d;will-change:transform}
 .appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
 .appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
@@ -181,7 +187,7 @@ html.cursor-text #magRing,html.cursor-text .magGhost{opacity:0}
 body.tab-asleep *{animation-play-state:paused!important}
 .magGhost{width:18px;height:18px;margin:-9px 0 0 -9px;background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.5),rgba(140,215,255,.12) 60%,transparent 72%)}
 #about{position:relative}
-.braille{position:absolute;inset:0;z-index:0;margin:0;padding:18px;overflow:hidden;font-family:var(--sym);font-size:12px;line-height:1.25;color:var(--acc);opacity:.45;pointer-events:none;user-select:none!important;-webkit-user-select:none!important;white-space:pre;-webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);animation:bpulse 1.6s ease-in-out infinite alternate}
+.braille{position:absolute;inset:0;z-index:0;margin:0;padding:18px;overflow:hidden;font-family:var(--sym);font-size:12px;line-height:1.25;color:var(--acc);opacity:.45;pointer-events:none;user-select:none!important;-webkit-user-select:none!important;white-space:pre;contain:layout paint;-webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);animation:bpulse 1.6s ease-in-out infinite alternate}
 @keyframes bpulse{from{opacity:.36}to{opacity:.55}}
 .aboutbox{background:transparent;border:none;padding:34px 8px;max-width:820px;position:relative;z-index:1}
 .aboutbox p{margin-bottom:14px;color:var(--ink);opacity:.95}
@@ -344,7 +350,7 @@ footer small{color:var(--sub);display:block;margin-top:8px}
   </section>
   <section class="blk" id="changelog">
     <h2 class="rv">Changelog</h2>
-    <p class="lead rv">Live from the repos, because hand-writing release notes is a crime against laziness.</p>
+    <p class="lead rv">Live from my Repos, No Judging :)</p>
     <div class="logtabs rv">
       <button class="on" data-log="p2p">P2P Screen Mirroring</button>
       <button data-log="as">AI Art Studio</button>
@@ -497,6 +503,19 @@ const $=id=>document.getElementById(id);
 const MOBILE=matchMedia("(max-width:768px)").matches||matchMedia("(pointer:coarse)").matches;
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* ===== IDLE ENGINE — window-focus aware sleep. Every engine (rAF loops + CSS animations) parks exactly the
+   way the browser already parks a hidden tab, then resumes mid-cycle on focus: zero visual change, zero CPU. ===== */
+const IDLE={on:document.hidden||!document.hasFocus()},WAKE=[];
+function setIdle(v){
+  if(IDLE.on===v)return;
+  IDLE.on=v;
+  document.body.classList.toggle("tab-asleep",v);
+  if(!v)WAKE.forEach(f=>{try{f()}catch(e){}});
+}
+addEventListener("blur",()=>setIdle(true));
+addEventListener("focus",()=>setIdle(document.hidden));
+document.addEventListener("visibilitychange",()=>setIdle(document.hidden||!document.hasFocus()));
+document.body.classList.toggle("tab-asleep",IDLE.on);
 const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")',explorer:'url("assets/CelWeave Explorer.webp")',vhs:'url("assets/CelWeave VHS.webp")',quis:'url("assets/CelWeave Orange-q90.webp")'};
 const ROUTE_WALL={home:"home","app/p2p":"p2p","app/celas":"celas","app/explorer":"explorer","app/vhs":"vhs","app/quis":"quis"};
 const FAV={home:"assets/Cel%20Logo%20Circle-q50.webp","app/p2p":"assets/Cel%20Logo%20P2P%20icon-q90.webp","app/celas":"assets/Cel%20Logo%20CelAS%20Circle%20Compressed.png","app/explorer":"assets/Cel%20Logo%20Explorer.webp","app/vhs":"assets/CelVHS_Icon.png","app/quis":"assets/QUIS_Icon.webp"};
@@ -552,8 +571,9 @@ $("appGrid").addEventListener("click",e=>{
   if(card&&!e.target.closest("a,[data-goto]"))navTo(card.dataset.route);
 });
 $("labGrid").innerHTML=LAB.map(l=>`
- <article class="lockcard rv pz lab">
-   <div class="lk">
+  <article class="lockcard rv pz lab">
+    <div class="glare"></div>
+    <div class="lk">
      <div class="sil"></div>
      <svg class="lockico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
      <h4>${l.n}</h4><p class="selectable">${l.t}</p>
@@ -585,7 +605,7 @@ $("logoBtn").onclick=()=>{
 /* footer logo: click = hue reroll · HOLD 3.33s = sleep/wake the liquid cursor */
 let fHeld=false,fTimer=0;
 const flogo=$("flogo");
-flogo.addEventListener("pointerdown",()=>{fHeld=false;flogo.classList.add("holding");fTimer=setTimeout(()=>{fHeld=true;flogo.classList.remove("holding");if(window.CURSOR)CURSOR.toggle()},3330)});
+flogo.addEventListener("pointerdown",()=>{fHeld=false;flogo.classList.add("holding");const hold=()=>{fTimer=setTimeout(()=>{if(IDLE.on||document.hidden){hold();return}fHeld=true;flogo.classList.remove("holding");if(window.CURSOR)CURSOR.toggle()},IDLE.on||document.hidden?900:3330)};hold()});
 ["pointerup","pointerleave","pointercancel"].forEach(ev=>flogo.addEventListener(ev,()=>{clearTimeout(fTimer);flogo.classList.remove("holding")}));
 flogo.addEventListener("click",()=>{
   if(fHeld){fHeld=false;return}
@@ -639,9 +659,16 @@ function swapWall(key){
   bgFront.animate([{opacity:1},{opacity:0}],{duration:900,easing:"ease-in-out",fill:"forwards"});
   [bgFront,bgBack]=[bgBack,bgFront];
 }
-let pitCur=.33,lastP=-1,scrollDirty=true,frameN=0,brailleOn=false,CHILL=false,dtSum=0,dtN=0,lastFrameT=0,lastScrollT=0,lastRevealT=0;
-addEventListener("scroll",()=>{scrollDirty=true;lastScrollT=performance.now()},{passive:true});
-addEventListener("resize",()=>{scrollDirty=true},{passive:true});
+let pitCur=.33,lastP=-1,scrollDirty=true,frameN=0,brailleOn=false,CHILL=false,dtSum=0,dtN=0,lastFrameT=0,lastScrollT=0,lastRevealT=0,lastAboutT=0,lastPitQ=-1,lastFilter="",lastPitBg="";
+let pitRAF=0,pitTimer=0;
+function pitWake(delay){
+  if(pitRAF)return;
+  if(delay){clearTimeout(pitTimer);pitTimer=setTimeout(()=>{pitTimer=0;if(!pitRAF)pitRAF=requestAnimationFrame(pitFrame)},delay);return}
+  pitRAF=requestAnimationFrame(pitFrame);
+}
+WAKE.push(()=>pitWake());
+addEventListener("scroll",()=>{scrollDirty=true;lastScrollT=performance.now();pitWake()},{passive:true});
+addEventListener("resize",()=>{scrollDirty=true;pitWake()},{passive:true});
 
 let RV=[];
 function collectRV(){RV=[...document.querySelectorAll(".rv")]}
@@ -662,57 +689,79 @@ function revealPass(){
   }
 }
 function pitFrame(t){
+  pitRAF=0;
+  if(IDLE.on||document.hidden){lastFrameT=0;return}
   if(lastFrameT){const dt=t-lastFrameT;if(dt>0&&dt<200){dtSum+=dt;dtN++;
     if(dtN>=120){if(dtSum/120>28&&!CHILL){CHILL=true;document.documentElement.classList.add("chill")}dtSum=0;dtN=0}}}
   lastFrameT=t;
-  const doc=document.documentElement;
-  const max=doc.scrollHeight-innerHeight;
+  const max=document.documentElement.scrollHeight-innerHeight;
   const p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
   const target=.33+p*.55;
   const settling=Math.abs(target-pitCur)>.001;
-  if((scrollDirty||settling||Math.abs(p-lastP)>.0005)&&(!MOBILE||frameN%2===0)){
+  const busy=scrollDirty||settling||Math.abs(p-lastP)>.0005;
+  if(busy&&(!MOBILE||frameN%2===0)){
     lastP=p;pitCur+=(target-pitCur)*.08;
-    const f=`brightness(${(1-pitCur).toFixed(3)}) saturate(${(1.08-p*.3).toFixed(3)})`;
-    bgFront.style.filter=f;bgBack.style.filter=f;
-    const t1=pitCur*.75,t2=Math.min(.88,pitCur+.18);
-    $("pit").style.background=`linear-gradient(180deg,rgba(0,0,0,${t1.toFixed(3)}),rgba(0,0,0,${t2.toFixed(3)}))`;
+    /* 1% quantization: stops rebuilding two full-screen filter nodes + the full-screen gradient on every scroll frame */
+    const q=Math.round(pitCur*100)/100;
+    if(q!==lastPitQ){
+      lastPitQ=q;
+      const f=`brightness(${(1-q).toFixed(2)}) saturate(${(1.08-p*.3).toFixed(2)})`;
+      if(f!==lastFilter){lastFilter=f;bgFront.style.filter=f;bgBack.style.filter=f}
+      const bg=`linear-gradient(180deg,rgba(0,0,0,${(q*.75).toFixed(2)}),rgba(0,0,0,${Math.min(.88,q+.18).toFixed(2)}))`;
+      if(bg!==lastPitBg){lastPitBg=bg;$("pit").style.background=bg}
+    }
     if(!MOBILE||performance.now()-lastRevealT>90){lastRevealT=performance.now();revealPass()}
     scrollDirty=false;
   }
-  if((frameN++%20)===0){const r=$("about").getBoundingClientRect();brailleOn=r.bottom>0&&r.top<innerHeight}
-  requestAnimationFrame(pitFrame);
+  const now=performance.now();
+  if(now-lastAboutT>250){lastAboutT=now;const r=$("about").getBoundingClientRect();brailleOn=r.bottom>0&&r.top<innerHeight}
+  frameN++;
+  /* idle heartbeat only — no more immortal 60fps loop; 360ms keeps the jank sampler + braille-on check alive */
+  pitWake(busy?(MOBILE?16:0):360);
 }
 
 const braillePre=$("braille");
 const BGlyphs="⠀⠁⣼⣀";
-let BR={rows:0,cols:0},brailleT=0;
+let BR={rows:0,cols:0};
 new ResizeObserver(es=>{const r=es[0].contentRect;BR.cols=Math.min(220,Math.floor(r.width/6.8));BR.rows=Math.min(140,Math.ceil(r.height/15)+2)}).observe($("about"));
+/* PHASE-HOISTED BRAILLE: the 3 sine fields depend on x only, y only, (x+y) only -> 720 sin() per tick instead of 92,400. Output identical. */
+const BC=new Float64Array(256),BRW=new Float64Array(160),BDG=new Float64Array(384),TAU=Math.PI*2;
+let pC=0,pR=0,pD=0;
 setInterval(()=>{
-  if(document.hidden||!brailleOn||!BR.rows||MOBILE)return;
-  brailleT+=.5;let s="";
-  for(let y=0;y<BR.rows;y++){let row="";
-    for(let x=0;x<BR.cols;x++){
-      const v=Math.sin(x*.28+brailleT*.9)+Math.sin(y*.45-brailleT*.6)+Math.sin((x+y)*.15+brailleT*.35);
-      let idx=Math.floor(((v+3)/6)*BGlyphs.length);
-      if(Math.random()<.02)idx=Math.floor(Math.random()*BGlyphs.length);
-      row+=BGlyphs[Math.max(0,Math.min(BGlyphs.length-1,idx))];
+  if(IDLE.on||document.hidden||!brailleOn||!BR.rows||MOBILE)return;
+  pC=(pC+.45)%TAU;pR=(pR-.3+TAU)%TAU;pD=(pD+.175)%TAU;
+  for(let x=0;x<256;x++)BC[x]=Math.sin(x*.28+pC);
+  for(let y=0;y<160;y++)BRW[y]=Math.sin(y*.45-pR);
+  for(let d=0;d<384;d++)BDG[d]=Math.sin(d*.15+pD);
+  const cols=BR.cols,rows=BR.rows,G=BGlyphs,GL=G.length,rand=Math.random;
+  let s="";
+  for(let y=0;y<rows;y++){const ry=BRW[y];let row="";
+    for(let x=0;x<cols;x++){
+      const v=BC[x]+ry+BDG[x+y];
+      let idx=Math.floor(((v+3)/6)*GL);
+      if(rand()<.02)idx=Math.floor(rand()*GL);
+      row+=G[idx<0?0:idx>GL-1?GL-1:idx];
     }
     s+=row+"\n";
   }
   braillePre.textContent=s;
 },180);
 
-/* MiMo liquid hero — full 60fps (chill mode halves it as emergency only) */
+/* MiMo liquid hero — full 60fps while it can actually be seen; IO-gated + cached hero box (zero per-frame layout reads) */
 const hero=$("hero"),liquid=$("liquid");
-let ltime=0,lskip=0;
+let ltime=0,lskip=0,heroW=0,heroH=0,heroOn=false;
 const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false,glideT:0,returning:false,returnStart:0,returnFrom:{x:0,y:0}};
 const SEG=MOBILE?24:48;
-function liquidCenter(){LSq.tx=hero.clientWidth/2;LSq.ty=hero.clientHeight*.46}
+function heroMeasure(){const r=hero.getBoundingClientRect();heroW=r.width;heroH=r.height}
+heroMeasure();
+new ResizeObserver(heroMeasure).observe(hero);
+new IntersectionObserver(es=>{heroOn=es[0].isIntersecting;liquidKick()},{rootMargin:"25%"}).observe(hero);
+function liquidKick(){if(!LSq.raf&&!IDLE.on&&!document.hidden&&heroOn)LSq.raf=requestAnimationFrame(liquidFrame)}
+function liquidCenter(){LSq.tx=heroW/2;LSq.ty=heroH*.46}
 function liquidFrame(){
-  LSq.raf=requestAnimationFrame(liquidFrame);
-  if(document.hidden||scrollY>innerHeight*1.2)return;
-  if(MOBILE&&performance.now()-lastScrollT<180)return;
-  if(CHILL&&(++lskip%2))return;
+  LSq.raf=0;
+  if(IDLE.on||document.hidden||!heroOn)return;
+  if(!(MOBILE&&performance.now()-lastScrollT<180)&&!(CHILL&&(++lskip%2))){
   ltime+=.05;
   if(!LSq.centered){liquidCenter();LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});LSq.centered=true}
   const g=LSq.glideT?Math.max(0,1-(performance.now()-LSq.glideT)/1100):0;
@@ -722,8 +771,8 @@ function liquidFrame(){
     const dur=900;
     const prog=Math.min(1,elapsed/dur);
     const eased=prog<.5?2*prog*prog:1-Math.pow(-2*prog+2,2)/2;
-    LSq.tx=LSq.returnFrom.x+(hero.clientWidth/2-LSq.returnFrom.x)*eased;
-    LSq.ty=LSq.returnFrom.y+(hero.clientHeight*.46-LSq.returnFrom.y)*eased;
+    LSq.tx=LSq.returnFrom.x+(heroW/2-LSq.returnFrom.x)*eased;
+    LSq.ty=LSq.returnFrom.y+(heroH*.46-LSq.returnFrom.y)*eased;
     if(prog>=1){LSq.returning=false;LSq.glideT=0}
   }
   for(let i=0;i<6;i++){
@@ -734,21 +783,23 @@ function liquidFrame(){
   }
   const fp=LSq.pts[0],lp=LSq.pts[5];
   const angle=Math.atan2(fp.y-lp.y,fp.x-lp.x);
-  const baseRadius=Math.min(hero.clientWidth,hero.clientHeight)*.34;
+  const baseRadius=Math.min(heroW,heroH)*.34;
   const points=[];
   for(let i=0;i<=SEG;i++){const theta=angle-Math.PI/2+(Math.PI*i/SEG);const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*(1+g*1.6);const r=Math.max(50,baseRadius+ripple);points.push(`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`)}
   for(let i=0;i<=SEG;i++){const theta=angle+Math.PI/2+(Math.PI*i/SEG);const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*(1+g*1.6);const r=Math.max(50,baseRadius+ripple);points.push(`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`)}
   liquid.style.clipPath=`polygon(${points.join(", ")})`;
+  }
+  LSq.raf=requestAnimationFrame(liquidFrame);
 }
 function liquidSet(cx,cy){const rect=hero.getBoundingClientRect();LSq.tx=cx-rect.left;LSq.ty=cy-rect.top}
 hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY));
-hero.addEventListener("mouseenter",e=>{const rect=hero.getBoundingClientRect();LSq.tx=e.clientX-rect.left;LSq.ty=e.clientY-rect.top;LSq.inside=true;LSq.glideT=0;LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});if(!LSq.raf)requestAnimationFrame(liquidFrame)});
+hero.addEventListener("mouseenter",e=>{const rect=hero.getBoundingClientRect();LSq.tx=e.clientX-rect.left;LSq.ty=e.clientY-rect.top;LSq.inside=true;LSq.glideT=0;LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});if(!LSq.raf&&!IDLE.on&&!document.hidden&&heroOn)LSq.raf=requestAnimationFrame(liquidFrame)});
 function liquidLeave(){LSq.inside=false;LSq.glideT=performance.now();LSq.returning=true;LSq.returnStart=performance.now();LSq.returnFrom={x:LSq.tx,y:LSq.ty}}
 hero.addEventListener("mouseleave",liquidLeave);
 hero.addEventListener("touchmove",e=>{LSq.inside=true;LSq.glideT=0;liquidSet(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
 hero.addEventListener("touchend",liquidLeave,{passive:true});
 addEventListener("resize",()=>{if(LSq.centered)liquidCenter()},{passive:true});
-if(!REDUCED)requestAnimationFrame(liquidFrame);
+if(!REDUCED)liquidKick();
 setTimeout(()=>$("revealLine").classList.add("on"),700);
 $("cue").addEventListener("click",()=>doScroll("apps"));
 
@@ -888,7 +939,7 @@ window.PUZZLE=(function(){
   const vis=new Set();
   const vio=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)vis.add(x.target);else vis.delete(x.target)}),{rootMargin:"80px"});
   setInterval(()=>{
-    if(document.hidden||!vis.size)return;
+    if(IDLE.on||document.hidden||!vis.size)return;
     const arr=[...vis];const pz=arr[Math.floor(Math.random()*arr.length)];
     const beam=pz.querySelector(".puzbeam");
     if(beam){beam.classList.remove("go");void beam.offsetWidth;beam.classList.add("go")}
@@ -993,7 +1044,7 @@ window.PUZZLE=(function(){
   const tr=(s1,s2)=>`translate3d(${bx.toFixed(1)}px,${by.toFixed(1)}px,0) rotate(${txt?0:ang.toFixed(2)}rad) scale(${(s1).toFixed(3)},${(s2).toFixed(3)}) rotate(${txt?0:(-ang).toFixed(2)}rad)`;
   function loop(t){
     raf=requestAnimationFrame(loop);
-    if(!enabled||document.hidden)return;
+    if(!enabled||IDLE.on||document.hidden)return;
     if(dirty){measure();dirty=false}
     const vx=mx-px,vy=my-py;px=mx;py=my;
     bx+=(mx-bx)*.45;by+=(my-by)*.45;
@@ -1038,7 +1089,7 @@ window.PUZZLE=(function(){
     ring.animate([{transform:`translate3d(${rx}px,${ry}px,0) scale(2.1)`,opacity:0},{transform:`translate3d(${rx}px,${ry}px,0) scale(1)`,opacity:1}],{duration:440,easing:"cubic-bezier(.2,1.4,.3,1)"});
     wake();
   }
-  function wake(){if(enabled&&!raf&&!document.hidden&&!hidden)raf=requestAnimationFrame(loop)}
+  function wake(){if(enabled&&!raf&&!IDLE.on&&!document.hidden&&!hidden)raf=requestAnimationFrame(loop)}
   function enable(){if(enabled)return;enabled=true;html.classList.add("cursor-on");STORE.set("cel-cursor","1");collect();wake()}
   function disable(){if(!enabled)return;enabled=false;html.classList.remove("cursor-on");cancelAnimationFrame(raf);raf=0;MAG.forEach(m=>{m.el.style.translate=""})}
   window.CURSOR={enable,disable,toggle(){enabled?disable():enable()}};
@@ -1058,14 +1109,18 @@ window.PUZZLE=(function(){
   let rz=0;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!enabled)return;dirty=true;collect();wake()},160)},{passive:true});
   addEventListener("hashchange",()=>setTimeout(()=>{if(!enabled)return;collect();dirty=true;wake()},380));
   document.addEventListener("visibilitychange",()=>{
-    document.body.classList.toggle("tab-asleep",document.hidden);
     if(document.hidden){cancelAnimationFrame(raf);raf=0}
-    else{dirty=true;if(enabled&&!hidden)wake()}
+    else{dirty=true;wake()}
   });
+  WAKE.push(()=>{dirty=true;wake()});
   addEventListener("load",()=>{if(enabled){collect();wake()}});
   /* awake by default on desktop — ?cursor=0 opts out, triple-click / hold 3.33s toggles */
   if(location.search.indexOf("cursor=0")===-1)enable();
 })();
+
+/* only animate what's on screen: parks the 5 blurred 160%-size fluid layers + every icon/logo float while off-camera */
+const ioVis=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle("io-off",!e.isIntersecting)),{rootMargin:"150px"});
+document.querySelectorAll(".pz,.imgwrap.round,.imgwrap.ic,.cue").forEach(el=>ioVis.observe(el));
 
 /* boot */
 const bootRoute=parseHash();
