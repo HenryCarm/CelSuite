@@ -47,12 +47,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .selectable a{color:var(--acc);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:hsl(var(--h) 80% 60% / .5);transition:.2s}
 .selectable a:hover{text-decoration-color:var(--acc);text-shadow:0 0 14px var(--glow)}
 .bg{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;will-change:opacity;transform:translateZ(0)}
-/* ZERO-REPAINT PIT ENGINE: static dark layer animated purely via compositor opacity */
-#pit{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.92));opacity:.42;will-change:opacity;transform:translateZ(0)}
+/* ZERO-REPAINT PIT ENGINE (+30% scroll darkening sensitivity) */
+#pit{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.95));opacity:.36;will-change:opacity;transform:translateZ(0)}
 @supports (animation-timeline: scroll(root)){
   #pit{animation:pitScroll linear both;animation-timeline:scroll(root)}
 }
-@keyframes pitScroll{from{opacity:.42}to{opacity:.94}}
+@keyframes pitScroll{0%{opacity:.36}77%,100%{opacity:.96}}
 #tint{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(120% 80% at 50% -10%,hsl(var(--h) 85% 55% / .14),transparent 60%),radial-gradient(90% 60% at 50% 110%,hsl(var(--h) 85% 40% / .12),transparent 60%);animation:tintBreath 12s ease-in-out infinite alternate;will-change:opacity}
 @keyframes tintBreath{0%{opacity:.76}100%{opacity:1}}
 .mobnote{position:fixed;top:56px;left:10px;z-index:49;display:none;font-size:10.5px;font-weight:600;color:#000;background:hsl(0 0% 100% / .88);padding:3px 9px;border-radius:99px;pointer-events:none;animation:mobPulse 3.2s ease-in-out infinite}
@@ -87,20 +87,26 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .sheet a:hover{background:hsl(var(--h) 60% 50% / .16);transform:translateX(5px)}
 .hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;cursor:crosshair;touch-action:pan-y;contain:layout paint}
 .hlayer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.heroT{font-family:var(--disp);font-size:clamp(52px,13.5vw,168px);letter-spacing:.01em;line-height:1;text-align:center;padding:0 12px;animation:heroFloat 6s ease-in-out infinite alternate}
+.heroT{font-family:var(--disp);font-size:clamp(52px,13.5vw,168px);letter-spacing:.01em;line-height:1;text-align:center;padding:0 12px;pointer-events:none;animation:heroFloat 6s ease-in-out infinite alternate}
 @keyframes heroFloat{0%{transform:scale(1)}100%{transform:scale(1.018)}}
 .base .heroT{color:var(--ink);text-shadow:0 8px 44px rgba(0,0,0,.55),0 0 38px var(--glow)}
-/* Zero Gaussian drop-shadow filter on the 98-vertex polygon; inner radial sheen + base text-shadow gives identical glow at 0ms GPU cost */
-.liquid{background:radial-gradient(circle at 50% 45%,hsl(var(--h) 92% 64%),var(--acc) 45%,var(--acc-deep) 80%);clip-path:circle(0px at -300px -300px);will-change:clip-path;transform:translateZ(0)}
+.liquid{background:radial-gradient(circle at 50% 45%,hsl(var(--h) 92% 64%),var(--acc) 45%,var(--acc-deep) 80%);clip-path:circle(0px at -300px -300px);will-change:clip-path;transform:translateZ(0);pointer-events:none}
 .liquid .heroT{color:var(--acc-dark)}
 .reveal{position:absolute;bottom:24%;left:0;right:0;text-align:center;font-family:var(--disp);font-size:clamp(18px,3vw,30px);color:var(--sub);opacity:0;transform:translateY(14px);transition:opacity .9s .15s,transform .9s .15s;pointer-events:none}
 .reveal.on{opacity:1;transform:none}
 .cue{position:absolute;bottom:calc(24% - 42px);left:50%;transform:translateX(-50%);color:var(--sub);font-size:11px;letter-spacing:.25em;animation:bob 2.2s infinite;pointer-events:auto;cursor:pointer;transition:color .25s,letter-spacing .25s,text-shadow .25s}
 .cue:hover{color:var(--acc);letter-spacing:.34em;text-shadow:0 0 12px var(--glow)}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+/* ===== SMOOTH THEME HORIZON SEPARATOR LINE (Home -> The Suite) ===== */
+.suite-sep{position:relative;max-width:1060px;height:28px;margin:36px auto -18px;padding:0 24px;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.suite-sep::before{content:"";position:absolute;left:24px;right:24px;top:50%;height:1.5px;transform:translateY(-50%);border-radius:99px;background:linear-gradient(90deg,transparent 0%,var(--line) 16%,var(--acc) 50%,var(--line) 84%,transparent 100%);box-shadow:0 0 16px var(--glow),0 0 4px var(--acc);opacity:.92}
+.suite-sep::after{content:"";position:absolute;left:12%;right:12%;top:50%;height:2px;transform:translateY(-50%);border-radius:99px;background:linear-gradient(90deg,transparent 0%,transparent 38%,rgba(255,255,255,.85) 50%,transparent 62%,transparent 100%) 200% 0/220% 100% no-repeat;animation:sepGlide 5.5s ease-in-out infinite}
+.suite-sep .sep-node{position:relative;z-index:1;width:24px;height:24px;border-radius:50%;background:hsl(var(--h) 44% 9% / .92);border:1px solid var(--acc);box-shadow:0 0 16px var(--glow),inset 0 0 8px var(--glow);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:10px;line-height:1;animation:sepPulse 3s ease-in-out infinite alternate}
+@keyframes sepGlide{0%{background-position:180% 0;opacity:0}20%{opacity:.95}80%{opacity:.95}100%{background-position:-80% 0;opacity:0}}
+@keyframes sepPulse{0%{transform:scale(.94);box-shadow:0 0 10px var(--glow)}100%{transform:scale(1.08);box-shadow:0 0 20px var(--glow)}}
 .blk{max-width:1120px;margin:0 auto;padding:clamp(52px,9vw,88px) clamp(14px,3vw,22px) 10px}
 @supports (content-visibility: auto){
-  #about,#changelog{content-visibility:auto;contain-intrinsic-size:auto 560px}
+  #changelog{content-visibility:auto;contain-intrinsic-size:auto 560px}
 }
 .blk h2{font-family:var(--disp);font-size:clamp(30px,5vw,52px);margin-bottom:6px;transition:text-shadow .35s,transform .35s cubic-bezier(.2,1.4,.3,1);display:inline-block}
 .blk h2:hover{text-shadow:0 0 22px var(--glow);transform:translateX(4px)}
@@ -139,7 +145,7 @@ footer .imgwrap.round .flogo{margin:0;width:100%;height:100%}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
 .grid2>.rv{min-width:0}
-/* ===== PUZZLE ENGINE v4 - Unified Matrix Transform (100% Phoenix Browser & Intel HD 4600 compatible) ===== */
+/* ===== PUZZLE ENGINE v4 - Unified Matrix Transform ===== */
 .grid2.puz-on,.labgrid.puz-on{gap:0}
 .pz{position:relative;margin:calc(var(--puzE,18px)*-1);padding:var(--puzE,18px);
   transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .32s cubic-bezier(.2,1.4,.3,1)}
@@ -147,7 +153,6 @@ footer .imgwrap.round .flogo{margin:0;width:100%;height:100%}
 .pz.rv.in:hover{transform:translate3d(calc(var(--popx,0px) + var(--magx,0px)),calc(var(--popy,0px) + var(--magy,0px)),0) scale(var(--pops,1)) perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));z-index:4}
 .pz.rv.in.tilting{transition:opacity .75s cubic-bezier(.16,1,.3,1)}
 .pz.suite{background:hsl(var(--h) 45% 9% / .86);border-radius:18px}
-/* Softened radial stops give the exact same lush blurred aurora look with ZERO Gaussian blur shader passes */
 .pz.suite::before{content:"";position:absolute;inset:-24%;z-index:0;opacity:.68;will-change:transform;
   background:radial-gradient(50% 68% at 24% 26%,var(--g1),transparent 74%),radial-gradient(46% 60% at 78% 32%,var(--g2),transparent 72%),radial-gradient(62% 76% at 52% 88%,var(--g3),transparent 74%);
   animation:fluid 18s ease-in-out infinite alternate}
@@ -156,18 +161,14 @@ footer .imgwrap.round .flogo{margin:0;width:100%;height:100%}
 .pz>.appcard,.pz>.lk{height:100%;position:relative;z-index:1}
 .pz .glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;border-radius:18px;background:radial-gradient(420px 300px at var(--mx,50%) var(--my,50%),hsl(var(--h) 90% 70% / .16),transparent 65%)}
 .pz:hover .glare{opacity:1;transition:opacity .18s}
-.pz:hover .puzbeam{animation:beamsweep 1.3s ease-out 1}
-.puzbeam{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;mix-blend-mode:screen;
-  background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%) 180% 0/260% 100% no-repeat}
-.puzbeam.go{animation:beamsweep 1.3s ease-out 1}
-@keyframes beamsweep{0%{background-position:180% 0;opacity:0}15%{opacity:.9}100%{background-position:-80% 0;opacity:0}}
-.pz.pulse .glare{animation:glarepulse 1.5s ease-out 1}
-@keyframes glarepulse{0%,100%{opacity:0}35%{opacity:.85}}
+.pz:hover .puzbeam{animation:beamsweep 1.2s ease-out 1}
+.puzbeam{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;
+  background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.38) 50%,transparent 58%) 180% 0/260% 100% no-repeat}
+@keyframes beamsweep{0%{background-position:180% 0;opacity:0}15%{opacity:.85}100%{background-position:-80% 0;opacity:0}}
 .chill .pz.suite::before,.chill #tint,.chill .chip,.chill .lockico,.chill .badge,.chill .aboutbox .art,.chill .heroT{animation-play-state:paused}
-.chill .braille{animation:none}
 @keyframes fluid{0%{transform:scale(1) rotate(0deg) translate3d(0,0,0)}50%{transform:scale(1.12) rotate(4deg) translate3d(3%,-2%,0)}100%{transform:scale(1.04) rotate(-3deg) translate3d(-3%,2%,0)}}
 .pz.io-off,.pz.io-off::before,.pz.io-off .lockico,.pz.io-off .badge,.pz.io-off .sil{animation-play-state:paused}
-.io-off .imgwrap.round,.io-off .imgwrap.ic,.imgwrap.round.io-off,.imgwrap.ic.io-off,.cue.io-off,.chip.io-off{animation-play-state:paused}
+.io-off .imgwrap.round,.io-off .imgwrap.ic,.imgwrap.round.io-off,.imgwrap.ic.io-off,.cue.io-off,.chip.io-off,.suite-sep.io-off::after,.suite-sep.io-off .sep-node{animation-play-state:paused}
 .appcard{position:relative;padding:clamp(24px,4vw,32px);cursor:pointer}
 .pz.green,.appcard.green{--g1:#19a35d;--g2:#0e6b3c;--g3:#053a20}
 .pz.gold,.appcard.gold{--g1:#f39c12;--g2:#8a6a08;--g3:#4a3403}
@@ -302,7 +303,7 @@ footer small:hover{color:var(--ink)}
 .dlitem:hover b svg{transform:scale(1.22) rotate(-8deg)}
 .dlitem span{color:var(--sub);font-size:12.5px;flex:1;transition:color .25s}
 .dlitem:hover span{color:var(--ink)}
-/* ===== 2026 TYPEWRITER ENGINE (Zero Layout Shift Ghost-Locked Caret) ===== */
+/* ===== 2026 TYPEWRITER ENGINE ===== */
 .tw-done{color:inherit}
 .tw-ghost{opacity:0;pointer-events:none;user-select:none}
 .tw-caret{display:inline-block;width:2px;height:1.05em;vertical-align:-0.15em;margin-left:1px;margin-right:-3px;background:var(--acc);box-shadow:0 0 8px var(--glow);animation:twBlink .65s steps(2,jump-none) infinite}
@@ -322,10 +323,10 @@ footer small:hover{color:var(--ink)}
 }
 #celSbThumb{position:absolute;right:2px;top:0;width:6px;min-height:36px;border-radius:99px;background:hsl(var(--h) 40% 40% / .65);box-shadow:0 0 0 transparent;transform-origin:100% 50%;transition:width .28s cubic-bezier(.22,1.5,.36,1),right .28s cubic-bezier(.22,1.5,.36,1),background-color .25s ease,box-shadow .28s ease,opacity .25s ease;will-change:transform,width}
 #celSb.exp #celSbThumb,#celSb:hover #celSbThumb,#celSb.drag #celSbThumb{width:7.2px;right:1.4px;background:var(--acc);box-shadow:0 0 12px var(--glow)}
-/* ===== POTATO / PHOENIX BROWSER / LOW-SPEC SHIELD ===== */
+/* ===== POTATO / LOW-SPEC SHIELD (Keeps ASCII Braille Art Alive on Desktop) ===== */
 html.potato #nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:hsl(var(--h) 42% 8% / .95)}
 html.potato #tint,html.potato .pz.suite::before,html.potato .chip,html.potato .lockico,html.potato .badge,html.potato .lockcard .sil,html.potato .heroT{animation:none}
-html.potato #about .braille,html.potato .puzbeam{display:none}
+html.potato .puzbeam{display:none}
 @media (max-width:900px){
   #nav .links a{padding:6px 9px;font-size:13px}
   .ghbtn{padding:6px 10px;font-size:12.5px}
@@ -337,13 +338,13 @@ html.potato #about .braille,html.potato .puzbeam{display:none}
   .reveal{bottom:20%}
   .cue{bottom:calc(20% - 40px)}
   .strip{margin-top:-24px}
+  .suite-sep{margin:26px auto -12px}
   .banner{max-height:200px}
   .banner.foot{max-height:150px}
   .apphead img{width:72px;height:72px}
   .apphead .imgwrap.ic{width:72px;height:72px}
   footer{padding-bottom:60px}
   .logo .wm-sub{display:none}
-  /* MOBILE & PHOENIX BROWSER GPU COMPOSITOR PASS */
   #nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:hsl(var(--h) 42% 8% / .95)}
   #tint,.heroT,.chip{animation:none}
   #about .braille,.puzbeam{display:none}
@@ -397,6 +398,7 @@ html.potato #about .braille,html.potato .puzbeam{display:none}
     <div class="cue" id="cue" role="button" aria-label="Scroll down to The Suite">SCROLL</div>
   </div>
   <div class="strip rv" id="stats"></div>
+  <div class="suite-sep rv" aria-hidden="true"><span class="sep-node">❖</span></div>
   <section class="blk" id="apps">
     <h2 class="rv" data-type="text" data-speed="38">The Suite</h2>
     <p class="lead rv selectable"><span data-type="text" data-speed="20">Programs you didn't know you needed &ndash; Premium, offline-first, zero bloat</span><br><span class="vq" data-type="text" data-speed="30">Quick Version Explanation</span></p>
@@ -625,14 +627,15 @@ const not=v=>Boolean(v)===false;
 const neq=(a,b)=>(a===b)===false;
 const MOBILE=matchMedia("(max-width:768px)").matches||matchMedia("(pointer:coarse)").matches;
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
-const POTATO=(Number(navigator.deviceMemory)>0&&Number(navigator.deviceMemory)<=2)||(MOBILE&&Number(navigator.hardwareConcurrency)>0&&Number(navigator.hardwareConcurrency)<=4);
+/* Only enable POTATO mode on actual low-memory mobile devices so desktop browsers like Midori keep full animations & Braille art */
+const POTATO=MOBILE&&((Number(navigator.deviceMemory)>0&&Number(navigator.deviceMemory)<=2)||(Number(navigator.hardwareConcurrency)>0&&Number(navigator.hardwareConcurrency)<=4));
 if(POTATO)document.documentElement.classList.add("potato");
 const CSS_SCROLL_TIMELINE=neq(typeof CSS,"undefined")&&typeof CSS.supports==="function"&&CSS.supports("animation-timeline: scroll(root)");
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function instantScroll(y){try{scrollTo({top:y,behavior:"instant"})}catch(e){scrollTo(0,y)}}
 
-/* ===== IDLE ENGINE - window-focus aware sleep ===== */
-const IDLE={on:document.hidden||not(document.hasFocus())},WAKE=[];
+/* ===== IDLE ENGINE - window-focus aware sleep + active pointer wake for Midori ===== */
+const IDLE={on:document.hidden},WAKE=[];
 function setIdle(v){
   if(IDLE.on===v)return;
   IDLE.on=v;
@@ -640,8 +643,8 @@ function setIdle(v){
   if(not(v))WAKE.forEach(f=>{try{f()}catch(e){}});
 }
 addEventListener("blur",()=>setIdle(true));
-addEventListener("focus",()=>setIdle(document.hidden));
-document.addEventListener("visibilitychange",()=>setIdle(document.hidden||not(document.hasFocus())));
+addEventListener("focus",()=>setIdle(false));
+document.addEventListener("visibilitychange",()=>setIdle(document.hidden));
 document.body.classList.toggle("tab-asleep",IDLE.on);
 
 const WALL={home:'url("assets/CelSuite_Main_BG_Compressed.webp")',p2p:'url("assets/CelWeave Light Green.jpeg")',celas:'url("assets/CelWeave Yellow AS wallpaper Compressed.jpg")',explorer:'url("assets/CelWeave Explorer.webp")',vhs:'url("assets/CelWeave VHS.webp")',quis:'url("assets/CelWeave Orange-q90.webp")',cellium:'url("assets/CelWeave_Cellium.webp")'};
@@ -690,7 +693,6 @@ function restoreScroll(route){const y=SCROLL_MEM.get(route);if(typeof y==="numbe
 
 const escHTML=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 $("stats").innerHTML=STATS.map((s,i)=>`<span class="chip" style="--cd:${(i*.18).toFixed(2)}s"><b>${escHTML(s[0])}</b> · ${escHTML(s[1])}</span>`).join("");
-/* Color class placed directly on .pz.suite as well so browsers without CSS :has() (like Phoenix Browser) render full card gradients */
 $("appGrid").innerHTML=APPS.map(a=>`
   <div class="rv pz suite ${a.cls}" data-tilt>
     <div class="glare"></div>
@@ -853,8 +855,8 @@ function collectRV(){
   });
 }
 
-/* ===== ZERO-REPAINT SCROLL & FRAME TELEMETRY ENGINE ===== */
-let pitCur=.42,lastP=-1,scrollDirty=true,brailleOn=false,CHILL=POTATO,dtSum=0,dtN=0,lastFrameT=0,lastScrollT=0,lastPitQ=-1,cachedMaxScroll=1;
+/* ===== ZERO-REPAINT SCROLL & FRAME TELEMETRY ENGINE (+30% Darkening Sensitivity) ===== */
+let pitCur=.36,lastP=-1,scrollDirty=true,brailleOn=false,CHILL=POTATO,dtSum=0,dtN=0,lastFrameT=0,lastScrollT=0,lastPitQ=-1,cachedMaxScroll=1;
 if(CHILL)document.documentElement.classList.add("chill");
 let pitRAF=0,pitTimer=0;
 function updateMaxScroll(){
@@ -873,7 +875,6 @@ window.TYPEWRITER=(function(){
   function stepJobs(now){
     twRAF=0;
     if(IDLE.on||document.hidden||jobs.size===0)return;
-    /* Yield CPU during active touch/wheel scroll so scrolling gets 100% of frame budget on low-spec devices */
     if(now-lastScrollT<120){
       twRAF=requestAnimationFrame(stepJobs);
       return;
@@ -1030,8 +1031,8 @@ function sampleFrameDt(t){
     const dt=t-lastFrameT;
     if(dt>0&&dt<120){
       dtSum+=dt;dtN++;
-      if(dtN>=90){
-        if(dtSum/90>24){CHILL=true;document.documentElement.classList.add("chill","potato")}
+      if(dtN>=120){
+        if(dtSum/120>30){CHILL=true;document.documentElement.classList.add("chill")}
         dtSum=0;dtN=0;
       }
     }
@@ -1051,46 +1052,21 @@ addEventListener("scroll",()=>{
 },{passive:true});
 addEventListener("resize",()=>{updateMaxScroll();scrollDirty=true;pitWake()},{passive:true});
 
-const aboutObserver=new IntersectionObserver(es=>{brailleOn=es[0].isIntersecting},{rootMargin:"100px"});
-aboutObserver.observe($("about"));
-
-function pitFrame(t){
-  pitRAF=0;
-  if(IDLE.on||document.hidden){lastFrameT=0;return}
-  sampleFrameDt(t);
-  if(not(CSS_SCROLL_TIMELINE)){
-    const p=Math.min(1,Math.max(0,scrollY/cachedMaxScroll));
-    const target=.42+p*.52;
-    const settling=Math.abs(target-pitCur)>.003;
-    const busy=scrollDirty||settling||Math.abs(p-lastP)>.002;
-    if(busy){
-      lastP=p;pitCur+=(target-pitCur)*.15;
-      const q=Math.round(pitCur*100)/100;
-      if(neq(q,lastPitQ)){
-        lastPitQ=q;
-        $("pit").style.opacity=q.toFixed(2);
-      }
-      scrollDirty=false;
-      pitWake(MOBILE?16:0);
-    }else{
-      lastFrameT=0;
-    }
-  }else{
-    lastFrameT=0;
-  }
-}
-
-const braillePre=$("braille");
+const aboutEl=$("about"),braillePre=$("braille");
 const BGlyphs="⠀⠁⣼⣀";
 let BR={rows:0,cols:0};
-if(typeof ResizeObserver==="function"){
-  new ResizeObserver(es=>{const r=es[0].contentRect;BR.cols=Math.min(180,Math.floor(r.width/7.2));BR.rows=Math.min(110,Math.ceil(r.height/15)+2)}).observe($("about"));
-}
-const BC=new Float64Array(200),BRW=new Float64Array(130),BDG=new Float64Array(330),TAU=Math.PI*2;
+const BC=new Float64Array(220),BRW=new Float64Array(140),BDG=new Float64Array(360),TAU=Math.PI*2;
 let pC=0,pR=0,pD=0;
-setInterval(()=>{
-  if(IDLE.on||document.hidden||not(brailleOn)||not(BR.rows)||MOBILE||CHILL||POTATO)return;
-  if(performance.now()-lastScrollT<160)return;
+
+function measureBrailleBox(){
+  const w=aboutEl.offsetWidth||800;
+  const h=aboutEl.offsetHeight||420;
+  BR.cols=Math.min(200,Math.max(40,Math.floor(w/7)));
+  BR.rows=Math.min(120,Math.max(18,Math.ceil(h/15)+2));
+}
+function renderBrailleFrame(){
+  if(MOBILE)return;
+  if(not(BR.rows))measureBrailleBox();
   pC=(pC+.45)%TAU;pR=(pR-.3+TAU)%TAU;pD=(pD+.175)%TAU;
   const cols=BR.cols,rows=BR.rows,G=BGlyphs,GL=G.length,rand=Math.random;
   for(let x=0;x<cols;x++)BC[x]=Math.sin(x*.28+pC);
@@ -1108,27 +1084,71 @@ setInterval(()=>{
     s+=row+"\n";
   }
   braillePre.textContent=s;
+}
+if(typeof ResizeObserver==="function"){
+  new ResizeObserver(es=>{
+    const r=es[0].contentRect;
+    if(r.width>0&&r.height>0){
+      BR.cols=Math.min(200,Math.floor(r.width/7));
+      BR.rows=Math.min(120,Math.ceil(r.height/15)+2);
+      if(not(braillePre.textContent))renderBrailleFrame();
+    }
+  }).observe(aboutEl);
+}
+const aboutObserver=new IntersectionObserver(es=>{
+  brailleOn=es[0].isIntersecting;
+  if(brailleOn&&not(braillePre.textContent))renderBrailleFrame();
+},{rootMargin:"180px"});
+aboutObserver.observe(aboutEl);
+setInterval(()=>{
+  if(IDLE.on||document.hidden||not(brailleOn)||MOBILE)return;
+  if(performance.now()-lastScrollT<140)return;
+  renderBrailleFrame();
 },200);
 
-/* MiMo liquid hero - IO-gated + pre-allocated trig tables + adaptive vertex count for potato/iGPU */
+function pitFrame(t){
+  pitRAF=0;
+  if(IDLE.on||document.hidden){lastFrameT=0;return}
+  sampleFrameDt(t);
+  if(not(CSS_SCROLL_TIMELINE)){
+    /* +30% scroll darkening sensitivity: reaches deep darkness 1.3x faster as you scroll down */
+    const p=Math.min(1,Math.max(0,(scrollY/cachedMaxScroll)*1.3));
+    const target=.36+p*.60;
+    const settling=Math.abs(target-pitCur)>.003;
+    const busy=scrollDirty||settling||Math.abs(p-lastP)>.002;
+    if(busy){
+      lastP=p;pitCur+=(target-pitCur)*.16;
+      const q=Math.round(pitCur*100)/100;
+      if(neq(q,lastPitQ)){
+        lastPitQ=q;
+        $("pit").style.opacity=q.toFixed(2);
+      }
+      scrollDirty=false;
+      pitWake(MOBILE?16:0);
+    }else{
+      lastFrameT=0;
+    }
+  }else{
+    lastFrameT=0;
+  }
+}
+
+/* MiMo liquid hero - Midori-proof zero-stall polygon engine */
 const hero=$("hero"),liquid=$("liquid");
-let ltime=0,lskip=0,heroW=0,heroH=0,heroOn=false;
-const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:true,raf:0,centered:false,glideT:0,returning:false,returnStart:0,returnFrom:{x:0,y:0}};
-const SEG=POTATO?16:MOBILE?20:36;
+let ltime=0,heroW=0,heroH=0,heroOn=false;
+const LSq={tx:-300,ty:-300,pts:Array.from({length:6},()=>({x:-300,y:-300})),inside:false,raf:0,centered:false,glideT:0,returning:false,returnStart:0,returnFrom:{x:0,y:0}};
+const SEG=MOBILE?18:28;
 const HERO_PTS=new Array((SEG+1)*2);
-function heroMeasure(){const r=hero.getBoundingClientRect();heroW=r.width;heroH=r.height}
+function heroMeasure(){const r=hero.getBoundingClientRect();heroW=r.width||innerWidth;heroH=r.height||innerHeight}
 heroMeasure();
 if(typeof ResizeObserver==="function")new ResizeObserver(heroMeasure).observe(hero);
 new IntersectionObserver(es=>{heroOn=es[0].isIntersecting;liquidKick()},{rootMargin:"5%"}).observe(hero);
 function liquidKick(){if(not(LSq.raf)&&not(IDLE.on)&&not(document.hidden)&&heroOn)LSq.raf=requestAnimationFrame(liquidFrame)}
 function liquidCenter(){LSq.tx=heroW/2;LSq.ty=heroH*.46}
-function liquidFrame(t){
+function liquidFrame(){
   LSq.raf=0;
-  if(IDLE.on||document.hidden||not(heroOn)){lastFrameT=0;return}
-  sampleFrameDt(t);
-  const recentScroll=performance.now()-lastScrollT<140;
-  const chillSkip=(CHILL||POTATO)&&(++lskip%2===1);
-  if(not(recentScroll)&&not(chillSkip)){
+  if(IDLE.on||document.hidden||not(heroOn))return;
+  if(not(MOBILE&&performance.now()-lastScrollT<140)){
     ltime+=.05;
     if(not(LSq.centered)){liquidCenter();LSq.pts.forEach(p=>{p.x=LSq.tx;p.y=LSq.ty});LSq.centered=true}
     const g=LSq.glideT?Math.max(0,1-(performance.now()-LSq.glideT)/1100):0;
@@ -1143,7 +1163,7 @@ function liquidFrame(t){
     }
     for(let i=0;i<6;i++){
       const target=i===0?{x:LSq.tx,y:LSq.ty}:LSq.pts[i-1];
-      const damping=(.7-.04*i)*(1-g*.45);
+      const damping=(.72-.04*i)*(1-g*.42);
       LSq.pts[i].x+=(target.x-LSq.pts[i].x)*damping;
       LSq.pts[i].y+=(target.y-LSq.pts[i].y)*damping;
     }
@@ -1152,29 +1172,35 @@ function liquidFrame(t){
     const baseRadius=Math.min(heroW,heroH)*.34;
     const amp=1+g*1.6;
     let k=0;
+    /* Integer-rounded coordinates prevent CSS polygon string GC stalls in Midori Browser */
     for(let i=0;i<=SEG;i++){
       const theta=angle-Math.PI/2+(Math.PI*i/SEG);
       const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*amp;
       const r=Math.max(50,baseRadius+ripple);
-      HERO_PTS[k++]=`${(fp.x+r*Math.cos(theta)).toFixed(1)}px ${(fp.y+r*Math.sin(theta)).toFixed(1)}px`;
+      HERO_PTS[k++]=`${Math.round(fp.x+r*Math.cos(theta))}px ${Math.round(fp.y+r*Math.sin(theta))}px`;
     }
     for(let i=0;i<=SEG;i++){
       const theta=angle+Math.PI/2+(Math.PI*i/SEG);
       const ripple=(Math.sin(theta*6+ltime*2.5)*14+Math.cos(theta*4-ltime*1.8)*8)*amp;
       const r=Math.max(50,baseRadius+ripple);
-      HERO_PTS[k++]=`${(lp.x+r*Math.cos(theta)).toFixed(1)}px ${(lp.y+r*Math.sin(theta)).toFixed(1)}px`;
+      HERO_PTS[k++]=`${Math.round(lp.x+r*Math.cos(theta))}px ${Math.round(lp.y+r*Math.sin(theta))}px`;
     }
     liquid.style.clipPath=`polygon(${HERO_PTS.join(",")})`;
   }
   LSq.raf=requestAnimationFrame(liquidFrame);
 }
 function liquidSet(cx,cy){
+  if(IDLE.on&&not(document.hidden))setIdle(false);
   LSq.tx=cx;
   LSq.ty=cy+scrollY;
+  LSq.inside=true;
   LSq.returning=false;
+  liquidKick();
 }
+hero.addEventListener("pointermove",e=>liquidSet(e.clientX,e.clientY),{passive:true});
 hero.addEventListener("mousemove",e=>liquidSet(e.clientX,e.clientY),{passive:true});
-hero.addEventListener("mouseenter",e=>{
+hero.addEventListener("pointerenter",e=>{
+  if(IDLE.on&&not(document.hidden))setIdle(false);
   LSq.tx=e.clientX;
   LSq.ty=e.clientY+scrollY;
   LSq.inside=true;
@@ -1184,6 +1210,7 @@ hero.addEventListener("mouseenter",e=>{
   liquidKick();
 },{passive:true});
 function liquidLeave(){LSq.inside=false;LSq.glideT=performance.now();LSq.returning=true;LSq.returnStart=performance.now();LSq.returnFrom={x:LSq.tx,y:LSq.ty}}
+hero.addEventListener("pointerleave",liquidLeave,{passive:true});
 hero.addEventListener("mouseleave",liquidLeave,{passive:true});
 hero.addEventListener("touchmove",e=>{LSq.inside=true;LSq.returning=false;LSq.glideT=0;liquidSet(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
 hero.addEventListener("touchend",liquidLeave,{passive:true});
@@ -1263,7 +1290,7 @@ document.addEventListener("click",e=>{
   if(l){e.preventDefault();const s=l.dataset.scroll;if(neq(route,"home")){scrollAfter=s;navTo("home")}else doScroll(s);return}
 });
 
-/* Unified 3D Tilt Engine - feeds --rx and --ry into the single .pz matrix without overwriting hover pop or magnetic pull */
+/* Unified 3D Tilt Engine */
 const TILTS=MOBILE||POTATO?[]:[...document.querySelectorAll("[data-tilt]")].map(c=>{
   const st={rx:0,ry:0,tx:0,ty:0};
   const aim=(cx,cy)=>{
@@ -1346,7 +1373,7 @@ async function loadLog(which){
 document.querySelectorAll(".logtabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".logtabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");loadLog(b.dataset.log)});
 loadLog("p2p");
 
-/* ============ PUZZLE ENGINE v4 - proportional jigsaw, viewport-triggered scatter-in, live resize ============ */
+/* ============ PUZZLE ENGINE v4 - Zero-Reflow Pulse & Live Resize ============ */
 window.PUZZLE=(function(){
   const GRIDS=[["appGrid"],["labGrid"]];
   const arc=(cx,cy,r,a0,a1,n=8)=>{const p=[];for(let i=0;i<=n;i++){const a=(a0+(a1-a0)*i/n)*Math.PI/180;p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)])}return p};
@@ -1354,7 +1381,7 @@ window.PUZZLE=(function(){
   function relPos(el,cont){let x=0,y=0,n=el;while(n&&neq(n,cont)){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent}return{x,y}}
   const vis=new Set();
   const observed=new WeakSet();
-  const vio=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)vis.add(x.target);else vis.delete(x.target)}),{rootMargin:"80px"});
+  const vio=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)vis.add(x.target);else vis.delete(x.target)}),{rootMargin:"20px"});
   const gridIntroIO=new IntersectionObserver(es=>{
     es.forEach(e=>{
       if(not(e.isIntersecting))return;
@@ -1370,14 +1397,15 @@ window.PUZZLE=(function(){
     });
   },{threshold:0.12});
 
+  /* Zero synchronous offsetWidth reflows; skips pulse while user is playing in Hero so Midori never stalls */
   setInterval(()=>{
-    if(IDLE.on||document.hidden||not(vis.size)||MOB()||POTATO||CHILL)return;
+    if(IDLE.on||document.hidden||not(vis.size)||MOB()||POTATO||CHILL||(heroOn&&LSq.inside))return;
     const arr=[...vis];const pz=arr[Math.floor(Math.random()*arr.length)];
     const beam=pz.querySelector(".puzbeam");
-    if(beam){beam.classList.remove("go");void beam.offsetWidth;beam.classList.add("go")}
-    pz.classList.remove("pulse");void pz.offsetWidth;pz.classList.add("pulse");
-    setTimeout(()=>pz.classList.remove("pulse"),1600);
-  },4200);
+    if(beam&&beam.animate){
+      beam.animate([{backgroundPosition:"180% 0",opacity:0},{opacity:.8,offset:.18},{backgroundPosition:"-80% 0",opacity:0}],{duration:1100,easing:"ease-out"});
+    }
+  },4500);
 
   function apply(cont){
     const mob=MOB();
@@ -1406,7 +1434,6 @@ window.PUZZLE=(function(){
     const E=maxR+6;
     cont.style.setProperty("--puzE",E+"px");cont.classList.add("puz-on");
     const{V,H}=cont._puz;
-    /* Batch read actual dimensions after --puzE padding is applied */
     const dims=rows.map(row=>row.items.map(it=>({el:it.c,W:it.c.offsetWidth,Hh:it.c.offsetHeight})));
     rows.forEach((row,r)=>row.items.forEach((it,c)=>{
       const{el,W,Hh}=dims[r][c];
@@ -1423,7 +1450,7 @@ window.PUZZLE=(function(){
       pts.push([x0,y1]);
       const lf=V.get(r+","+(c-1));
       if(lf){lf.knobs.slice().sort((a,b)=>b.t-a.t).forEach(k=>{const ty=y0+k.t*(y1-y0);pts.push(...(k.d===1?arc(x0,ty,lf.r,90,-90):arc(x0,ty,lf.r,90,270)))})}
-      const poly="polygon("+pts.map(p=>p[0].toFixed(1)+"px "+p[1].toFixed(1)+"px").join(",")+")";
+      const poly="polygon("+pts.map(p=>Math.round(p[0])+"px "+Math.round(p[1])+"px").join(",")+")";
       el.style.clipPath=poly;
       const beam=el.querySelector(".puzbeam");if(beam)beam.style.clipPath=poly;
       let px=0,py=0,ps=1;
@@ -1464,8 +1491,7 @@ window.PUZZLE=(function(){
   const STRONG=".btn,.chip,.ghbtn,.ytbox,.imgretry,.logtabs button,#nav .links a,.sheet a,footer .flinks a,.back";
   const CARD=".pz,.fitem,.dlitem";
   const SOFT="h1,h2,h3,.sig,.vertable";
-  let MAG=[],enabled=false,lastTarget=null;
-  /* Document-space coordinate caching: 0 getBoundingClientRect() calls during scroll */
+  let MAG=[],enabled=false,lastTarget=null,brTick=0;
   function measure(){
     const sx=scrollX,sy=scrollY;
     for(const m of MAG){
@@ -1494,18 +1520,19 @@ window.PUZZLE=(function(){
   function loop(t){
     raf=requestAnimationFrame(loop);
     if(not(enabled)||IDLE.on||document.hidden){lastFrameT=0;return}
-    sampleFrameDt(t);
     if(dirty){measure();dirty=false}
     const vx=mx-px,vy=my-py;px=mx;py=my;
-    bx+=(mx-bx)*.45;by+=(my-by)*.45;
-    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    bx+=(mx-bx)*.48;by+=(my-by)*.48;
+    rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
     gx1+=(bx-gx1)*.30;gy1+=(by-gy1)*.30;
     gx2+=(gx1-gx2)*.16;gy2+=(gy1-gy2)*.16;
     const sp=Math.min(Math.hypot(vx,vy),48);ang=Math.atan2(vy,vx);
     st=1+sp/160;sq=1-sp/260;
     const ps=press?.8:1;
     blob.style.transform=tr(st*ps*(mag?1.12:1),sq*(press?1.25:1)*(mag?1.12:1));
-    if(not(txt))blob.style.borderRadius=`${46+Math.sin(t/240)*10}% ${54-Math.sin(t/240)*10}% ${50+Math.cos(t/300)*9}% ${50-Math.cos(t/300)*9}% / ${50-Math.cos(t/260)*9}% ${50+Math.cos(t/260)*9}% ${46+Math.sin(t/300)*10}% ${54-Math.sin(t/300)*10}%`;
+    if(not(txt)&&(++brTick%3===0)){
+      blob.style.borderRadius=`${Math.round(46+Math.sin(t/240)*10)}% ${Math.round(54-Math.sin(t/240)*10)}% ${Math.round(50+Math.cos(t/300)*9)}% ${Math.round(50-Math.cos(t/300)*9)}% / ${Math.round(50-Math.cos(t/260)*9)}% ${Math.round(50+Math.cos(t/260)*9)}% ${Math.round(46+Math.sin(t/300)*10)}% ${Math.round(54-Math.sin(t/300)*10)}%`;
+    }
     ring.style.transform=`translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0) rotate(${(-ang*.35).toFixed(2)}rad) scale(${(1+sp/320).toFixed(3)})`;
     g1.style.transform=`translate3d(${gx1.toFixed(1)}px,${gy1.toFixed(1)}px,0) scale(${(1-Math.min(.5,sp*.01)).toFixed(3)})`;
     g2.style.transform=`translate3d(${gx2.toFixed(1)}px,${gy2.toFixed(1)}px,0) scale(${(1-Math.min(.7,sp*.008)).toFixed(3)})`;
@@ -1517,7 +1544,6 @@ window.PUZZLE=(function(){
       const ey=m.fixed?m.docY:m.docY-sy;
       const dx=mx-ex,dy=my-ey,rad=m.rad;
       let tx=0,ty=0;
-      /* Fast AABB box rejection before running Math.hypot */
       if(Math.abs(dx)<rad&&Math.abs(dy)<rad){
         const d=Math.hypot(dx,dy);
         if(d<rad&&d>1){const f=(1-d/rad)*(1-d/rad)*m.s;tx=dx/d*f;ty=dy/d*f}
@@ -1578,7 +1604,8 @@ window.PUZZLE=(function(){
     });
   }
   window.CURSOR={enable,disable,toggle(){enabled?disable():enable()},touch(){lastMove=performance.now();if(hidden)restructure()},refresh(){if(enabled){collect();wake()}},remeasure(){if(enabled)dirty=true}};
-  addEventListener("pointermove",e=>{
+  const onMove=e=>{
+    if(IDLE.on&&not(document.hidden))setIdle(false);
     if(not(enabled))return;
     mx=e.clientX;my=e.clientY;lastMove=performance.now();
     if(neq(e.target,lastTarget)){
@@ -1589,8 +1616,10 @@ window.PUZZLE=(function(){
       if(neq(mg,mag)){mag=mg;blob.classList.toggle("mag",mag);ring.classList.toggle("mag",mag)}
     }
     if(hidden)restructure();else wake();
-  },{passive:true});
-  addEventListener("pointerdown",e=>{if(not(enabled))return;mx=e.clientX;my=e.clientY;press=true;lastMove=performance.now();if(hidden)restructure();else wake()},{passive:true});
+  };
+  addEventListener("pointermove",onMove,{passive:true});
+  addEventListener("mousemove",onMove,{passive:true});
+  addEventListener("pointerdown",e=>{if(IDLE.on&&not(document.hidden))setIdle(false);if(not(enabled))return;mx=e.clientX;my=e.clientY;press=true;lastMove=performance.now();if(hidden)restructure();else wake()},{passive:true});
   addEventListener("pointerup",()=>{press=false;lastMove=performance.now()},{passive:true});
   document.addEventListener("mouseleave",()=>{lastMove=0});
   addEventListener("scroll",()=>{if(not(enabled))return;lastMove=performance.now();wake()},{passive:true});
@@ -1605,7 +1634,7 @@ window.PUZZLE=(function(){
   if(location.search.indexOf("cursor=0")===-1)enable();
 })();
 
-document.querySelectorAll(".pz,.imgwrap.round,.imgwrap.ic,.cue,.chip").forEach(el=>ioVis.observe(el));
+document.querySelectorAll(".pz,.imgwrap.round,.imgwrap.ic,.cue,.chip,.suite-sep").forEach(el=>ioVis.observe(el));
 
 /* boot */
 const bootRoute=parseHash();
@@ -1622,6 +1651,7 @@ activateImgs(currentView());
 watchImgs();
 collectRV();
 TYPEWRITER.observeScope(document);
+renderBrailleFrame();
 updateMaxScroll();
 requestAnimationFrame(pitFrame);
 try{PUZZLE.refresh()}catch(e){console.error("puzzle boot:",e)}
